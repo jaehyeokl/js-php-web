@@ -1,17 +1,23 @@
-<!-- Database 'portfolio' 연결 -->
 <?php
-    $servername = "localhost";
-    $port = "3306";
-    $dbname = "portfolio";
-    $user = "manager";
-    $password = "8fuch#CJjcyW8zHgLISW27^J8D4NB4VI^fLMp4XtR0ZO7!4u&k";
-
-    try {
-        $conn = new PDO("mysql:host=$servername;port=$port;dbname=$dbname", $user, $password);
-        // set the PDO error mode to exception
-        $conn->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
-        // echo "connect!";
-    } catch (PDOException $ex) {
-        echo "failed! : ".$ex->getMessage()."<br>";
-    }
+echo "hello world";
+echo "dd";
 ?>
+
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <!-- <meta name="description" content="메인페이지"> -->
+    <!-- <meta property="og:title" content="ego lego" /> -->
+    <!-- <meta property="og:description" content="활동적인 아웃도어 라이프스타일" /> -->
+    <title>메인</title>
+    <link rel="stylesheet" href="css/reset.css">
+    <!-- <script src="https://kit.fontawesome.com/8451689280.js" crossorigin="anonymous"></script> -->
+</head>
+    <a href="">안녕하세요</a>
+    <a href=""></a>
+<body>
+    
+</body>
+</html>
