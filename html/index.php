@@ -8,10 +8,11 @@
     <!-- <meta property="og:description" content="활동적인 아웃도어 라이프스타일" /> -->
     <title>Hello</title>
     <link rel="stylesheet" href="css/reset.css">
+    <link rel="stylesheet" href="css/header.css">
     <link rel="stylesheet" href="css/index.css">
     <!-- <script src="https://kit.fontawesome.com/8451689280.js" crossorigin="anonymous"></script> -->
 </head>
-
+<body>
     <!-- Header -->
     <section id="header">
         <div class="header container">
@@ -109,7 +110,6 @@
     </div>
   </section>
   <!-- End Contact Section -->
-<body>
-    
+
 </body>
 </html>
