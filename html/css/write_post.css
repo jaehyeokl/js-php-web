@@ -1,0 +1,19 @@
+/* 글쓰기 form */
+#editor {
+    width: 50vw;
+    margin: 8vw auto;
+}
+
+#editor .header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding-bottom: 12px;
+    margin-bottom: 30px;
+    border-bottom: solid 1px black;
+}
+
+#editor .form {
+    display: flex;
+    flex-direction: column;
+}
