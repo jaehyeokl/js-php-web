@@ -1,0 +1,115 @@
+/* Header section */
+#header {
+    position: fixed;
+    z-index: 1000;
+    left: 0;
+    top: 0;
+    width: 100vw;
+    height: auto;
+}
+
+#header .header {
+    min-height: 10vh;
+    background-color: rgba(31, 30, 30, 0.24);
+    transition: 0.3s ease background-color;
+}
+
+#header .nav-bar {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    width: 100%;
+    height: 100%;
+    max-width: 1300px;
+    padding: 0 10px;
+}
+
+#header .nav-list ul {
+    position: absolute;
+    width: 100vw;
+    top: 0;
+    display: flex;
+}
+
+#header .nav-list ul a {
+    font-size: 2.5rem;
+    font-weight: 500;
+    letter-spacing: 0.2rem;
+    color: white;
+    text-transform: uppercase;
+    padding: 20px;
+    display: block;
+}
+
+#header .nav-list ul li:hover a {
+    color: black;
+}
+/* End Header section */
+
+
+/* Blog */
+#blog {
+    width: 100vw;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+}
+
+#blog .header {
+    width: 55vw;
+    /* background-color: blue; */
+    margin-top: 8vw;
+    padding-bottom: 20px;
+    border-bottom: solid 1px black;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}
+
+#blog .blog-title {
+    font-size: 20px;
+}
+
+#blog .body {
+    width: 46vw;
+    padding: 0 16px;
+}
+
+#blog .blog-item {
+    height: 8vw;
+    margin-top: 40px;
+    padding: 2px 20px;
+    border-bottom: solid 1px black;
+    /* background-color: tomato; */
+}
+
+#blog .blog-item a {
+    display: flex;
+    justify-content: space-between;
+}
+
+#blog .item-text {
+    display: flex;
+    flex-direction: column;
+    padding-bottom: 50px; 
+}
+/* 블로그 아이템 제목 */
+#blog .item-text span:nth-child(1) {
+    font-size: 1.5rem;
+    font-weight: bold;
+}
+/* 블로그 아이템 내용 */
+#blog .item-text span:nth-child(2) {
+    margin-top: 8px;
+}
+
+#blog .item-img {
+    /* background-color: thistle; */
+}
+
+#blog .item-img img {
+    width: 110px;
+    height: 110px;
+}
+/* End Blog */
