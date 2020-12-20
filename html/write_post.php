@@ -39,15 +39,11 @@
         </div>
     
         <form class="editor form" action="uproad_post.php" method="post">
-            <input class="write_modify" type="hidden" name="modify_post_id" value="0">
             <input class="write_title"type="text" name="title" minlength="1" placeholder="제목을 작성해주세요" maxlength="45">
             <div class="write_video">
-                <i id="write_video" class="fas fa-file-video"></i>
-                <input class="select_video" name= "video" type="file" accept="video/*">
-                <!-- <button type="button">동영상</button> -->
-                <!-- <button type="button">저장</button> -->
+                <input class="select_video" name= "file" type="file" accept="video/*, image/*">
             </div>
-            <textarea id="summernote" class="write_contents" name="contents_text"></textarea>
+            <textarea class="write_text" name="text"></textarea>
             <input class="write_submit" type="submit" value="등록">
         </form>
     </section>
