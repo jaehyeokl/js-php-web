@@ -49,5 +49,5 @@
 #editor .write_text:focus {
     outline: none;
     border: solid 2px #444444;
-    border-radius: 5px;
+    border-radius: 5px; 
 }
