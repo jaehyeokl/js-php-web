@@ -4,17 +4,16 @@
 <?php
     include_once("../resources/config.php");
     $connectDB = connectDB();
+    $ip = getIP();
 
     // modify_id 로 전달받을 수 있는 값
     // (새 게시글일때 = 0 / 게시글 수정일때 = 게시글 id) 
     // 새로운 글 생성일때, 또는 수정일때
     // $modify_id = $_POST['modify_post_id'];
 
-    // 수정하기를 통해 들어왔을때 true
+    // 게시글 수정하기를 통해 들어왔을때 true 가 되도록
     $isModify = false;
     
-    date_default_timezone_set("Asia/Seoul");
-
     try {
         if (!$isModify) {
             // 새 게시글 작성
@@ -32,7 +31,9 @@
             $title = $_POST['title'];
             $contentsText = $_POST['contents_text'];
             // MYSQL 의 NOW() 처럼 현재시간을 구하는 함수
-            // 한국시간 가져오기 위해 php.ini 파일의 date.timezone 을 Asia/Seoul로 설정하였음
+            // 게시글 생성시간을 한국시간으로 생성하기 위한 설정
+            // date_default_timezone_set("Asia/Seoul");
+            // 기본적으로 한국시간 가져오기 위해 php.ini 파일의 date.timezone 을 Asia/Seoul로 설정하였음
             $createdAt = date('Y-m-d H:i:s');
             $createPostStatement->execute();
 
@@ -53,12 +54,14 @@
     }
     $connectDB = null;
 
+    // DB에 저장 완료 후
+    // 게시글 생성일때는 게시글 목록으로 돌아가기
+    // 게시글 수정일때는 해당 게시글 상세보기로 돌아가기
     if (!$isModify) {
         // 게시글 목록으로
+        header("Location: http://".$ip."/blog.php");
+        die();
     } else {
         // 수정한 게시글 보기
     }
-    // 자유게시판으로 리다이렉트
-    // header("Location: https://ego-lego.site/board.php");
-    // die();
 ?>
