@@ -2,7 +2,7 @@
 <!-- 호출하여 사용 -->
 
 <?php
-// IP
+// 사이트 IP
 function getIP() {
     $ip = "52.79.61.49";
     return $ip;

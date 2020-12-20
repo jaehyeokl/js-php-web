@@ -47,5 +47,8 @@
             <input class="write_submit" type="submit" value="등록">
         </form>
     </section>
+    <!-- TODO: 게시글 작성할때, 제목 길이제한, 게시글 길이제한 예외처리 해야한다  -->
+    <!-- TODO: 이미지업로드 또는 비디오 업로드일때 구현해야한다 -->
+    <!-- TODO: 관리자 로그인일때 게시글 작성, 수정 버튼 보이도록 -->
     
 </body>    

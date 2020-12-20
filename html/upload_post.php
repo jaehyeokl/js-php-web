@@ -3,9 +3,10 @@
 
 <?php
     include_once("../resources/config.php");
-    $connectDB = connectDB();
-    $ip = getIP();
+    $connectDB = connectDB(); // DB 연결
+    $ip = getIP(); // 사이트의 ip 가져오기
 
+    // TODO: 게시글 수정하기 일 때 isModify 를 true 로 반환할 수 있도록 구현해야한다
     // modify_id 로 전달받을 수 있는 값
     // (새 게시글일때 = 0 / 게시글 수정일때 = 게시글 id) 
     // 새로운 글 생성일때, 또는 수정일때
@@ -27,7 +28,7 @@
 
             // DB 쿼리문에 bind 할 데이터를 초기화한다
             $writerId = 1;
-            // TODO : writerId 를 user 테이블의 id 로 적용해야한다
+            // TODO: 회원가입 구현 이후, 로그인한 계정(관리자계정)의 user 테이블 id 값을 사용하도록
             $title = $_POST['title'];
             $contentsText = $_POST['contents_text'];
             // MYSQL 의 NOW() 처럼 현재시간을 구하는 함수

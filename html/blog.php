@@ -60,9 +60,8 @@
                 </a>
             </div>
         </div>
-
-        
     </section>
+    <!-- TODO:  -->
     <!-- End Blog -->
     
 </body>
