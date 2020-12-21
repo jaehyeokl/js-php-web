@@ -1,19 +1,14 @@
-<!-- 블로그 게시글을 생성하거나 수정할때 실행 
-    데이터베이스 blog 테이블의 게시글에 대한 데이터를를 저장(수정)한다 -->
+<!-- 블로그 게시글을 생성하거나 수정, 삭제할때 실행 
+    데이터베이스 blog 테이블의 게시글에 대한 데이터를 생성,수정 한다
+    (삭제일 경우 DB에서 삭제가 아닌 deletedAt 컬럼에 삭제시간을 추가하여 삭제된것처럼 처리한다) -->
 
 <?php
     include_once("../resources/config.php");
     $connectDB = connectDB(); // DB 연결
     $ip = getIP(); // 사이트의 ip 가져오기
 
-    // TODO: 게시글 수정하기 일 때 isModify 를 true 로 반환할 수 있도록 구현해야한다
-    // modify_id 로 전달받을 수 있는 값
-    // (새 게시글일때 = 0 / 게시글 수정일때 = 게시글 id) 
-    // 새로운 글 생성일때, 또는 수정일때
-    // $modify_id = $_POST['modify_post_id'];
-
-    // 게시글 수정하기를 통해 들어왔을때 true 가 되도록
-    $isModify = false;
+    // 게시글이 수정상태인지 체크 (수정 true / 생성 false)
+    $isModify = getStateModify();
     
     try {
         if (!$isModify) {
@@ -40,15 +35,18 @@
 
         } else {
             // 기존 게시글 수정
-            // $modifyPostStatement = $connectDB->prepare("UPDATE general_board SET title = :title, contents_text = :contents_text 
-            // WHERE id = :id");
-            // $modifyPostStatement->bindParam(':title', $title);
-            // $modifyPostStatement->bindParam(':contents_text', $contents_text);
-            // $modifyPostStatement->bindParam(':id', $modify_id, PDO::PARAM_INT);
-            // // 데이터 입력 후 실행
-            // $title = $_POST['title'];
-            // $contentsText = $_POST['contents_text'];
-            // $modifyPostStatement->execute();
+            $modifyPostStatement = $connectDB->prepare("UPDATE blog SET title = :title, contentsText = :contentsText, 
+            updatedAt = :updatedAt WHERE id = :id");
+            $modifyPostStatement->bindParam(':title', $title);
+            $modifyPostStatement->bindParam(':contentsText', $contentsText);
+            $modifyPostStatement->bindParam(':updatedAt', $updatedAt);
+            $modifyPostStatement->bindParam(':id', $postId, PDO::PARAM_INT);
+            // 데이터 입력 후 실행
+            $title = $_POST['title'];
+            $contentsText = $_POST['contents_text'];
+            $updatedAt = date('Y-m-d H:i:s');
+            $postId = $_GET['id'];
+            $modifyPostStatement->execute();
         }
     } catch (PDOException $ex) {
         echo "failed! : ".$ex->getMessage()."<br>";
@@ -64,5 +62,18 @@
         die();
     } else {
         // 수정한 게시글 보기
+        header("Location: http://".$ip."/view_post.php?id=".$postId);
+        die();
+    }
+
+    // 게시글 생성, 수정중 어떤 상태인지 확인하기
+    function getStateModify() {
+        $isModify = false;
+        if (isset($_GET['mode'])) {
+            if ($_GET['mode'] === "modify") {
+                $isModify = true;
+            }
+        }
+        return $isModify;
     }
 ?>

@@ -6,6 +6,7 @@
     $postId = $_GET['id']; // 게시글 id
 
     // TODO: 작성자 불러올경우에는 JOIN 을 통하여 한번의 쿼리문으로 함께 불러올 수 있도록 하자
+    // TODO: 수정일을 보여줄 수 있는 방법을 생각해보자
     $getPostStatement = $connectDB->prepare("SELECT * FROM blog WHERE id = :postId");
     $getPostStatement->bindParam(':postId', $postId, PDO::PARAM_INT);
     $getPostStatement->execute();
@@ -53,12 +54,18 @@
     <!-- View Post -->
     <section id="viewer">
         <div class="viewer header">
-            <div class="post_title">
-                <h1><?=$title?></h1>
+            <div class="header_top">
+                <h1 class="post_title"><?=$title?></h1>
             </div>
-            <div>
-                <span class="created-at">작성일 : <?=$createdAt?></span>
-                <span class="edit-button">톱니</span>
+            <div class="header_bottom">
+                <div class="post_information">
+                    <span class="created-at">작성일 : <?=$createdAt?></span>
+                </div>
+                <div class="post_button">
+                    <a href="write_post.php?mode=modify&id=<?=$postId?>">수정</a>
+                    <a href="">삭제</a>
+                    <a class="edit-button">＜</a>
+                </div>
             </div>
         </div>
         <div class="viewer body">
@@ -90,6 +97,8 @@
         }
         textareaAutoHeight();
         // TODO: 브라우저 창의 크기가 바뀔때마다 새로 실행디되도록 하기
+
+        // 게시글 수정/ 삭제
     </script>
     <!-- End View Post -->
 </body>

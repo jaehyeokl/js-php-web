@@ -17,7 +17,7 @@
 #viewer .header {
     display: flex;
     flex-direction: column;
-    padding-bottom: 12px;
+    padding-bottom: 8px;
     margin-bottom: 30px;
     border-bottom: solid 1px black;
 }
@@ -27,13 +27,20 @@
     margin-bottom: 2rem;
 }
 
-#viewer .header .created-at {
-    font-size: 0.8rem;
+#viewer .header .header_bottom {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
 }
 
-#viewer .header .edit-button {
-    color: red;
-    float: right;
+#viewer .header .header_bottom .post_button {
+    padding: 8px;
+    text-align: center;
+    font-size: 0.9rem;
+}
+
+#viewer .header .created-at {
+    font-size: 0.8rem;
 }
 
 #viewer .body .content_text textarea {
