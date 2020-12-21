@@ -1,4 +1,4 @@
-/* 글쓰기 form */
+/* Write Post */
 #editor {
     width: 50vw;
     margin: 8vw auto;
@@ -51,3 +51,4 @@
     border: solid 2px #444444;
     border-radius: 5px; 
 }
+/* End Write Post */

@@ -1,0 +1,55 @@
+/* Blog Title */
+#header .blog-title {
+    margin-top: 3rem;
+    margin-left: 1.5rem;
+    font-size: 4rem;
+}
+/* End Blog Title */
+
+/* View Post */
+#viewer {
+    width: 50%;
+    margin: 8vw auto;
+    display: flex;
+    flex-direction: column;
+}
+
+#viewer .header {
+    display: flex;
+    flex-direction: column;
+    padding-bottom: 12px;
+    margin-bottom: 30px;
+    border-bottom: solid 1px black;
+}
+
+#viewer .header .post_title {
+    font-size: 1.8rem;
+    margin-bottom: 2rem;
+}
+
+#viewer .header .created-at {
+    font-size: 0.8rem;
+}
+
+#viewer .header .edit-button {
+    color: red;
+    float: right;
+}
+
+#viewer .body .content_text textarea {
+    width: 100%;
+    border: none;
+    border-radius: 10px;
+    font-size: 1.1rem;
+    color: black;
+    opacity: 0.7;
+    resize: none;
+    outline: none;
+    box-sizing: border-box;
+}
+
+#viewer .footer {
+    margin-top: 20px;
+    border-top: solid 1px black;
+}
+/* End View Post */

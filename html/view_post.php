@@ -1,3 +1,23 @@
+<?php
+    // 게시글 불러오기
+    include_once("../resources/config.php");
+    $connectDB = connectDB(); // DB 연결
+    
+    $postId = $_GET['id']; // 게시글 id
+
+    // TODO: 작성자 불러올경우에는 JOIN 을 통하여 한번의 쿼리문으로 함께 불러올 수 있도록 하자
+    $getPostStatement = $connectDB->prepare("SELECT * FROM blog WHERE id = :postId");
+    $getPostStatement->bindParam(':postId', $postId, PDO::PARAM_INT);
+    $getPostStatement->execute();
+        
+    $postRow = $getPostStatement->fetch();
+    // $writerId = $row['creater'];
+    $title = $postRow['title'];
+    $contentsText = $postRow['contentsText'];
+    $createdAt = $postRow['createdAt'];
+?>
+
+
 <!DOCTYPE html>
 <html lang="ko">
 <head>
@@ -19,15 +39,57 @@
             <div class="nav-bar">
                 <div class="nav-list">
                     <ul>
-                        <li><a href="#main">Home</a></li>
-                        <li><a href="#projects">Projects</a></li>
-                        <li><a href="#blog">Blog</a></li>
-                        <!-- <li><a href="#about">About</a></li> -->
-                        <li><a href="#contact">Contact</a></li>
+                        <li><a href="index.php">Home</a></li>
                     </ul>
                 </div>
             </div>
         </div>
+        <div class="blog-title">
+            <h1>BLOG</h1>
+        </div>
     </section>
     <!-- End Header --> 
+
+    <!-- View Post -->
+    <section id="viewer">
+        <div class="viewer header">
+            <div class="post_title">
+                <h1><?=$title?></h1>
+            </div>
+            <div>
+                <span class="created-at">작성일 : <?=$createdAt?></span>
+                <span class="edit-button">톱니</span>
+            </div>
+        </div>
+        <div class="viewer body">
+            <div class="content_image">
+                <img src="" alt="">
+            </div>
+            <div class="content_text">
+                <textarea readonly="readonly"><?=$contentsText?></textarea>        
+            </div>
+        </div>
+        <div class="viewer footer">
+            <span>댓글 다는곳</span>
+            <!-- TODO: Comment 구현하기 -->
+        </div>
+    </section>
+
+    <script>
+        // 불러오는 게시글의 양만큼 textarea 의 높이를 자동으로 조절하도록 한다
+        function textareaAutoHeight() {
+            let el = document.querySelector(".content_text textarea");
+            setTimeout(() => {
+                el.style.height = 'auto';
+
+                let scrollHeight = el.scrollHeight;
+                let outlineHeight = el.offsetHeight - el.clientHeight;
+
+                el.style.height = (scrollHeight + outlineHeight) + 'px';
+            }, 0);
+        }
+        textareaAutoHeight();
+        // TODO: 브라우저 창의 크기가 바뀔때마다 새로 실행디되도록 하기
+    </script>
+    <!-- End View Post -->
 </body>

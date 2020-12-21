@@ -22,10 +22,6 @@
         $page = $_GET['page'];
     }
 
-    // echo $page."<br>";
-    // echo $totalPostCount."<br>";
-    // echo $totalPageCount."<br>";
-
     // 현재 페이지에 보여줄 게시글 데이터 불러오기
     // 삭제된 게시글을 제외 / id 역순으로 불러오기(최신순) / 현재페이지에 들어갈 데이터만(페이징)
     $getPagingPostStatement = $connectDB->prepare("SELECT * FROM blog WHERE deletedAt IS NULL ORDER BY id DESC LIMIT :pagingStartPoint, :postCount");
@@ -38,9 +34,9 @@
     $getPagingPostStatement->bindParam(':postCount', $postCount, PDO::PARAM_INT);
     $getPagingPostStatement->execute();
 
-    // 불러온 데이터를 HTML 
-    // 불러온 게시글을 테이블에 반영한다
+    // 불러온 데이터를 통해 게시글 HTML 태그 구현
     while ($blogPostRow = $getPagingPostStatement->fetch()) {
+        // TODO: 작성자 불러올경우에는 JOIN 을 통하여 한번의 쿼리문으로 함께 불러올 수 있도록 하자
         // 게시글의 작성자를 닉네임으로 표시하기 위해서
         // 게시글 데이터에 저장된 (creater)을 이용해 user 데이터에서 작성자의 닉네임을 불러온다
         // $name_statement = $connectDB->prepare("SELECT name FROM user WHERE email = :creater");
@@ -54,32 +50,21 @@
         $contentsText = $blogPostRow['contentsText'];
         $formatCreatedAt = getFormatCreatedAt($blogPostRow); // 게시글 작성일
 
-        
+        // 블로그 게시글 태그 생성
         $blogItemTag = $blogItemTag."<div class='blog-item'>".
                                         "<a href='view_post.php?id=$postId'>".
                                             "<div class='item-text'>".
                                                 "<span>$title</span>".
                                                 "<span>$contentsText</span>".
                                             "</div>".
-                                            "<div class='item-img'><img src='' alt=''></div>".
+                                            "<div class='item-img'>".
+                                                // "<img src='' alt=''>".
+                                            "</div>".
                                         "</a>".
                                     "</div>";
 
-        // echo $blogItemTag."<br>";
-
-        // $listId = "<td class='index'>{$row['id']}</td>";
-        // // <a> 태그의 링크에 게시글의 id를 파라미터로 추가한다
-        // // 게시글이 고유한 주소를 가지게 하면서, id와 일치하는 게시글의 데이터만을 가져오기 위해
-        // $listTitle = "<td class='title'><a href='view_post.php?id={$row['id']}'>{$row['title']}</a></td>";
-        // $listCreater = "<td class='creater'>{$name}</td>";
-        // $listCreated = "<td class='created'>{$time_created}</td>";
-        // $listHit = "<td class='created'>{$row['hit']}</td>";
-
-        // $totalRow = $totalRow."<tr>".$listId.$listTitle.$listCreater.$listCreated.$listHit."<tr>";
+        // TODO: 이미지 또는 비디오일 경우에는 어떻게 태그를 추가할 것인가
     }
-
-
-
 
     // 게시글 전체 페이지 수 구하기
     function getTotalPage($postCount, $totalPostCount) {
@@ -128,49 +113,32 @@
             <div class="nav-bar">
                 <div class="nav-list">
                     <ul>
-                        <li><a href="#main">Home</a></li>
-                        <li><a href="#projects">Projects</a></li>
-                        <li><a href="#blog">Blog</a></li>
-                        <!-- <li><a href="#about">About</a></li> -->
-                        <li><a href="#contact">Contact</a></li>
+                        <li><a href="index.php">Home</a></li>
                     </ul>
                 </div>
             </div>
         </div>
+        <div class="blog-title">
+            <h1>BLOG</h1>
+        </div>
     </section>
     <!-- End Header -->
+
+    <!-- Blog Title -->
+    
 
     <!-- Blog -->
     <section id="blog">
         <div class="blog header">
-            <div class="blog-title">
+            <!-- <div class="blog-title">
                 <h1>Blog</h1>
-            </div>
+            </div> -->
+            <a href="">뒤로</a>
             <a href="write_post.php">글작성</a>
         </div>
         <div class="blog body">
             <!-- 블로그 아이템 태그 -->
             <?= $blogItemTag ?>
-
-            <!-- <div class="blog-item">
-                <a href="view_post.php">
-                    <div class="item-text">
-                        <span>제목</span>
-                        <span>내용 내용내용내용</span>
-                    </div>
-                    <div class="item-img"><img src="" alt=""></div>
-                </a>
-            </div>
-
-            <div class="blog-item">
-                <a href="">
-                    <div class="item-text">
-                        <span>제목</span>
-                        <span>내용 내용내용내용</span>
-                    </div>
-                    <div class="item-img"><img src="../img/layout/background-main.jpg" alt=""></div>
-                </a>
-            </div> -->
         </div>
     </section>
     <!-- End Blog -->
