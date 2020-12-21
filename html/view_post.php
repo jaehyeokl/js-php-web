@@ -63,7 +63,7 @@
                 </div>
                 <div class="post_button">
                     <a href="write_post.php?mode=modify&id=<?=$postId?>">수정</a>
-                    <a href="">삭제</a>
+                    <a href="upload_post.php?mode=delete&id=<?=$postId?>">삭제</a>
                     <a class="edit-button">＜</a>
                 </div>
             </div>
