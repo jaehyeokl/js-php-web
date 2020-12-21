@@ -40,33 +40,43 @@
 
     // 불러온 데이터를 HTML 
     // 불러온 게시글을 테이블에 반영한다
-    // while ($blogPostRow = $getPagingPostStatement->fetch()) {
-    //     // 게시글의 작성자를 닉네임으로 표시하기 위해서
-    //     // 게시글 데이터에 저장된 (creater)을 이용해 user 데이터에서 작성자의 닉네임을 불러온다
-    //     $name_statement = $connectDB->prepare("SELECT name FROM user WHERE email = :creater");
-    //     $name_statement->bindParam(':creater', $row['creater']);
-    //     $name_statement->execute();
-    //     $name_row = $name_statement->fetch();
-    //     $name = $name_row['name']; // 닉네임
+    while ($blogPostRow = $getPagingPostStatement->fetch()) {
+        // 게시글의 작성자를 닉네임으로 표시하기 위해서
+        // 게시글 데이터에 저장된 (creater)을 이용해 user 데이터에서 작성자의 닉네임을 불러온다
+        // $name_statement = $connectDB->prepare("SELECT name FROM user WHERE email = :creater");
+        // $name_statement->bindParam(':creater', $row['creater']);
+        // $name_statement->execute();
+        // $name_row = $name_statement->fetch();
+        // $name = $name_row['name']; // 닉네임
 
-    //     // 작성일 포맷 (년.월.일)
-    //     // 당일 작성한 글은 시간만 표기되도록 한다 (시:분)
-    //     $time_today = date("Y.m.d");
-    //     $time_created = date("Y.m.d", strtotime($row['created']));
-    //     if($time_today === $time_created) {
-    //         $time_created = date("H:i", strtotime($row['created']));
-    //     }
+        $postId = $blogPostRow['id']; // 게시글 id
+        $title = $blogPostRow['title'];
+        $contentsText = $blogPostRow['contentsText'];
+        $formatCreatedAt = getFormatCreatedAt($blogPostRow); // 게시글 작성일
+
         
-    //     $listId = "<td class='index'>{$row['id']}</td>";
-    //     // <a> 태그의 링크에 게시글의 id를 파라미터로 추가한다
-    //     // 게시글이 고유한 주소를 가지게 하면서, id와 일치하는 게시글의 데이터만을 가져오기 위해
-    //     $listTitle = "<td class='title'><a href='view_post.php?id={$row['id']}'>{$row['title']}</a></td>";
-    //     $listCreater = "<td class='creater'>{$name}</td>";
-    //     $listCreated = "<td class='created'>{$time_created}</td>";
-    //     $listHit = "<td class='created'>{$row['hit']}</td>";
+        $blogItemTag = $blogItemTag."<div class='blog-item'>".
+                                        "<a href='view_post.php?id=$postId'>".
+                                            "<div class='item-text'>".
+                                                "<span>$title</span>".
+                                                "<span>$contentsText</span>".
+                                            "</div>".
+                                            "<div class='item-img'><img src='' alt=''></div>".
+                                        "</a>".
+                                    "</div>";
 
-    //     $totalRow = $totalRow."<tr>".$listId.$listTitle.$listCreater.$listCreated.$listHit."<tr>";
-    // }
+        // echo $blogItemTag."<br>";
+
+        // $listId = "<td class='index'>{$row['id']}</td>";
+        // // <a> 태그의 링크에 게시글의 id를 파라미터로 추가한다
+        // // 게시글이 고유한 주소를 가지게 하면서, id와 일치하는 게시글의 데이터만을 가져오기 위해
+        // $listTitle = "<td class='title'><a href='view_post.php?id={$row['id']}'>{$row['title']}</a></td>";
+        // $listCreater = "<td class='creater'>{$name}</td>";
+        // $listCreated = "<td class='created'>{$time_created}</td>";
+        // $listHit = "<td class='created'>{$row['hit']}</td>";
+
+        // $totalRow = $totalRow."<tr>".$listId.$listTitle.$listCreater.$listCreated.$listHit."<tr>";
+    }
 
 
 
@@ -81,6 +91,19 @@
     function getPagingStartPoint($postCount, $page) {
         $pagingStartPoint = ($page - 1)*$postCount;
         return $pagingStartPoint;
+    }
+
+    // 게시글 작성날짜 포맷
+    // default : 년.월.일 / today : 시:분
+    function getFormatCreatedAt($row) {
+        $currntDate = date("Y.m.d"); // 현재 날짜
+        if($currntDate === $formatCreatedAt) {
+            // 게시글 생성일이 현재 날짜와 같을 경우에는 시:분 으로 작성일을 표기한다
+            $formatCreatedAt = date("H:i", strtotime($row['created']));
+        } else {
+            $formatCreatedAt = date("Y.m.d", strtotime($row['created']));
+        }
+        return $formatCreatedAt;
     }
 ?>
 
@@ -126,7 +149,10 @@
             <a href="write_post.php">글작성</a>
         </div>
         <div class="blog body">
-            <div class="blog-item">
+            <!-- 블로그 아이템 태그 -->
+            <?= $blogItemTag ?>
+
+            <!-- <div class="blog-item">
                 <a href="view_post.php">
                     <div class="item-text">
                         <span>제목</span>
@@ -144,7 +170,7 @@
                     </div>
                     <div class="item-img"><img src="../img/layout/background-main.jpg" alt=""></div>
                 </a>
-            </div>
+            </div> -->
         </div>
     </section>
     <!-- End Blog -->
