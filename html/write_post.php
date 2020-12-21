@@ -90,10 +90,10 @@
             <h1 class="editor-title">블로그 게시글 작성</h1>
         </div>
     
-        <form class="editor form" action="upload_post.php<?=$addModifyMode?>" method="post">
+        <form class="editor form" action="upload_post.php<?=$addModifyMode?>" enctype="multipart/form-data" method="post">
             <input class="write_title"type="text" name="title" minlength="1" value="<?=$title?>" placeholder="제목을 작성해주세요" maxlength="45">
             <div class="write_video">
-                <input class="select_video" name= "file" type="file" accept="video/*, image/*">
+                <input class="select_video" name= "contents_file" type="file" accept="video/*, image/*">
             </div>
             <textarea class="write_text" name="contents_text" placeholder="내용을 작성해주세요"><?=$contentsText?></textarea>
             <input class="write_submit" type="submit" value="<?=$buttonName?>">

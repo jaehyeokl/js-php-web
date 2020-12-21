@@ -37,7 +37,21 @@
                 // date_default_timezone_set("Asia/Seoul");
                 // 기본적으로 한국시간 가져오기 위해 php.ini 파일의 date.timezone 을 Asia/Seoul로 설정하였음
                 $createdAt = date('Y-m-d H:i:s');
-                $createPostStatement->execute();
+                // $createPostStatement->execute();
+
+                // 게시글 첨부이미지 DB 저장
+                // 파일 전달 여부 체크 후 파일이 있을때 DB에 저장한다 (일단은 이미지만)
+                // TODO: 이미지/비디오 파일 구분하여 저장하기
+                if (!isset($_FILES['contents_file'])) {
+                   // 파일 전달 X
+                } else {
+                    try {
+                        imageUpload(); // 이미지 DB에 저장
+                    } catch(Exception $e) {
+                        echo '<h4>'.$e->getMessage().'</h4>';
+                    }
+                }
+                
                 break;
 
             case $MODIFY_POST:
@@ -74,25 +88,25 @@
     $connectDB = null;
 
     // 게시글 추가, 수정 삭제 DB 작업 완료 이후 전환될 페이지 설정
-    switch ($modeState) {
-        case $CREATE_POST:
-            // 새 게시글 작성 : 게시글 목록보기
-            header("Location: http://".$ip."/blog.php");
-            die();
-            break;
+    // switch ($modeState) {
+    //     case $CREATE_POST:
+    //         // 새 게시글 작성 : 게시글 목록보기
+    //         header("Location: http://".$ip."/blog.php");
+    //         die();
+    //         break;
 
-        case $MODIFY_POST:
-            // 게시글 수정 : 수정한 게시글 보기
-            header("Location: http://".$ip."/view_post.php?id=".$postId);
-            die();
-            break;
+    //     case $MODIFY_POST:
+    //         // 게시글 수정 : 수정한 게시글 보기
+    //         header("Location: http://".$ip."/view_post.php?id=".$postId);
+    //         die();
+    //         break;
 
-        case $DELETE_POST:
-            // 게시글 작성 : 게시글 목록으로 돌아가기
-            header("Location: http://".$ip."/blog.php");
-            die();
-            break;
-    }
+    //     case $DELETE_POST:
+    //         // 게시글 작성 : 게시글 목록으로 돌아가기
+    //         header("Location: http://".$ip."/blog.php");
+    //         die();
+    //         break;
+    // }
 
     // 게시글 생성, 수정, 삭제 상태 확인하여 반환하는 메소드
     function getModeState() {
@@ -115,5 +129,44 @@
             $modeState = $CREATE_POST;
         }
         return $modeState;
+    }
+
+    function imageUpload() {
+        // 파일이 정상적으로 서버에 업로드 되었을때
+        if (is_uploaded_file($_FILES['contents_file']['tmp_name']) && getimagesize($_FILES['contents_file']['tmp_name']) != false) {
+            $imageInformation = getimagesize($_FILES['contents_file']['tmp_name']);
+            // 이미지 정보 초기화
+            $imgReadBinary = fopen($_FILES['contents_file']['tmp_name'], 'rb'); // rb, 파일 바이너리로 읽기
+            $width = $imageInformation[0];
+            $height = $imageInformation[1];
+            $type = $imageInformation['mime']; //파일 mime-type; ex # "image/jpeg"
+            $size = $_FILES['contents_file']['size'];
+            $name = $_FILES['contents_file']['name'];   
+            $createdAt = date('Y-m-d H:i:s');
+            $maxSize = 99999999;
+            
+            // 파일 사이즈 체크(제한 크기 보다 작을때 DB 저장)
+            if ($size < $maxSize ) {
+                $connectDB = connectDB(); // DB 연결
+                $connectDB->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION); // TODO: error mode?
+                
+                // 데이터베이스 image 테이블 이미지 저장    
+                $createImageStatement = $connectDB->prepare("INSERT INTO image (image, width, height, size, createdAt, fileName) VALUES (:image ,:width, :height, :size, :createdAt, :fileName)");
+
+                $createImageStatement->bindParam(':image', $imgReadBinary, PDO::PARAM_LOB);
+                $createImageStatement->bindParam(':width', $width, PDO::PARAM_INT);
+                $createImageStatement->bindParam(':height', $height, PDO::PARAM_INT);
+                $createImageStatement->bindParam(':size', $size, PDO::PARAM_INT);
+                $createImageStatement->bindParam(':createdAt', $createdAt);
+                $createImageStatement->bindParam(':fileName', $name);
+                $createImageStatement->execute();
+            } else {
+                // 이미지 제한 사이즈 초과
+                throw new Exception("File Size Error");
+            }
+        } else {
+            // 이미지 업로드 실패
+            throw new Exception("Unsupported Image Format!");
+        }
     }
 ?>
