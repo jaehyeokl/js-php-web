@@ -47,7 +47,7 @@
     <section id="projects">
         <div class="projects container">
             <div class="projects-header">
-                <h1 class="section-title">Recent <span>Projects</span></h1>
+                <h1 class="section-title">프로젝트 영상 업로드</h1>
             </div>
         </div>
     </section>
@@ -56,7 +56,7 @@
     <!-- Blog Section -->
     <section id="blog">
         <div class="blog container">
-            <div class="section-title">Blog</div>
+            <a href="blog.php">블로그 전체 보기</a>
         </div>
     </section>
     <!-- End Blog Section  -->
@@ -64,7 +64,7 @@
     <!-- About Section -->
     <section id="about">
         <div class="about container">
-            <div class="col-left">
+            <!-- <div class="col-left">
                 <div class="about-img">
                     <img src="./img/img-2.png" alt="img">
                 </div>
@@ -73,43 +73,18 @@
                 <h1 class="section-title">About <span>me</span></h1>
                 <h2>Front End Developer</h2>
                 <p>Lorem ipsum, dolor sit amet consectetur adipisicing elit. Asperiores, velit alias eius non illum beatae atque repellat ratione qui veritatis repudiandae adipisci maiores. At inventore necessitatibus deserunt exercitationem cumque earum omnis ipsum rem accusantium quis, quas quia, accusamus provident suscipit magni! Expedita sint ad dolore, commodi labore nihil velit earum ducimus nulla quae nostrum fugit aut, deserunt reprehenderit libero enim!</p>
-            </div>
+            </div> -->
         </div>
     </section>
     <!-- End About Section -->
 
-  <!-- Contact Section -->
-  <section id="contact">
-    <div class="contact container">
-        <!-- <div><h1 class="section-title">Contact <span>info</span></h1></div>
-        <div class="contact-items">
-          <div class="contact-item">
-            <div class="icon"><img src="https://img.icons8.com/bubbles/100/000000/phone.png"/></div>
-            <div class="contact-info">
-              <h1>Phone</h1>
-              <h2>+1 234 123 1234</h2>
-              <h2>+1 234 123 1234</h2>
-            </div>
-          </div>
-          <div class="contact-item">
-            <div class="icon"><img src="https://img.icons8.com/bubbles/100/000000/new-post.png"/></div>
-            <div class="contact-info">
-              <h1>Email</h1>
-              <h2>info@gmail.com</h2>
-              <h2>abcd@gmail.com</h2>
-            </div>
-          </div>
-          <div class="contact-item">
-            <div class="icon"><img src="https://img.icons8.com/bubbles/100/000000/map-marker.png"/></div>
-            <div class="contact-info">
-              <h1>Address</h1>
-              <h2>Fatikchhari, Chittagong, Bangladesh</h2>
-            </div>
-          </div>
-        </div> -->
-    </div>
-  </section>
-  <!-- End Contact Section -->
+    <!-- Contact Section -->
+    <section id="contact">
+        <div class="contact container">
+            
+        </div>
+    </section>
+    <!-- End Contact Section -->
 
 </body>
 </html>

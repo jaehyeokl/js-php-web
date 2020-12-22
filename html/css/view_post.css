@@ -4,6 +4,10 @@
     margin-left: 1.5rem;
     font-size: 4rem;
 }
+
+#header {
+    z-index: 1;
+}
 /* End Blog Title */
 
 /* View Post */
@@ -20,6 +24,7 @@
     padding-bottom: 8px;
     margin-bottom: 30px;
     border-bottom: solid 1px black;
+    z-index: 2;
 }
 
 #viewer .header .post_title {
@@ -41,6 +46,13 @@
 
 #viewer .header .created-at {
     font-size: 0.8rem;
+}
+
+#viewer .body .content_image img {
+    width: 100%;
+    /* height: ; */
+    object-fit: cover;
+    margin-bottom: 50px;
 }
 
 #viewer .body .content_text textarea {

@@ -40,7 +40,7 @@
                 $createPostStatement->execute();
                 // 저장된 게시글의 id
                 // 이미지를 저장할때 게시글을 확인하기위해 사용
-                $postId = $connectDB->lastInsertId();
+                $newPostId = $connectDB->lastInsertId();
 
                 // 이미지 업로드(파일)여부 확인
                 // 이미지를 데이터베이스 image 테이블에 저장
@@ -54,7 +54,7 @@
                         // 생성된 게시글 데이터에 이미지정보 업데이트 (image 테이블에 저장된 imageId)
                         $addImageStatement = $connectDB->prepare("UPDATE blog SET contentsImageId = :contentsImageId WHERE id = :id");
                         $addImageStatement->bindParam(':contentsImageId', $imageId, PDO::PARAM_INT);
-                        $addImageStatement->bindParam(':id', $postId, PDO::PARAM_INT);
+                        $addImageStatement->bindParam(':id', $newPostId, PDO::PARAM_INT);
                         $addImageStatement->execute();
                     } catch(Exception $e) {
                         echo '<h4>'.$e->getMessage().'</h4>';
@@ -99,7 +99,7 @@
     switch ($modeState) {
         case $CREATE_POST:
             // 새 게시글 작성 : 게시글 목록보기
-            header("Location: http://".$ip."/blog.php");
+            header("Location: http://".$ip."/view_post.php?id=".$newPostId);
             die();
             break;
 

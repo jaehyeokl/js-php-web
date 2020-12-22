@@ -22,6 +22,26 @@
         $page = $_GET['page'];
     }
 
+    // 페이지 하단 버튼생성 위한 변수 초기화
+    $blockPageCount = 5; // 한번에 보여줄 하단 페이지 버튼 개수
+    $totalBlockCount = ceil($totalPageCount/$blockPageCount); // 총 블록
+    $currentBlock = ceil($page/$blockPageCount); // 현재 페이지의 블록
+
+    $blockStartPage = ($currentBlock * $blockPageCount) - ($blockPageCount - 1);
+    if ($blockStartPage <= 1) {
+        $blockStartPage = 1;
+    }
+
+    $blockEndPage = $currentBlock*$blockPageCount;
+    if ($totalBlockCount <= $blockEndPage) {
+        $blockEndPage = $totalBlockCount;
+    }
+
+    for ($i = 0; $i < $totalPageCount; $i++) {
+        $buttonNumber = $i + 1;
+        $pageButtonTag = $pageButtonTag.'<a href="blog.php?page='.$buttonNumber.'">'.$buttonNumber.'</a>';
+    }
+
     // 현재 페이지에 보여줄 게시글 데이터 불러오기
     // 삭제된 게시글을 제외 / id 역순으로 불러오기(최신순) / 현재페이지에 들어갈 데이터만(페이징)
     $getPagingPostStatement = $connectDB->prepare("SELECT * FROM blog WHERE deletedAt IS NULL ORDER BY id DESC LIMIT :pagingStartPoint, :postCount");
@@ -119,13 +139,10 @@
             </div>
         </div>
         <div class="blog-title">
-            <h1>BLOG</h1>
+            <a href="blog.php">BLOG</a>
         </div>
     </section>
     <!-- End Header -->
-
-    <!-- Blog Title -->
-    
 
     <!-- Blog -->
     <section id="blog">
@@ -139,6 +156,9 @@
         <div class="blog body">
             <!-- 블로그 아이템 태그 -->
             <?= $blogItemTag ?>
+        </div>
+        <div class="page_button">
+            <?= $pageButtonTag ?>
         </div>
     </section>
     <!-- End Blog -->

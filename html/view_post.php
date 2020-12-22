@@ -15,7 +15,22 @@
     // $writerId = $row['creater'];
     $title = $postRow['title'];
     $contentsText = $postRow['contentsText'];
+    $contentsImageId = $postRow['contentsImageId'];
     $createdAt = $postRow['createdAt'];
+
+    if ($contentsImageId) {
+        $getImageStatement = $connectDB->prepare("SELECT image FROM image WHERE imageId = :imageId");
+        $getImageStatement->bindParam(':imageId', $contentsImageId, PDO::PARAM_INT);
+        $getImageStatement->execute();
+
+        $getImageStatement->setFetchMode(PDO::FETCH_ASSOC);
+        $getImageResult = $getImageStatement->fetch();
+        // header("Content-type: image/jpeg");
+        $imageBlob = $getImageResult['image'];
+        // 이미지 blob img 태그에 넣기
+        // https://stackoverflow.com/questions/20556773/php-display-image-blob-from-mysql
+        $imageTag = '<img src="data:image/jpeg;base64,'.base64_encode($imageBlob).'"/>';
+    }
 ?>
 
 
@@ -46,7 +61,7 @@
             </div>
         </div>
         <div class="blog-title">
-            <h1>BLOG</h1>
+            <a href="blog.php">BLOG</a>
         </div>
     </section>
     <!-- End Header --> 
@@ -70,7 +85,7 @@
         </div>
         <div class="viewer body">
             <div class="content_image">
-                <img src="" alt="">
+                <?php echo $imageTag;?>
             </div>
             <div class="content_text">
                 <textarea readonly="readonly"><?=$contentsText?></textarea>        
