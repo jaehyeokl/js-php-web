@@ -1,46 +1,65 @@
 <?php
-    // 블로그 게시글 페이징처리하여 불러오기
+    // 블로그 게시글 목록
+    // 게시글 페이징처리하여 불러오기
+    // url) www.jaehyeok.ml/blog.php?page=(현재 page)
 
     include_once("../resources/config.php");
     $connectDB = connectDB(); // DB 연결
+    
+    /** 변수 초기화 **/
 
-    // 페이지 url) www.website/blog.php?page=(현재 page)
-
-    // 게시글 페이징처리 위한 변수 초기화 (페이지당 게시글 수, 전체 게시글 수)
-    // 이를 통한 게시글 전체 페이지 수 초기화 (페이지 버튼)
+    // 페이징 작업을 위한 변수
     $postCount = 10; // 페이지당 포스팅 개수
-    // 삭제된 게시글 제외
     $getTotalPageStatement = $connectDB->query("SELECT * FROM blog WHERE deletedAt IS NULL");
     $totalPostCount = $getTotalPageStatement->rowCount(); // 전체 게시글 수
     $totalPageCount = getTotalPage($postCount, $totalPostCount); // 전체 페이지 수
-    
-    // url 에서 현재 페이지 가져오기(GET)
+    // url 에서 현재 블로그 페이지 가져오기(GET)
     // 파라미터가 없을때(블로그 게시판 처음 들어왔을때 -> 1페이지)
-    if (!isset($_GET['page'])) {
-        $page = 1;
-    } else {
-        $page = $_GET['page'];
-    }
+    $page = $_GET['page'] == '' ? 1 : $_GET['page'];
 
-    // 페이지 하단 버튼생성 위한 변수 초기화
-    $blockPageCount = 5; // 한번에 보여줄 하단 페이지 버튼 개수
-    $totalBlockCount = ceil($totalPageCount/$blockPageCount); // 총 블록
-    $currentBlock = ceil($page/$blockPageCount); // 현재 페이지의 블록
-
+    // 하단 페이지 버튼 생성 위한 변수
+    $blockPageCount = 3; // 한번에 보여줄 버튼 개수(블록)
+    $totalBlockCount = ceil($totalPageCount / $blockPageCount); // 총 블록
+    $currentBlock = ceil($page/$blockPageCount); // 현재 페이지가 속한 블록
+    // 블럭의 첫번째 페이지 번호
+    // 게시글이 부족하여 블럭이 없을 경우에도 1페이지는 표시한다
     $blockStartPage = ($currentBlock * $blockPageCount) - ($blockPageCount - 1);
     if ($blockStartPage <= 1) {
         $blockStartPage = 1;
     }
 
     $blockEndPage = $currentBlock*$blockPageCount;
-    if ($totalBlockCount <= $blockEndPage) {
-        $blockEndPage = $totalBlockCount;
+    if ($totalPageCount <= $blockEndPage) {
+        $blockEndPage = $totalPageCount;
     }
 
-    for ($i = 0; $i < $totalPageCount; $i++) {
-        $buttonNumber = $i + 1;
+
+    /* 하단 페이지 버튼 생성*/
+
+    // 현재 블록의 페이지 버튼 생성
+    for ($p = $blockStartPage; $p <= $blockEndPage; $p++) {
+        $buttonNumber = $p;
         $pageButtonTag = $pageButtonTag.'<a href="blog.php?page='.$buttonNumber.'">'.$buttonNumber.'</a>';
     }
+
+    // 블록 이전/다음 이동 버튼 생성
+    $previousStartPage = $blockStartPage - $blockPageCount;
+    $nextBlockStartPage = $blockStartPage + $blockPageCount;
+
+    if ($currentBlock == 1) {
+        // 첫 블록일 경우에는 다음블록 이동 버튼만 생성
+        $nextBlockTag = '<a class="next-block" href="blog.php?page='.$nextBlockStartPage.'">'.'>'.'</a>';
+    } else if ($currentBlock == $totalBlockCount) {
+        // 마지막 블록일 경우에는 이전블록 이동 버튼만 생성
+        $previousBlockTag = '<a class="previous-block" href="blog.php?page='.$previousStartPage.'">'.'<'.'</a>';
+    } else {
+        // 나머지 이전 다음 블록 생성
+        $previousBlockTag = '<a class="previous-block" href="blog.php?page='.$previousStartPage.'">'.'<'.'</a>';
+        $nextBlockTag = '<a class="next-block" href="blog.php?page='.$nextBlockStartPage.'">'.'>'.'</a>';
+    }
+
+    
+    /* 게시글 불러오기 */
 
     // 현재 페이지에 보여줄 게시글 데이터 불러오기
     // 삭제된 게시글을 제외 / id 역순으로 불러오기(최신순) / 현재페이지에 들어갈 데이터만(페이징)
@@ -158,7 +177,9 @@
             <?= $blogItemTag ?>
         </div>
         <div class="page_button">
+            <?= $previousBlockTag ?>
             <?= $pageButtonTag ?>
+            <?= $nextBlockTag ?>
         </div>
     </section>
     <!-- End Blog -->
