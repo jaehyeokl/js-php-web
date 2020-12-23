@@ -63,6 +63,13 @@
     <link rel="stylesheet" href="css/header.css">
     <link rel="stylesheet" href="css/write_post.css">
     <!-- <script src="https://kit.fontawesome.com/8451689280.js" crossorigin="anonymous"></script> -->
+    <!-- summernote 사용 위한 bootstrap, jquery -->
+    <link href="https://stackpath.bootstrapcdn.com/bootstrap/3.4.1/css/bootstrap.min.css" rel="stylesheet">
+    <script src="https://code.jquery.com/jquery-3.5.1.min.js"></script>
+    <script src="https://stackpath.bootstrapcdn.com/bootstrap/3.4.1/js/bootstrap.min.js"></script>
+    <!-- summernote -->
+    <link href="https://cdn.jsdelivr.net/npm/summernote@0.8.18/dist/summernote-lite.css" rel="stylesheet">
+    <script src="https://cdn.jsdelivr.net/npm/summernote@0.8.18/dist/summernote-lite.js"></script>
 </head>
 <body>
     <!-- Header -->
@@ -71,11 +78,7 @@
             <div class="nav-bar">
                 <div class="nav-list">
                     <ul>
-                        <li><a href="#main">Home</a></li>
-                        <li><a href="#projects">Projects</a></li>
-                        <li><a href="#blog">Blog</a></li>
-                        <!-- <li><a href="#about">About</a></li> -->
-                        <li><a href="#contact">Contact</a></li>
+                        <li><a href="index.php">Home</a></li>
                     </ul>
                 </div>
             </div>
@@ -86,7 +89,7 @@
     <!-- Write Post -->
     <section id="editor">
         <div class="editor header">
-            <a href="">BACK</a>
+            <a href="blog.php">BACK</a>
             <h1 class="editor-title">블로그 게시글 작성</h1>
         </div>
     
@@ -95,10 +98,66 @@
             <div class="write_video">
                 <input class="select_video" name= "contents_file" type="file" accept="video/*, image/*">
             </div>
-            <textarea class="write_text" name="contents_text" placeholder="내용을 작성해주세요"><?=$contentsText?></textarea>
+            <!-- <textarea class="write_text" name="contents_text" placeholder="내용을 작성해주세요"><?=$contentsText?></textarea> -->
+            <textarea name="" id="summernote" cols="30" rows="10"><?=$contentsText?></textarea>
             <input class="write_submit" type="submit" value="<?=$buttonName?>">
         </form>
     </section>
+
+    <script>
+         $('#summernote').summernote({
+            // height : 400,
+            // maxHeight : 400,
+            minHeight : 400,
+            focus : true,
+            lang : 'ko-KR',
+            callbacks: {
+                // 업로드한 이미지를 Base 64 인코딩 형태가 아닌 파일자체를 서버에 저장하기 위해서
+                // 이미지 업로드 직후에 작동하는 callback 메소드인 onImageUpload 에  
+                // 서버에 이미지를 파일로 저장하는 메소드(sendFile)을 override 한다
+                // onImageUpload : function(files, editor, welEditable) {
+                //     console.log('image upload:', files);
+                //     sendFile(files[0], editor, welEditable);
+                // }
+            },
+
+            // 툴바에 들어갈 들어갈 기능 설정
+            toolbar: [
+                ['style', ['style']],
+                ['font', ['bold', 'underline', 'clear']],
+                ['fontname', ['fontname']],
+                ['color', ['color']],
+                // ['para', ['ul', 'ol', 'paragraph']],
+                // ['table', ['table']],
+                ['insert', ['link', 'picture', 'video']],
+                // ['view', ['fullscreen', 'codeview', 'help']],
+            ],
+
+            popover: {
+                image: [
+                    // 첨부한 이미지 리사이즈 금지하기 위한 설정
+                    // ['image', ['resizeFull', 'resizeHalf', 'resizeQuarter', 'resizeNone']],
+                    // ['float', ['floatLeft', 'floatRight', 'floatNone']],
+                    // ['remove', ['removeMedia']]
+                ],
+                link: [
+                    ['link', ['linkDialogShow', 'unlink']]
+                ],
+                table: [
+                    ['add', ['addRowDown', 'addRowUp', 'addColLeft', 'addColRight']],
+                    ['delete', ['deleteRow', 'deleteCol', 'deleteTable']],
+                ],
+                air: [
+                    ['color', ['color']],
+                    ['font', ['bold', 'underline', 'clear']],
+                    ['para', ['ul', 'paragraph']],
+                    ['table', ['table']],
+                    ['insert', ['link', 'picture']]
+                ]
+            }
+        });
+    </script>
+
     <!-- TODO: 게시글 작성할때, 제목 길이제한, 게시글 길이제한 예외처리 해야한다  -->
     <!-- TODO: 게시글 등록 버튼 둥글게 -->
     <!-- TODO: 이미지업로드 또는 비디오 업로드일때 구현해야한다 -->

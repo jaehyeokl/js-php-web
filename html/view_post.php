@@ -111,9 +111,6 @@
             }, 0);
         }
         textareaAutoHeight();
-        // TODO: 브라우저 창의 크기가 바뀔때마다 새로 실행디되도록 하기
-
-        // 게시글 수정/ 삭제
     </script>
     <!-- End View Post -->
 </body>

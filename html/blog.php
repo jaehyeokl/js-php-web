@@ -169,7 +169,6 @@
             <!-- <div class="blog-title">
                 <h1>Blog</h1>
             </div> -->
-            <a href="">뒤로</a>
             <a href="write_post.php">글작성</a>
         </div>
         <div class="blog body">
