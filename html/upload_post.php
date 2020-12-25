@@ -32,7 +32,6 @@
                 $createdAt = date('Y-m-d H:i:s');
                 
 
-
                 // 게시글 이미지 처리
                 // 1. 임시폴더에 저장된 게시글의 이미지 파일을 업로드된 게시글의 이미지 저장을 위한 폴더로 이동
                 // 2. 게시글에서 기록된 이미지의 임시경로를 변경된 경로로 수정 (img 태그의 src 경로를 수정)
@@ -63,8 +62,13 @@
                         array_push($uploadImgSrcList, $uploadImgSrc);
                     }                
                     
-                    // 2. contentsText 변수 그대로 덮어쓰기
-                    $contentsText = preg_replace($imgSrcList, $uploadImgSrcList, $contentsText);
+                    // 2
+                    $contentsText = str_replace("editor_tmp", "post", $contentsText);
+                    // TODO: 게시글에 경로 이름이 들어가면 오류가 생기게된다
+                    // $contentsText = preg_replace($imgSrcList, $uploadImgSrcList, $contentsText);
+                    // print_r($imgSrcList);
+                    // print_r($uploadImgSrcList);
+                    // var_dump($contentsText);
                     
                     // 3
                     $firstImgSrc = $imgSrcList[0];
@@ -181,7 +185,7 @@
         return $modeState;
     }
 
-    function getThumbnail($imgSrc); {
+    function getThumbnail($imgSrc) {
         
     }
 
