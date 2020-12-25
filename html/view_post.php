@@ -15,22 +15,23 @@
     // $writerId = $row['creater'];
     $title = $postRow['title'];
     $contentsText = $postRow['contentsText'];
-    $contentsImageId = $postRow['contentsImageId'];
+    // $contentsImageId = $postRow['contentsImageId'];
     $createdAt = $postRow['createdAt'];
 
-    if ($contentsImageId) {
-        $getImageStatement = $connectDB->prepare("SELECT image FROM image WHERE imageId = :imageId");
-        $getImageStatement->bindParam(':imageId', $contentsImageId, PDO::PARAM_INT);
-        $getImageStatement->execute();
+    // summernote 적용으로 인해 이미지를 DB에서 불러오지 않고, 본문의 img 태그에서 파일로 불러온다
+    // if ($contentsImageId) {
+    //     $getImageStatement = $connectDB->prepare("SELECT image FROM image WHERE imageId = :imageId");
+    //     $getImageStatement->bindParam(':imageId', $contentsImageId, PDO::PARAM_INT);
+    //     $getImageStatement->execute();
 
-        $getImageStatement->setFetchMode(PDO::FETCH_ASSOC);
-        $getImageResult = $getImageStatement->fetch();
-        // header("Content-type: image/jpeg");
-        $imageBlob = $getImageResult['image'];
-        // 이미지 blob img 태그에 넣기
-        // https://stackoverflow.com/questions/20556773/php-display-image-blob-from-mysql
-        $imageTag = '<img src="data:image/jpeg;base64,'.base64_encode($imageBlob).'"/>';
-    }
+    //     $getImageStatement->setFetchMode(PDO::FETCH_ASSOC);
+    //     $getImageResult = $getImageStatement->fetch();
+    //     // header("Content-type: image/jpeg");
+    //     $imageBlob = $getImageResult['image'];
+    //     // 이미지 blob img 태그에 넣기
+    //     // https://stackoverflow.com/questions/20556773/php-display-image-blob-from-mysql
+    //     $imageTag = '<img src="data:image/jpeg;base64,'.base64_encode($imageBlob).'"/>';
+    // }
 ?>
 
 
@@ -91,9 +92,10 @@
             </div>
         </div>
         <div class="viewer body">
-            <div class="content_image">
-                <?php echo $imageTag;?>
-            </div>
+            <!-- summernote 적용으로 인해  -->
+            <!-- <div class="content_image">
+                <?php //echo $imageTag;?>
+            </div> -->
             <div class="content_text">
                 <!-- <textarea readonly="readonly"><?=$contentsText?></textarea> -->
                 <textarea name="contents_text" id="summernote"></textarea>
