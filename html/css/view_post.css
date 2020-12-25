@@ -1,4 +1,19 @@
+/* Summernote 적용하는 페이지에서
+   기존에 적용된 CSS(여기서는 header.css) 적용 안되는 문제 있음
+   적용 안되는 부분을 write_post.css 에서 적용 */
+#header .container {
+    width: 100%;
+}
+
+#header a {
+    text-decoration: none;
+    color: black;
+}
+/* */
+
 /* Blog Title */
+
+
 #header .blog-title {
     margin-top: 3rem;
     margin-left: 1.5rem;

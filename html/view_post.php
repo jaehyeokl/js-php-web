@@ -47,6 +47,13 @@
     <link rel="stylesheet" href="css/header.css">
     <link rel="stylesheet" href="css/view_post.css">
     <!-- <script src="https://kit.fontawesome.com/8451689280.js" crossorigin="anonymous"></script> -->
+    <!-- summernote 사용 위한 bootstrap, jquery -->
+    <link href="https://stackpath.bootstrapcdn.com/bootstrap/3.4.1/css/bootstrap.min.css" rel="stylesheet">
+    <script src="https://code.jquery.com/jquery-3.5.1.min.js"></script>
+    <script src="https://stackpath.bootstrapcdn.com/bootstrap/3.4.1/js/bootstrap.min.js"></script>
+    <!-- summernote -->
+    <link href="https://cdn.jsdelivr.net/npm/summernote@0.8.18/dist/summernote-lite.css" rel="stylesheet">
+    <script src="https://cdn.jsdelivr.net/npm/summernote@0.8.18/dist/summernote-lite.js"></script>
 </head>
 <body>
     <!-- Header -->
@@ -88,7 +95,8 @@
                 <?php echo $imageTag;?>
             </div>
             <div class="content_text">
-                <textarea readonly="readonly"><?=$contentsText?></textarea>        
+                <!-- <textarea readonly="readonly"><?=$contentsText?></textarea> -->
+                <textarea name="contents_text" id="summernote"></textarea>
             </div>
         </div>
         <div class="viewer footer">
@@ -112,5 +120,39 @@
         }
         textareaAutoHeight();
     </script>
+
+    <script>
+        // summernote 설정
+        $('#summernote').summernote({
+            airMode: true,
+            height : 400,
+            // maxHeight : 400,
+            minHeight : 400,
+            // tabsize: 2,
+            focus : true,
+            lang : 'ko-KR',
+            // 드래그 드롭을 통해 게시글에 내용 추가되는것 확인하였음
+            // 읽기전용이기 때문에 해당 기능 비활성화
+            disableDragAndDrop: true,
+            // 읽기전용 모든 툴바를 제거한다
+            toolbar: [
+                // ['style', ['style']],
+                // ['font', ['bold', 'underline', 'clear']],
+                // ['fontname', ['fontname']],
+                // ['color', ['color']],
+                // ['para', ['ul', 'ol', 'paragraph']],
+                // ['table', ['table']],
+                // ['insert', ['link', 'picture', 'video']],
+                // ['view', ['fullscreen', 'codeview', 'help']],
+            ]
+        });
+
+        // 저장된 게시글 적용
+        var contents = '<?=$contentsText?>';
+        $('#summernote').summernote('pasteHTML', contents);
+
+        // 읽기 전용, 쓰기 기능 비활성화
+        $('#summernote').summernote('disable');
+    </script> 
     <!-- End View Post -->
 </body>
