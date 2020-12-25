@@ -8,10 +8,10 @@
             $ext = explode('.', $_FILES['file']['name']);
             $filename = $name . '.' . $ext[1];
             // 전달받은 파일을 지정한 위치에 저장            
-            $destination = './img/post/' . $filename;
+            $destination = './img/editor_tmp/' . $filename;
             $uploadedFile = $_FILES["file"]["tmp_name"];
             move_uploaded_file($uploadedFile, $destination);
-            echo 'img/post/' . $filename;
+            echo 'img/editor_tmp/' . $filename;
             
             // TODO: 게시글 작성 중 에디터에 업로드 되었지만, 게시글이 업로드 되지 않은경우에는
             // 필요없는 이미지가 서버에 저장되어 있게됨, 어떻게 삭제를 해주어야 할지 생각해보자

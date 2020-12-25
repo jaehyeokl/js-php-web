@@ -19,14 +19,7 @@
         switch ($modeState) {
             case $CREATE_POST:
                 // 새 게시글 작성
-                $createPostStatement = $connectDB->prepare("INSERT INTO blog (writerId, title, contentsText, createdAt) 
-                VALUES (:writerId, :title, :contentsText, :createdAt)");    
-                // $createPostStatement->bindParam(':creater', $_SESSION['email']); // 세션에 저장된 email 을 작성자로 추가
-                $createPostStatement->bindParam(':writerId', $writerId, PDO::PARAM_INT);
-                $createPostStatement->bindParam(':title', $title);
-                $createPostStatement->bindParam(':contentsText', $contentsText);
-                $createPostStatement->bindParam(':createdAt', $createdAt);
-
+                
                 // DB 쿼리문에 bind 할 데이터를 초기화한다
                 $writerId = 1;
                 // TODO: 회원가입 구현 이후, 로그인한 계정(관리자계정)의 user 테이블 id 값을 사용하도록
@@ -37,14 +30,63 @@
                 // date_default_timezone_set("Asia/Seoul");
                 // 기본적으로 한국시간 가져오기 위해 php.ini 파일의 date.timezone 을 Asia/Seoul로 설정하였음
                 $createdAt = date('Y-m-d H:i:s');
+                
+
+
+                // 게시글 이미지 처리
+                // 1. 임시폴더에 저장된 게시글의 이미지 파일을 업로드된 게시글의 이미지 저장을 위한 폴더로 이동
+                // 2. 게시글에서 기록된 이미지의 임시경로를 변경된 경로로 수정 (img 태그의 src 경로를 수정)
+                // 3. 게시글에 업로드된 이미지 중 첫번째 이미지를 썸네일 이미지로 만들기 (resize)
+                
+                // 게시글에 작성된 모든 이미지를 추출한다 (img 태그 정규표현식을 이용)
+                preg_match_all("/<img[^>]*src=[\"']?([^>\"']+)[\"']?[^>]*>/i", $contentsText, $matches);
+                $imgTagList = $matches[0]; // 게시글 이미지태그 전체 리스트(img 태그 포함)
+                $imgSrcList = $matches[1]; // 게시글 이미지태그의 src(폴더 경로) 리스트
+                                    
+                // 게시글에 작성된 이미지가 있을때
+                if (!empty($imgTagList)) {
+                    
+                    // 1
+                    $uploadImgSrcList = array();
+
+                    foreach($imgSrcList as $src) {
+                        $srcFileName = explode("/", $src)[2]; // 이미지 파일명
+                        $tmpImgSrc = $src; // 이미지의 임시폴더 경로
+                        $uploadImgSrc = "img/post/".$srcFileName; // 파일명 그대로 이동할 경로
+                        
+                        // 임시폴더에서 게시글 이미지를 저장하는 폴더(img/post) 이미지 이동
+                        if(file_exists($tmpImgSrc)) {
+                            rename($tmpImgSrc, $uploadImgSrc);
+                        }
+                        
+                        // uploadImgSrcList 는 기존 게시글에 저장된 이미지 경로를 replace 하기 위해 사용
+                        array_push($uploadImgSrcList, $uploadImgSrc);
+                    }                
+                    
+                    // 2. contentsText 변수 그대로 덮어쓰기
+                    $contentsText = preg_replace($imgSrcList, $uploadImgSrcList, $contentsText);
+                    
+                    // 3
+                    $firstImgSrc = $imgSrcList[0];
+                    getThumbnail($firstImgSrc);
+                } 
+
+                // DB 저장
+                $createPostStatement = $connectDB->prepare("INSERT INTO blog (writerId, title, contentsText, createdAt) 
+                VALUES (:writerId, :title, :contentsText, :createdAt)");    
+                // $createPostStatement->bindParam(':creater', $_SESSION['email']); // 세션에 저장된 email 을 작성자로 추가
+                $createPostStatement->bindParam(':writerId', $writerId, PDO::PARAM_INT);
+                $createPostStatement->bindParam(':title', $title);
+                $createPostStatement->bindParam(':contentsText', $contentsText);
+                $createPostStatement->bindParam(':createdAt', $createdAt);
                 $createPostStatement->execute();
+                
                 // // 저장된 게시글의 id
                 // // 이미지를 저장할때 게시글을 확인하기위해 사용
                 // $newPostId = $connectDB->lastInsertId();
 
                 // // 이미지 업로드(파일)여부 확인
                 // // 이미지를 데이터베이스 image 테이블에 저장
-                // // TODO: 이미지/비디오 파일 구분하여 저장하기
                 // if (!isset($_FILES['contents_file'])) {
                 //     // 파일 전달 X
                 //  } else {
@@ -96,25 +138,25 @@
     $connectDB = null;
 
     // 게시글 추가, 수정 삭제 DB 작업 완료 이후 전환될 페이지 설정
-    switch ($modeState) {
-        case $CREATE_POST:
-            // 새 게시글 작성 : 게시글 목록보기
-            header("Location: http://".$ip."/view_post.php?id=".$newPostId);
-            die();
-            break;
+    // switch ($modeState) {
+    //     case $CREATE_POST:
+    //         // 새 게시글 작성 : 게시글 목록보기
+    //         header("Location: http://".$ip."/view_post.php?id=".$newPostId);
+    //         die();
+    //         break;
 
-        case $MODIFY_POST:
-            // 게시글 수정 : 수정한 게시글 보기
-            header("Location: http://".$ip."/view_post.php?id=".$postId);
-            die();
-            break;
+    //     case $MODIFY_POST:
+    //         // 게시글 수정 : 수정한 게시글 보기
+    //         header("Location: http://".$ip."/view_post.php?id=".$postId);
+    //         die();
+    //         break;
 
-        case $DELETE_POST:
-            // 게시글 작성 : 게시글 목록으로 돌아가기
-            header("Location: http://".$ip."/blog.php");
-            die();
-            break;
-    }
+    //     case $DELETE_POST:
+    //         // 게시글 작성 : 게시글 목록으로 돌아가기
+    //         header("Location: http://".$ip."/blog.php");
+    //         die();
+    //         break;
+    // }
 
     // 게시글 생성, 수정, 삭제 상태 확인하여 반환하는 메소드
     function getModeState() {
@@ -137,6 +179,10 @@
             $modeState = $CREATE_POST;
         }
         return $modeState;
+    }
+
+    function getThumbnail($imgSrc); {
+        
     }
 
     // // 업로드된 이미지 파일을 DB에 저장
