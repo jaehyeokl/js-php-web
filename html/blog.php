@@ -87,6 +87,8 @@
         $postId = $blogPostRow['id']; // 게시글 id
         $title = $blogPostRow['title'];
         $contentsText = $blogPostRow['contentsText'];
+        // strip_tags() -> 문자열 모든 태그를 제거하여 본문내용만 보이도록한다
+        $mainText = strip_tags($contentsText);
         $formatCreatedAt = getFormatCreatedAt($blogPostRow); // 게시글 작성일
 
         // 블로그 게시글 태그 생성
@@ -94,7 +96,7 @@
                                         "<a href='view_post.php?id=$postId'>".
                                             "<div class='item-text'>".
                                                 "<span>$title</span>".
-                                                "<span>$contentsText</span>".
+                                                "<span>$mainText</span>".
                                             "</div>".
                                             "<div class='item-img'>".
                                                 // "<img src='' alt=''>".
