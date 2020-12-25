@@ -13,7 +13,7 @@
     $DELETE_POST = 3;
 
     // 게시글 생성/수정/삭제 상태 체크
-    $modeState = getModeState();    
+    $modeState = getModeState();
     
     try {
         switch ($modeState) {
@@ -38,28 +38,28 @@
                 // 기본적으로 한국시간 가져오기 위해 php.ini 파일의 date.timezone 을 Asia/Seoul로 설정하였음
                 $createdAt = date('Y-m-d H:i:s');
                 $createPostStatement->execute();
-                // 저장된 게시글의 id
-                // 이미지를 저장할때 게시글을 확인하기위해 사용
-                $newPostId = $connectDB->lastInsertId();
+                // // 저장된 게시글의 id
+                // // 이미지를 저장할때 게시글을 확인하기위해 사용
+                // $newPostId = $connectDB->lastInsertId();
 
-                // 이미지 업로드(파일)여부 확인
-                // 이미지를 데이터베이스 image 테이블에 저장
-                // TODO: 이미지/비디오 파일 구분하여 저장하기
-                if (!isset($_FILES['contents_file'])) {
-                    // 파일 전달 X
-                 } else {
-                    try {
-                        // 이미지 DB 저장 후, id 를 return 받음
-                        $imageId = imageUpload();
-                        // 생성된 게시글 데이터에 이미지정보 업데이트 (image 테이블에 저장된 imageId)
-                        $addImageStatement = $connectDB->prepare("UPDATE blog SET contentsImageId = :contentsImageId WHERE id = :id");
-                        $addImageStatement->bindParam(':contentsImageId', $imageId, PDO::PARAM_INT);
-                        $addImageStatement->bindParam(':id', $newPostId, PDO::PARAM_INT);
-                        $addImageStatement->execute();
-                    } catch(Exception $e) {
-                        echo '<h4>'.$e->getMessage().'</h4>';
-                    }
-                 }
+                // // 이미지 업로드(파일)여부 확인
+                // // 이미지를 데이터베이스 image 테이블에 저장
+                // // TODO: 이미지/비디오 파일 구분하여 저장하기
+                // if (!isset($_FILES['contents_file'])) {
+                //     // 파일 전달 X
+                //  } else {
+                //     try {
+                //         // 이미지 DB 저장 후, id 를 return 받음
+                //         $imageId = imageUpload();
+                //         // 생성된 게시글 데이터에 이미지정보 업데이트 (image 테이블에 저장된 imageId)
+                //         $addImageStatement = $connectDB->prepare("UPDATE blog SET contentsImageId = :contentsImageId WHERE id = :id");
+                //         $addImageStatement->bindParam(':contentsImageId', $imageId, PDO::PARAM_INT);
+                //         $addImageStatement->bindParam(':id', $newPostId, PDO::PARAM_INT);
+                //         $addImageStatement->execute();
+                //     } catch(Exception $e) {
+                //         echo '<h4>'.$e->getMessage().'</h4>';
+                //     }
+                //  }
                 break;
 
             case $MODIFY_POST:
@@ -139,46 +139,46 @@
         return $modeState;
     }
 
-    // 업로드된 이미지 파일을 DB에 저장
-    function imageUpload() {
-        // 파일이 정상적으로 서버에 업로드 되었을때
-        if (is_uploaded_file($_FILES['contents_file']['tmp_name']) && getimagesize($_FILES['contents_file']['tmp_name']) != false) {
-            $imageInformation = getimagesize($_FILES['contents_file']['tmp_name']);
-            // 이미지 정보 초기화
-            $imgReadBinary = fopen($_FILES['contents_file']['tmp_name'], 'rb'); // rb, 파일 바이너리로 읽기
-            $width = $imageInformation[0];
-            $height = $imageInformation[1];
-            $type = $imageInformation['mime']; //파일 mime-type; ex # "image/jpeg"
-            $size = $_FILES['contents_file']['size'];
-            $name = $_FILES['contents_file']['name'];   
-            $createdAt = date('Y-m-d H:i:s');
-            $maxSize = 8388608; // 8메가
+    // // 업로드된 이미지 파일을 DB에 저장
+    // function imageUpload() {
+    //     // 파일이 정상적으로 서버에 업로드 되었을때
+    //     if (is_uploaded_file($_FILES['contents_file']['tmp_name']) && getimagesize($_FILES['contents_file']['tmp_name']) != false) {
+    //         $imageInformation = getimagesize($_FILES['contents_file']['tmp_name']);
+    //         // 이미지 정보 초기화
+    //         $imgReadBinary = fopen($_FILES['contents_file']['tmp_name'], 'rb'); // rb, 파일 바이너리로 읽기
+    //         $width = $imageInformation[0];
+    //         $height = $imageInformation[1];
+    //         $type = $imageInformation['mime']; //파일 mime-type; ex # "image/jpeg"
+    //         $size = $_FILES['contents_file']['size'];
+    //         $name = $_FILES['contents_file']['name'];   
+    //         $createdAt = date('Y-m-d H:i:s');
+    //         $maxSize = 8388608; // 8메가
             
-            // 파일 사이즈 체크(제한 크기 보다 작을때 DB 저장)
-            if ($size < $maxSize ) {
-                $connectDB = connectDB(); // DB 연결
+    //         // 파일 사이즈 체크(제한 크기 보다 작을때 DB 저장)
+    //         if ($size < $maxSize ) {
+    //             $connectDB = connectDB(); // DB 연결
                 
-                // 데이터베이스 image 테이블 이미지 저장    
-                $createImageStatement = $connectDB->prepare("INSERT INTO image (image, width, height, size, createdAt, fileName) VALUES (:image ,:width, :height, :size, :createdAt, :fileName)");
+    //             // 데이터베이스 image 테이블 이미지 저장    
+    //             $createImageStatement = $connectDB->prepare("INSERT INTO image (image, width, height, size, createdAt, fileName) VALUES (:image ,:width, :height, :size, :createdAt, :fileName)");
 
-                $createImageStatement->bindParam(':image', $imgReadBinary, PDO::PARAM_LOB);
-                $createImageStatement->bindParam(':width', $width, PDO::PARAM_INT);
-                $createImageStatement->bindParam(':height', $height, PDO::PARAM_INT);
-                $createImageStatement->bindParam(':size', $size, PDO::PARAM_INT);
-                $createImageStatement->bindParam(':createdAt', $createdAt);
-                $createImageStatement->bindParam(':fileName', $name);
-                $createImageStatement->execute();
-                // 저장한 이미지의 imageId
-                // blog 테이블에 게시글을 저장할때 imageId 를 함께 저장하기위해 return
-                $imageId = $connectDB->lastInsertId();
-                return $imageId;
-            } else {
-                // 이미지 제한 사이즈 초과
-                throw new Exception("File Size Error");
-            }
-        } else {
-            // 이미지 업로드 실패
-            throw new Exception("Unsupported Image Format!");
-        }
-    }
+    //             $createImageStatement->bindParam(':image', $imgReadBinary, PDO::PARAM_LOB);
+    //             $createImageStatement->bindParam(':width', $width, PDO::PARAM_INT);
+    //             $createImageStatement->bindParam(':height', $height, PDO::PARAM_INT);
+    //             $createImageStatement->bindParam(':size', $size, PDO::PARAM_INT);
+    //             $createImageStatement->bindParam(':createdAt', $createdAt);
+    //             $createImageStatement->bindParam(':fileName', $name);
+    //             $createImageStatement->execute();
+    //             // 저장한 이미지의 imageId
+    //             // blog 테이블에 게시글을 저장할때 imageId 를 함께 저장하기위해 return
+    //             $imageId = $connectDB->lastInsertId();
+    //             return $imageId;
+    //         } else {
+    //             // 이미지 제한 사이즈 초과
+    //             throw new Exception("File Size Error");
+    //         }
+    //     } else {
+    //         // 이미지 업로드 실패
+    //         throw new Exception("Unsupported Image Format!");
+    //     }
+    // }
 ?>
