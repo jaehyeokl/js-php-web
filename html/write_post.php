@@ -99,12 +99,13 @@
                 <input class="select_video" name= "contents_file" type="file" accept="video/*, image/*">
             </div>
             <!-- <textarea class="write_text" name="contents_text" placeholder="내용을 작성해주세요"><?=$contentsText?></textarea> -->
-            <textarea name="" id="summernote" cols="30" rows="10"><?=$contentsText?></textarea>
+            <textarea name="contents_text" id="summernote"><?=$contentsText?></textarea>
             <input class="write_submit" type="submit" value="<?=$buttonName?>">
         </form>
     </section>
 
     <script>
+        // Summernote Editor 설정
          $('#summernote').summernote({
             // height : 400,
             // maxHeight : 400,
@@ -115,10 +116,10 @@
                 // 업로드한 이미지를 Base 64 인코딩 형태가 아닌 파일자체를 서버에 저장하기 위해서
                 // 이미지 업로드 직후에 작동하는 callback 메소드인 onImageUpload 에  
                 // 서버에 이미지를 파일로 저장하는 메소드(sendFile)을 override 한다
-                // onImageUpload : function(files, editor, welEditable) {
-                //     console.log('image upload:', files);
-                //     sendFile(files[0], editor, welEditable);
-                // }
+                onImageUpload : function(files, editor, welEditable) {
+                    console.log('image upload:', files);
+                    sendFile(files[0], editor, welEditable);
+                }
             },
 
             // 툴바에 들어갈 들어갈 기능 설정
@@ -156,6 +157,35 @@
                 ]
             }
         });
+
+        // ajax 를 이용하여 에디터에 업로드한 이미지(file)를 서버에 전달(POST) 한다
+        // 서버 url(editor_realtime_upload.php)에서 임시폴더에 업로드된 파일을 저장한다 
+        // 일단은 바로 임시폴더에 저장해놓았다가,   
+        function sendFile(file, editor, welEditable) {
+            data = new FormData();
+            data.append("file", file);
+            
+            $.ajax({
+                url: "editor_realtime_upload.php",
+                data: data,
+                cache: false,
+                contentType: false,
+                processData: false,
+                type: 'POST',
+                // url(save_board_image.php) 로 파일 전달이 완료됐을때
+                // summernote 이미지 업로드 API 를 이용하여 서버에 '저장된' 이미지를 게시판에 입력
+                success: function(data) {
+                    // alert(data);
+                    // API : $('#summernote').summernote('insertImage', url, filename);
+                    // 에디터에 img 태그로 저장을 하기 위함
+                    var image = $('<img>').attr('src', '' + data);
+                    $('#summernote').summernote("insertNode", image[0]);
+                },
+                error: function(jqXHR, textStatus, errorThrown) {
+                    console.log(textStatus+" "+errorThrown);
+                }
+            });
+        }
     </script>
 
     <!-- TODO: 게시글 작성할때, 제목 길이제한, 게시글 길이제한 예외처리 해야한다  -->
