@@ -75,7 +75,7 @@
                     $thumbnailSrc = str_replace("post", "thumbnail", $firstImgSrc);
                     $thumbnailWidth = 240;
                     $thumbnailHeight = 240;
-                    getThumbnail($firstImgSrc, $thumbnailSrc, $thumbnailWidth, $thumbnailHeight);
+                    getImageThumbnail($firstImgSrc, $thumbnailSrc, $thumbnailWidth, $thumbnailHeight);
                 } 
 
                 // 게시글 동영상 처리
@@ -113,11 +113,12 @@
                     // TODO: 게시글에 경로 이름이 들어가면 오류가 생기게된다
                     
                     // 3
-                    // $firstImgSrc = $uploadImgSrcList[0];
-                    // $thumbnailSrc = str_replace("post", "thumbnail", $firstImgSrc);
-                    // $thumbnailWidth = 240;
-                    // $thumbnailHeight = 240;
-                    // getThumbnail($firstImgSrc, $thumbnailSrc, $thumbnailWidth, $thumbnailHeight);
+                    $firstVideoSrc = $uploadVideoSrcList[0];
+                    $videoThumbnailSrc = str_replace("post", "thumbnail", $firstVideoSrc);
+                    $thumbnailWidth = 240;
+                    $thumbnailHeight = 240;
+                    // getVideoThumbnail($firstVideoSrc, $videoThumbnailSrc, $thumbnailWidth, $thumbnailHeight);
+                    getVideoThumbnail($firstVideoSrc);
                 }
 
                 // DB 저장
@@ -232,9 +233,9 @@
         return $modeState;
     }
 
-    // 썸네일 생성
+    // 이미지 썸네일 생성
     // 이미지를 resize 하여 newfile 경로로 저장한다
-    function getThumbnail($file, $newfile, $w, $h) {
+    function getImageThumbnail($file, $newfile, $w, $h) {
         // 원본 이미지의 가로, 세로 사이즈
         list($width, $height) = getimagesize($file);
 
@@ -261,6 +262,26 @@
         } else if(strpos(strtolower($newfile), ".gif")) {
             imagegif($tmpCreation, $newfile);
         }
+    }
+
+    // 동영상 썸네일 생성
+    // php-FFmpeg 라이브러리를 사용하여 썸네일 생성
+    function getVideoThumbnail($video) {
+        require_once("../resources/vendor/autoload.php");
+        $ffmpeg = FFMpeg\FFMpeg::create();
+        $video = $ffmpeg->open($video);
+        $video
+            ->frame(FFMpeg\Coordinate\TimeCode::fromSeconds(1))
+            ->addFilter(new CustomFrameFilter('scale=320x160')) //resize output frame image
+            ->save('frame.jpg');
+
+            // $ffmpeg = FFMpeg::create();
+            // $ffmpeg->open('video path')
+            //        ->frame(TimeCode::fromSeconds(1))
+            //        ->addFilter(new CustomFrameFilter('scale=320x160')) //resize output frame image
+            //        ->save('save path');    
+
+        
     }
 
     // // 업로드된 이미지 파일을 DB에 저장
