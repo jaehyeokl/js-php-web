@@ -72,7 +72,10 @@
                     
                     // 3
                     $firstImgSrc = $uploadImgSrcList[0];
-                    getThumbnail($firstImgSrc);
+                    $thumbnailSrc = str_replace("post", "thumbnail", $firstImgSrc);
+                    $thumbnailWidth = 200;
+                    $thumbnailHeight = 100;
+                    getThumbnail($firstImgSrc, $thumbnailSrc, $thumbnailWidth, $thumbnailHeight);
                 } 
 
                 // DB 저장
@@ -185,25 +188,36 @@
         return $modeState;
     }
 
-    // FIXME: 썸네일 작업 들어가자
-    // function getThumbnail($imgSrc, $file, $newfile, $w, $h) {
-    //     list($width, $height) = getimagesize($file);
-    //     if(strpos(strtolower($file), ".jpg"))
-    //         $src = imagecreatefromjpeg($file);
-    //     else if(strpos(strtolower($file), ".png"))
-    //         $src = imagecreatefrompng($file);
-    //     else if(strpos(strtolower($file), ".gif"))
-    //         $src = imagecreatefromgif($file);
-    //     $dst = imagecreatetruecolor($w, $h);
+    // 썸네일 생성
+    // 이미지를 resize 하여 newfile 경로로 저장한다
+    function getThumbnail($file, $newfile, $w, $h) {
+        // 원본 이미지의 가로, 세로 사이즈
+        list($width, $height) = getimagesize($file);
 
-    //     imagecopyresampled($dst, $src, 0, 0, 0, 0, $w, $h, $width, $height);
-    //     if(strpos(strtolower($newfile), ".jpg"))
-    //         imagejpeg($dst, $newfile);
-    //     else if(strpos(strtolower($newfile), ".png"))
-    //         imagepng($dst, $newfile);
-    //     else if(strpos(strtolower($newfile), ".gif"))
-    //         imagegif($dst, $newfile);
-    // }
+        // 원본 이미지를 불러온다
+        // 여러 이미지 확장자(jpg, png, gif)를 처리할 수 있도록 분기한다
+        if(strpos(strtolower($file), ".jpg")) {
+            $originalSrc = imagecreatefromjpeg($file);
+        } else if (strpos(strtolower($file), ".png")) {
+            $originalSrc = imagecreatefrompng($file);
+        } else if(strpos(strtolower($file), ".gif")) {
+            $originalSrc = imagecreatefromgif($file);
+        }
+
+        // 썸네일 사이즈의 이미지 틀을 생성한다
+        $tmpCreation = imagecreatetruecolor($w, $h);
+        // 썸네일 이미지 틀에 맞게 원본이미지를 resize 한다
+        imagecopyresampled($tmpCreation, $originalSrc, 0, 0, 0, 0, $w, $h, $width, $height);
+
+        // 썸네일을 thumbnail 디렉토리에 저장한다
+        if(strpos(strtolower($newfile), ".jpg")) {
+            imagejpeg($tmpCreation, $newfile);
+        } else if(strpos(strtolower($newfile), ".png")) {
+            imagepng($tmpCreation, $newfile);
+        } else if(strpos(strtolower($newfile), ".gif")) {
+            imagegif($tmpCreation, $newfile);
+        }
+    }
 
     // // 업로드된 이미지 파일을 DB에 저장
     // function imageUpload() {
