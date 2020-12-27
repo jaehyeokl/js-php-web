@@ -66,15 +66,20 @@
 /* 블로그 아이템 내용 */
 #blog .item-text span:nth-child(2) {
     margin-top: 8px;
-}
-
-#blog .item-img {
-    /* background-color: thistle; */
+    overflow: hidden;
+    text-overflow: ellipsis;
+    display: -webkit-box;
+    -webkit-line-clamp: 3;
+    -webkit-box-orient: vertical;
+    word-wrap:break-word; 
+    line-height: 1.2em;
+    height: 3.6em; /* line-height 가 1.2em 이고 3라인을 자르기 때문에 height는 1.2em * 3 = 3.6em */
 }
 
 #blog .item-img img {
     width: 110px;
     height: 110px;
+    margin-left: 20px;
 }
 /* End Blog */
 
