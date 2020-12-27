@@ -78,6 +78,48 @@
                     getThumbnail($firstImgSrc, $thumbnailSrc, $thumbnailWidth, $thumbnailHeight);
                 } 
 
+                // 게시글 동영상 처리
+                // 1. 임시폴더에 저장된 게시글의 동영상 파일을 업로드된 게시글의 동영상 저장을 위한 폴더로 이동
+                // 2. 게시글에서 기록된 동영상의 임시경로를 변경된 경로로 수정 (video 태그의 src 경로를 수정)
+                // 3. 게시글에 업로드된 이미지 중 첫번째 이미지를 썸네일 이미지로 만들기 (resize)
+                
+                // 게시글에 작성된 모든 이미지를 추출한다 (img 태그 정규표현식을 이용)
+                preg_match_all("/<video[^>]*src=[\"']?([^>\"']+)[\"']?[^>]*>/i", $contentsText, $matches);
+                $videoTagList = $matches[0]; // 게시글 비디오태그 전체 리스트(video 태그 포함)
+                $videoSrcList = $matches[1]; // 게시글 비디오태그의 src(폴더 경로) 리스트
+                                    
+                // 게시글에 작성된 동영상이 있을때
+                if (!empty($videoTagList)) {
+                    
+                    // 1
+                    $uploadvideoSrcList = array();
+
+                    foreach($videoSrcList as $src) {
+                        $srcFileName = explode("/", $src)[2]; // 비디오 파일명
+                        $tmpVideoSrc = $src; // 동영상의 임시폴더 경로
+                        $uploadVideoSrc = "video/post/".$srcFileName; // 파일명 그대로 이동할 경로
+                        
+                        // 임시폴더에서 게시글 동영상을 저장하는 폴더(video/post) 동영상 이동
+                        if(file_exists($tmpVideoSrc)) {
+                            rename($tmpVideoSrc, $uploadVideoSrc);
+                        }
+                        
+                        // uploadVideoSrcList 는 기존 게시글에 저장된 동영상 경로를 replace 하기 위해 사용
+                        array_push($uploadVideoSrcList, $uploadVideoSrc);
+                    }                
+                    
+                    // 2
+                    $contentsText = str_replace("editor_tmp", "post", $contentsText);
+                    // TODO: 게시글에 경로 이름이 들어가면 오류가 생기게된다
+                    
+                    // 3
+                    // $firstImgSrc = $uploadImgSrcList[0];
+                    // $thumbnailSrc = str_replace("post", "thumbnail", $firstImgSrc);
+                    // $thumbnailWidth = 240;
+                    // $thumbnailHeight = 240;
+                    // getThumbnail($firstImgSrc, $thumbnailSrc, $thumbnailWidth, $thumbnailHeight);
+                }
+
                 // DB 저장
                 $createPostStatement = $connectDB->prepare("INSERT INTO blog (writerId, title, contentsText, createdAt, thumbnail) 
                 VALUES (:writerId, :title, :contentsText, :createdAt, :thumbnail)");    
