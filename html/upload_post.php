@@ -79,13 +79,15 @@
                 } 
 
                 // DB 저장
-                $createPostStatement = $connectDB->prepare("INSERT INTO blog (writerId, title, contentsText, createdAt) 
-                VALUES (:writerId, :title, :contentsText, :createdAt)");    
+                $createPostStatement = $connectDB->prepare("INSERT INTO blog (writerId, title, contentsText, createdAt, thumbnail) 
+                VALUES (:writerId, :title, :contentsText, :createdAt, :thumbnail)");    
                 // $createPostStatement->bindParam(':creater', $_SESSION['email']); // 세션에 저장된 email 을 작성자로 추가
                 $createPostStatement->bindParam(':writerId', $writerId, PDO::PARAM_INT);
                 $createPostStatement->bindParam(':title', $title);
                 $createPostStatement->bindParam(':contentsText', $contentsText);
                 $createPostStatement->bindParam(':createdAt', $createdAt);
+                // 썸네일 경로( 게시글 이미지가 없을때 null)
+                $createPostStatement->bindParam(':thumbnail', $thumbnailSrc);
                 $createPostStatement->execute();
                 
                 // // 저장된 게시글의 id
@@ -145,25 +147,25 @@
     $connectDB = null;
 
     // 게시글 추가, 수정 삭제 DB 작업 완료 이후 전환될 페이지 설정
-    // switch ($modeState) {
-    //     case $CREATE_POST:
-    //         // 새 게시글 작성 : 게시글 목록보기
-    //         header("Location: http://".$ip."/view_post.php?id=".$newPostId);
-    //         die();
-    //         break;
+    switch ($modeState) {
+        case $CREATE_POST:
+            // 새 게시글 작성 : 게시글 목록보기
+            header("Location: http://".$ip."/view_post.php?id=".$newPostId);
+            die();
+            break;
 
-    //     case $MODIFY_POST:
-    //         // 게시글 수정 : 수정한 게시글 보기
-    //         header("Location: http://".$ip."/view_post.php?id=".$postId);
-    //         die();
-    //         break;
+        case $MODIFY_POST:
+            // 게시글 수정 : 수정한 게시글 보기
+            header("Location: http://".$ip."/view_post.php?id=".$postId);
+            die();
+            break;
 
-    //     case $DELETE_POST:
-    //         // 게시글 작성 : 게시글 목록으로 돌아가기
-    //         header("Location: http://".$ip."/blog.php");
-    //         die();
-    //         break;
-    // }
+        case $DELETE_POST:
+            // 게시글 작성 : 게시글 목록으로 돌아가기
+            header("Location: http://".$ip."/blog.php");
+            die();
+            break;
+    }
 
     // 게시글 생성, 수정, 삭제 상태 확인하여 반환하는 메소드
     function getModeState() {
