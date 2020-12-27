@@ -90,6 +90,13 @@
         // strip_tags() -> 문자열 모든 태그를 제거하여 본문내용만 보이도록한다
         $mainText = strip_tags($contentsText);
         $formatCreatedAt = getFormatCreatedAt($blogPostRow); // 게시글 작성일
+        $thumbnailPath = $blogPostRow['thumbnail'];
+        if ($thumbnailPath) {
+            // 썸네일 있을때
+            $thumbnailTag = "<img src='".$thumbnailPath."'>";
+        } else {
+            $thumbnailTag = null;
+        }
 
         // 블로그 게시글 태그 생성
         $blogItemTag = $blogItemTag."<div class='blog-item'>".
@@ -99,12 +106,12 @@
                                                 "<span>$mainText</span>".
                                             "</div>".
                                             "<div class='item-img'>".
-                                                // "<img src='' alt=''>".
+                                                $thumbnailTag.
                                             "</div>".
                                         "</a>".
                                     "</div>";
 
-        // TODO: 이미지 또는 비디오일 경우에는 어떻게 태그를 추가할 것인가
+        // TODO: 비디오일 경우에는 어떻게 썸네일을 보여주어야 할까
     }
 
     // 게시글 전체 페이지 수 구하기
