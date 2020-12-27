@@ -40,7 +40,15 @@
     opacity: 0.7;
 }
 
-#editor .write_title:focus {
+#editor .upload_video {
+    display: flex;
+}
+
+#editor .upload_video .select_video {
+    visibility: hidden;
+}
+
+/* #editor .write_title:focus {
     outline: none;
     border: solid 2px #444444;
     border-radius: 5px;
@@ -62,5 +70,5 @@
     outline: none;
     border: solid 2px #444444;
     border-radius: 5px; 
-}
+} */
 /* End Write Post */

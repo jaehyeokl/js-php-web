@@ -95,10 +95,10 @@
     
         <form class="editor form" action="upload_post.php<?=$addModifyMode?>" enctype="multipart/form-data" method="post">
             <input class="write_title"type="text" name="title" minlength="1" value="<?=$title?>" placeholder="제목을 작성해주세요" maxlength="45">
-            <div class="write_video">
-                <input class="select_video" name= "contents_file" type="file" accept="video/*, image/*">
+            <div class="upload_video">
+                <button type="button">동영상 업로드</button>
+                <input class="select_video" name= "video" type="file" accept="video/*">
             </div>
-            <!-- <textarea class="write_text" name="contents_text" placeholder="내용을 작성해주세요"><?=$contentsText?></textarea> -->
             <textarea name="contents_text" id="summernote"><?=$contentsText?></textarea>
             <input class="write_submit" type="submit" value="<?=$buttonName?>">
         </form>
@@ -163,7 +163,7 @@
         // 일단은 바로 임시폴더에 저장해놓았다가,   
         function sendFile(file, editor, welEditable) {
             data = new FormData();
-            data.append("file", file);
+            data.append("image", file);
             
             $.ajax({
                 url: "editor_realtime_upload.php",
@@ -186,6 +186,71 @@
                 }
             });
         }
+    </script>
+
+    <script>
+        // 썸머노트에 비디오파일 올리기
+
+        // input 태그를 통해 업로드할 파일을 선택했을때, 파일경로가 나타나게된다
+        // 에디터에 업로드 할 때 여러 동영상 업로드가 가능하기 때문에, 경로를 나타나지 않도록 하려고 한다
+        // 이를위해 기존 input 태그를 숨기고(hidden), 일반 Button 을 눌렀을때 숨겨놓은 input 을 클릭하도록 설정
+        document.querySelector(".upload_video button").addEventListener("click", selectVideo);
+        function selectVideo() {
+            document.querySelector(".select_video").click();
+        }
+
+        // 파일 업로드 시 서버에 파일을 저장
+        // input 태그에서 업로드할 파일을 선택했을때 발생하는 change 이벤트를 통해 서버에 파일을 업로드하는 메소드 실행
+        document.querySelector(".select_video").addEventListener("change", sendVideo);
+
+        function sendVideo() {
+            fileVideo = new FormData(document.querySelector(".editor.form"));
+            
+            $.ajax({
+                url: "editor_realtime_upload.php",
+                data: fileVideo,
+                cache: false,
+                contentType: false,
+                processData: false,
+                type: 'POST',
+                success: function(data) {
+                    if (data === "") {
+                        // alert(data);
+                        alert("20M 이하의 동영상만 업로드 할 수 있습니다")
+                    } else {
+                        // 동영상태그에 컨트롤러, 너비 지정
+                        var video = $('<video>').attr({'src':'' + data, 'controls':true, 'width':'800'});
+                        $('#summernote').summernote("insertNode", video[0]);
+                    }
+                },
+                error: function(jqXHR, textStatus, errorThrown) {
+                    console.log(textStatus+" "+errorThrown);
+                }
+            });
+        }
+
+        // XMLHttpRequest 직접 구현하여 FormData 전달하였음,
+        // 전달 완료 후 요청페이지에서 처리한 값을 다시 가져오는 것 구현하지 않고
+        // jQuery 의 ajax를 사용하였음
+        // function sendVideo() {
+        //     var xhr = new XMLHttpRequest();
+        //     var formData = new FormData(document.querySelector(".write-post"));
+        
+        //     xhr.onload = function() {
+        //         if (xhr.status === 200 || xhr.status === 201) {
+        //             // 요청 완료
+        //             console.log(xhr.responseText);
+        //             console.log("성공");
+        //         } else {
+        //             // 요청 실패
+        //             console.error(xhr.responseText);
+        //             console.log("실패");
+        //         }
+        //     };
+
+        //     xhr.open('POST', 'http://54.180.215.159/phptest.php');
+        //     xhr.send(formData);
+        // }
     </script>
 
     <!-- TODO: 게시글 작성할때, 제목 길이제한, 게시글 길이제한 예외처리 해야한다  -->
