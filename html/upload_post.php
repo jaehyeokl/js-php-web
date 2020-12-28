@@ -113,12 +113,13 @@
                     // TODO: 게시글에 경로 이름이 들어가면 오류가 생기게된다
                     
                     // 3
-                    $firstVideoSrc = $uploadVideoSrcList[0];
-                    $videoThumbnailSrc = str_replace("post", "thumbnail", $firstVideoSrc);
-                    $thumbnailWidth = 240;
-                    $thumbnailHeight = 240;
+                    // TODO: 비디오 썸네일 생성 보류 : FFMpeg 객체 생성 실패
+                    // $firstVideoSrc = $uploadVideoSrcList[0];
+                    // $videoThumbnailSrc = str_replace("post", "thumbnail", $firstVideoSrc);
+                    // $thumbnailWidth = 240;
+                    // $thumbnailHeight = 240;
                     // getVideoThumbnail($firstVideoSrc, $videoThumbnailSrc, $thumbnailWidth, $thumbnailHeight);
-                    getVideoThumbnail($firstVideoSrc);
+                    // getVideoThumbnail($firstVideoSrc, $videoThumbnailSrc);
                 }
 
                 // DB 저장
@@ -133,9 +134,8 @@
                 $createPostStatement->bindParam(':thumbnail', $thumbnailSrc);
                 $createPostStatement->execute();
                 
-                // // 저장된 게시글의 id
-                // // 이미지를 저장할때 게시글을 확인하기위해 사용
-                // $newPostId = $connectDB->lastInsertId();
+                // DB에 저장된 게시글의 id
+                $newPostId = $connectDB->lastInsertId();
 
                 // // 이미지 업로드(파일)여부 확인
                 // // 이미지를 데이터베이스 image 테이블에 저장
@@ -266,14 +266,19 @@
 
     // 동영상 썸네일 생성
     // php-FFmpeg 라이브러리를 사용하여 썸네일 생성
-    function getVideoThumbnail($video) {
-        require_once("../resources/vendor/autoload.php");
-        $ffmpeg = FFMpeg\FFMpeg::create();
-        $video = $ffmpeg->open($video);
-        $video
-            ->frame(FFMpeg\Coordinate\TimeCode::fromSeconds(1))
-            ->addFilter(new CustomFrameFilter('scale=320x160')) //resize output frame image
-            ->save('frame.jpg');
+    function getVideoThumbnail($video, $newThumbnail) {
+        require_once("../resources/library/vendor/autoload.php");
+        // $ffmpeg = FFMpeg\FFMpeg::create();
+        
+        var_dump(FFMpeg\FFMpeg::create());
+        
+        
+        // $video = $ffmpeg->open($video);
+        // $video
+        //     ->frame(FFMpeg\Coordinate\TimeCode::fromSeconds(1))
+        //     ->addFilter(new CustomFrameFilter('scale=320x160')) //resize output frame image
+        //     ->save($newThumbnail);
+        // echo "??";
 
             // $ffmpeg = FFMpeg::create();
             // $ffmpeg->open('video path')
