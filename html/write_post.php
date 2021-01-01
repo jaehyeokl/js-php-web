@@ -1,5 +1,7 @@
 <?php
-    // TODO: 게시글 등록 수정할때 로그인 여부 확인
+    include_once("../resources/config.php");
+    $signinSessionStatus = checkSigninStatus(); // 로그인 세션 확인
+    $connectDB = connectDB(); // DB 연결
 
     // 새로 생성, 수정할 블로그 게시글 내용을 입력하는 페이지
     // 게시글 작성 일때 (default) url = www.ex.com/write_post.php
@@ -11,8 +13,6 @@
     if ($isModify) {
         // 게시글 수정일때
         // 게시글을 수정할 수 있도록 기존에 작성된 내용을 input 태그에 반영해준다
-        include_once("../resources/config.php");
-        $connectDB = connectDB(); // DB 연결
         
         $postId = $_GET['id']; // 수정할 게시글 id
 
@@ -81,7 +81,7 @@
                     <ul class="nav-menu">
                         <li><a href="index.php">Home</a></li>
                     </ul>
-                    <ul class="nav-manager">
+                    <ul class="nav-manager" id="<?php echo $signinSessionStatus[2];?>">
                         <li class="manager-button">관리</li>
                         <ul>
                             <li><a href="write_post.php">게시글 작성</a></li>

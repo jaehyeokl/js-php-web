@@ -1,3 +1,8 @@
+<?php
+    include_once("../resources/config.php");
+    $signinSessionStatus = checkSigninStatus(); // 로그인 세션 확인
+?>
+
 <!DOCTYPE html>
 <html lang="ko">
 <head>
@@ -22,7 +27,7 @@
                     <ul class="nav-menu">
                         <li><a href="index.php">Home</a></li>
                     </ul>
-                    <ul class="nav-manager">
+                    <ul class="nav-manager" id="<?php echo $signinSessionStatus[2];?>">
                         <li class="manager-button">관리</li>
                         <ul>
                             <li><a href="write_post.php">게시글 작성</a></li>

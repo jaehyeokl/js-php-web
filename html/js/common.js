@@ -27,4 +27,22 @@ window.onload = function() {
         managerDropdownMenu.style.display = 'none';
     })
     
+    /** 관리자 버튼 **/
+
+
+    /** 블로그 글쓰기 버튼 **/
+
+    let writePostButton = document.querySelector('.blog.header a');
+
+    // 블로그 목록에서 글쓰기버튼을 관리자 로그인일 경우에만 보이도록 한다
+    if (managerButton.getAttribute('id') == 1) {
+        // 관리자일 경우
+        writePostButton.style.visibility = 'visible';
+    } else {
+        // 관리자가 아니거나, 로그인상태가 아닐 경우
+        writePostButton.style.visibility = 'hidden';
+    }
+    
+    /** 블로그 글쓰기 버튼 **/
+
 }

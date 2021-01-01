@@ -31,6 +31,10 @@
     z-index: 2;
 }
 
+#blog .header a {
+    visibility: hidden;
+}
+
 /* #blog .blog-title {
     font-size: 20px;
 } */
@@ -82,7 +86,3 @@
     margin-left: 20px;
 }
 /* End Blog */
-
-.page_button a {
-    margin: 8px;
-}

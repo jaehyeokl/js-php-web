@@ -1,8 +1,7 @@
 <?php
     include_once("../resources/config.php");
-    $signinSessionStatus = checkSigninStatus();
-    // var_dump($signinSessionStatus[2]);
-    // echo $signinSessionStatus[2];
+    $signinSessionStatus = checkSigninStatus(); // 로그인 세션 확인
+    
 ?>
 
 <!DOCTYPE html>
