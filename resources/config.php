@@ -8,6 +8,21 @@ function getIP() {
     return $ip;
 }
 
+// 로그인 여부 확인
+function checkSigninStatus() {
+    session_start();
+
+    // SESSION 전역변수의 존재여부를 통해 로그인상태 체크
+    // 로그인 상태일때 세션에 저장된 변수를 담은 배열을 반환한다
+    // (로그인 상태가 아닐 시 false 반환)
+    if (isset($_SESSION['userId'])) {
+        $signinSessionArray = array($_SESSION['userId'], $_SESSION['email'], $_SESSION['manager']); 
+        return $signinSessionArray;
+    } else {
+        return false;
+    }
+}
+
 // Database 'portfolio' 연결
 function connectDB() {
     $servername = "localhost";
