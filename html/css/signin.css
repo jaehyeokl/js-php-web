@@ -1,0 +1,56 @@
+/* 로그인 폼 */
+#signin .signin {
+    display: flex;
+    flex-direction: column;
+    width: 25%;
+    height: 50%;
+}
+
+#signin .header {
+    text-align: center;
+    margin: 200px auto 0px;
+    font-size: 2rem;
+    opacity: 0.7;
+}
+
+#signin .body {
+    margin: 20px auto 0px;
+}
+
+#signin .body .form {
+    display: flex;
+    flex-direction: column;
+}
+
+#signin .form__input {
+    height: 30px;
+    margin: 0px 30px;
+    text-align: center;
+    border-radius: 20px;
+}
+
+#signin .form__text {
+    color: grey;
+    font-size: 14px;
+    margin-top: 10px;
+    margin-bottom: 3px;
+    margin-left: 30px;
+}
+
+#signin .form__text.email-rule {
+    visibility: hidden;
+    color: red;
+    font-size: 10px;
+    margin-top: 3px;
+    margin-bottom: 0;
+}
+
+#signin .form__button {
+    height: 40px;
+    margin: 30px;
+    color: azure;
+    font-size: 1rem;
+    background-color: slategray;
+    border: none;
+    border-radius: 20px;
+}
