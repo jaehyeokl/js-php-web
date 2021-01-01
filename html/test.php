@@ -1,8 +1,10 @@
 <?php
     include_once("../resources/config.php");
     $signinSessionStatus = checkSigninStatus();
+    echo "<script>"."alret(".$signinSessionStatus[2].");</script>";
 
-    echo $userSessionStatus[0];
-    echo $userSessionStatus[1];
-    echo $userSessionStatus[2];
+
+    echo $signinSessionStatus[0];
+    echo $signinSessionStatus[1];
+    echo $signinSessionStatus[2];
 ?>

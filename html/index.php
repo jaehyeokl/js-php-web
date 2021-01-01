@@ -1,3 +1,10 @@
+<?php
+    include_once("../resources/config.php");
+    $signinSessionStatus = checkSigninStatus();
+    // var_dump($signinSessionStatus[2]);
+    // echo $signinSessionStatus[2];
+?>
+
 <!DOCTYPE html>
 <html lang="ko">
 <head>
@@ -10,6 +17,7 @@
     <link rel="stylesheet" href="css/reset.css">
     <link rel="stylesheet" href="css/header.css">
     <link rel="stylesheet" href="css/index.css">
+    <script src="js/common.js"></script>
     <!-- <script src="https://kit.fontawesome.com/8451689280.js" crossorigin="anonymous"></script> -->
 </head>
 <body>
@@ -25,9 +33,9 @@
                         <!-- <li><a href="#about">About</a></li> -->
                         <li><a href="#contact">Contact</a></li>
                     </ul>
-                    <ul class="nav-manager">
+                    <ul class="nav-manager" id="<?php echo $signinSessionStatus[2];?>">
                         <li class="manager-button">관리</li>
-                        <ul>
+                        <ul class="manager-menu">
                             <li><a href="write_post.php">게시글 작성</a></li>
                             <li><a href="#">관리자페이지</a></li>
                             <li><a href="#">로그아웃</a></li>
