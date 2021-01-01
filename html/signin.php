@@ -32,7 +32,7 @@
                         <ul>
                             <li><a href="write_post.php">게시글 작성</a></li>
                             <li><a href="#">관리자페이지</a></li>
-                            <li><a href="#">로그아웃</a></li>
+                            <li><a href="logout.php">로그아웃</a></li>
                         </ul>
                     </ul>
                 </div>

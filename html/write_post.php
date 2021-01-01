@@ -13,7 +13,7 @@
     if ($isModify) {
         // 게시글 수정일때
         // 게시글을 수정할 수 있도록 기존에 작성된 내용을 input 태그에 반영해준다
-        
+
         $postId = $_GET['id']; // 수정할 게시글 id
 
         $getPostStatement = $connectDB->prepare("SELECT * FROM blog WHERE id = :postId");
@@ -86,7 +86,7 @@
                         <ul>
                             <li><a href="write_post.php">게시글 작성</a></li>
                             <li><a href="#">관리자페이지</a></li>
-                            <li><a href="#">로그아웃</a></li>
+                            <li><a href="logout.php">로그아웃</a></li>
                         </ul>
                     </ul>
                 </div>
