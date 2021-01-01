@@ -55,12 +55,40 @@ p {
 
 /* Projects section */
 #projects .projects {
+    background-color: slategrey;
     flex-direction: column;
-    max-width: 1200px;
+    /* max-width: 1200px; */
     margin: 0 auto;
-    padding: 100px 0;
+    padding: 100px 200px;
 }
 /* End Projects section */
+
+/* Blog Section */
+#blog .blog {
+    background-color: lightsteelblue;
+    flex-direction: column;
+    margin: 0 auto;
+    padding: 100px 200px;
+}
+
+#blog .blog-header {
+    display: flex;
+    background-color: red;
+}
+
+#blog .blog-body {
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: space-around;
+}
+
+.box {
+    width: 300px;
+    height: 300px;
+    background-color: mediumseagreen;
+    border: solid 1px black;
+}
+/* End Blog Section */
 
 
 

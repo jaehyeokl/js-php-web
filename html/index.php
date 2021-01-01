@@ -71,7 +71,18 @@
     <!-- Blog Section -->
     <section id="blog">
         <div class="blog container">
-            <a href="blog.php">블로그 전체 보기</a>
+            <div class="blog-header">
+                <h1>BLOG</h1>
+                <a href="blog.php">블로그로 이동</a>
+            </div>
+            <div class="blog-body">
+                <div class="box">1</div>
+                <div class="box">2</div>
+                <div class="box">3</div>
+                <div class="box">4</div>
+                <div class="box">5</div>
+                <div class="box">6</div>
+            </div>
         </div>
     </section>
     <!-- End Blog Section  -->
