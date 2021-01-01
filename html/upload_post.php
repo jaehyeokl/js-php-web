@@ -193,19 +193,19 @@
     switch ($modeState) {
         case $CREATE_POST:
             // 새 게시글 작성 : 게시글 목록보기
-            header("Location: http://".$ip."/view_post.php?id=".$newPostId);
+            header("Location: https://jaehyeok.ml/view_post.php?id=".$newPostId);
             die();
             break;
 
         case $MODIFY_POST:
             // 게시글 수정 : 수정한 게시글 보기
-            header("Location: http://".$ip."/view_post.php?id=".$postId);
+            header("Location: https://jaehyeok.ml/view_post.php?id=".$postId);
             die();
             break;
 
         case $DELETE_POST:
             // 게시글 작성 : 게시글 목록으로 돌아가기
-            header("Location: http://".$ip."/blog.php");
+            header("Location: https://jaehyeok.ml/blog.php");
             die();
             break;
     }
