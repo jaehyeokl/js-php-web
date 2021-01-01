@@ -69,7 +69,7 @@
                     </ul>
                     <ul class="nav-manager" id="<?php echo $signinSessionStatus[2];?>">
                         <li class="manager-button">관리</li>
-                        <ul>
+                        <ul class="manager-menu">
                             <li><a href="write_post.php">게시글 작성</a></li>
                             <li><a href="#">관리자페이지</a></li>
                             <li><a href="logout.php">로그아웃</a></li>
@@ -97,7 +97,7 @@
                 <div class="post_button">
                     <a href="write_post.php?mode=modify&id=<?=$postId?>">수정</a>
                     <a href="upload_post.php?mode=delete&id=<?=$postId?>">삭제</a>
-                    <a class="edit-button">＜</a>
+                    <span class="edit-button">＜</span>
                 </div>
             </div>
         </div>
