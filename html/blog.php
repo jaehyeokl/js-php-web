@@ -115,6 +115,8 @@
         // TODO: 비디오일 경우에는 어떻게 썸네일을 보여주어야 할까
     }
 
+    $connectDB = null;
+
     // 게시글 전체 페이지 수 구하기
     function getTotalPage($postCount, $totalPostCount) {
         $totalPageCount = (int) ($totalPostCount / $postCount) + 1;

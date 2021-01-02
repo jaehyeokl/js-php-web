@@ -48,6 +48,8 @@
         }
         return $isModify;
     }
+
+    $connectDB = null;
 ?>
 
 <!DOCTYPE html>

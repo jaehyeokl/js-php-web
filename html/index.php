@@ -24,6 +24,8 @@
                                         "</a>".
                                     "</div>";
     }
+
+    $connectDB = null;
 ?>
 
 <!DOCTYPE html>

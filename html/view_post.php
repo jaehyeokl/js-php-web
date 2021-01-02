@@ -33,6 +33,8 @@
     //     // https://stackoverflow.com/questions/20556773/php-display-image-blob-from-mysql
     //     $imageTag = '<img src="data:image/jpeg;base64,'.base64_encode($imageBlob).'"/>';
     // }
+
+    $connectDB = null;
 ?>
 
 
