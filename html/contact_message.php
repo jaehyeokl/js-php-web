@@ -7,14 +7,20 @@
     $mailFrom = $_POST['email'];
     $message = $_POST['message'];
 
+    echo $nameFrom;
+    echo "<br>";
+    echo $mailFrom;
+    echo "<br>";
+    echo $message;
+
     sendContactEmail($nameFrom, $mailFrom, $message);
 
-    echo "
-        <script>
-            alert('전송 완료!');
-            location.href = 'https://jaehyeok.ml/#contact';
-        </script>
-        ";
+    // echo "
+    //     <script>
+    //         alert('전송 완료!');
+    //         location.href = 'https://jaehyeok.ml/#contact';
+    //     </script>
+    //     ";
 
     // mail() 함수를 사용하기 위해서 sendmail 설치 해야한다
     // (sudo apt-get install sendmail)  

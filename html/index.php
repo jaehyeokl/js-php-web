@@ -114,7 +114,7 @@
             </div>
             <div class="contact-form">
                 <form action="contact_message.php" method="post">
-                    <input class="input" type="text" name="name" placeholder="Name" maxlength="20" minlength="5">
+                    <input class="input" type="text" name="name" placeholder="Name" maxlength="20" minlength="2">
                     <input class="input" type="text" name="email" placeholder="Email" maxlength="45" minlength="10">
                     <textarea class="input" name="message" id=""  placeholder="Message" maxlength="3000" minlength="1"></textarea>
                     <input class="submit" type="submit" value="SUBMIT">
