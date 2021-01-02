@@ -98,3 +98,24 @@
     display: block;
 }
 /* End Header section */
+
+
+
+/* Footer Section */
+#footer .footer {
+    height: 50px;
+    display: flex;
+    justify-content: center;
+    align-items: flex-end;
+    opacity: 0.7;
+    border-top: double 1px #444444;
+    border-bottom: double 1px #444444;
+    padding: 50px 0px;
+    margin: 5px 100px;
+}
+
+#footer .footer a {
+    font-size: 0.8rem;
+    margin-right: 10px;
+}
+/* End Footer Section */

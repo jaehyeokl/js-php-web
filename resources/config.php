@@ -72,7 +72,7 @@ function sendContactEmail($nameFrom, $mailFrom, $message) {
         $mail->SetFrom('hyukzza@naver.com', $mailFrom); // 보내는 사람 email 주소와 표시될 이름 (표시될 이름은 생략가능)
         $mail->AddAddress('hyukzza@naver.com'); // 받을 사람 email 주소와 표시될 이름 (표시될 이름은 생략가능)
         $mail->Subject = '[Contact from portfolio]'; // 메일 제목
-        $mail->Body = "[보내는 사람 : $nameFrom]\n".$message; // 메세지
+        $mail->Body = "[보내는 사람 : $nameFrom]\n\n".$message; // 메세지
         $mail->Send(); // 발송
         
         echo "Message Sent OK //발송 확인\n";

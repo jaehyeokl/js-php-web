@@ -124,6 +124,15 @@
     </section>
     <!-- End Contact Section -->
 
+    <!-- Footer Section -->
+    <section id="footer">
+        <div class="footer">
+            <a href="signin.php">관리자 로그인</a>
+            <span>@Designed By JaeHyeok</span>
+        </div>
+    </section>
+    <!-- End Footer Section -->
+
 
     <!-- About Section -->
     <!-- <section id="about">
