@@ -106,9 +106,28 @@
     </section>
     <!-- End Blog Section  -->
 
+    <!-- Contact Section -->
+    <section id="contact">
+        <div class="contact container">
+            <div class="contact-title">
+                <h1>CONTACT ME</h1>
+            </div>
+            <div class="contact-form">
+                <form action="contact_message.php" method="post">
+                    <input class="input" type="text" name="name" placeholder="Name" maxlength="20" minlength="5">
+                    <input class="input" type="text" name="email" placeholder="Email" maxlength="45" minlength="10">
+                    <textarea class="input" name="message" id=""  placeholder="Message" maxlength="3000" minlength="1"></textarea>
+                    <input class="submit" type="submit" value="SUBMIT">
+                </form>
+            </div>
+        </div>
+    </section>
+    <!-- End Contact Section -->
+
+
     <!-- About Section -->
-    <section id="about">
-        <div class="about container">
+    <!-- <section id="about">
+        <div class="about container"> -->
             <!-- <div class="col-left">
                 <div class="about-img">
                     <img src="./img/img-2.png" alt="img">
@@ -119,17 +138,10 @@
                 <h2>Front End Developer</h2>
                 <p>Lorem ipsum, dolor sit amet consectetur adipisicing elit. Asperiores, velit alias eius non illum beatae atque repellat ratione qui veritatis repudiandae adipisci maiores. At inventore necessitatibus deserunt exercitationem cumque earum omnis ipsum rem accusantium quis, quas quia, accusamus provident suscipit magni! Expedita sint ad dolore, commodi labore nihil velit earum ducimus nulla quae nostrum fugit aut, deserunt reprehenderit libero enim!</p>
             </div> -->
-        </div>
-    </section>
+        <!-- </div>
+    </section> -->
     <!-- End About Section -->
 
-    <!-- Contact Section -->
-    <section id="contact">
-        <div class="contact container">
-            
-        </div>
-    </section>
-    <!-- End Contact Section -->
-
+    
 </body>
 </html>

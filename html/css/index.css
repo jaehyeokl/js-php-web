@@ -63,9 +63,9 @@ p {
 }
 /* End Projects section */
 
+
 /* Blog Section */
 #blog .blog {
-    /* background-color: lightsteelblue; */
     flex-direction: column;
     margin: 0 auto;
     padding: 100px 240px;
@@ -121,6 +121,67 @@ p {
     font-weight: 700;
 }
 /* End Blog Section */
+
+
+/* Contact Section */
+#contact .contact {
+    background-color: lightsteelblue;
+    margin: 0 auto;
+    padding: 100px 200px;
+    flex-wrap: wrap;
+    justify-content: space-between;
+    align-items: center;
+}
+
+#contact .contact-title {
+    display: flex;
+}
+
+#contact .contact-title h1 {
+    font-size: 4rem;
+    border-bottom: solid 6px white;
+    color: white;
+}
+
+#contact .contact-form {
+    padding: 30px;
+}
+
+#contact .contact-form form {
+    display: flex;
+    flex-direction: column;
+    align-items: flex-end;
+}
+
+#contact .contact-form form .input {
+    background-color: whitesmoke;
+    min-width: 500px;
+    font-size: 16px;
+    color: #585858;
+    padding: 20px 14px;
+    margin: 5px 0;
+    outline: none;
+    border: none;
+    border-radius: 4px;
+}
+
+#contact .contact-form form textarea {
+    height: 200px;
+    resize: none;
+}
+
+#contact .contact-form form .submit {
+    background-color: navy;
+    color: whitesmoke;
+    letter-spacing: 2px;
+    margin: 5px 0;
+    width: 100px;
+    height: 40px;
+    border: none;
+    border-radius: 4px;
+}
+
+/* End Contact Section */
 
 
 
