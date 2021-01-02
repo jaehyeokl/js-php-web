@@ -73,7 +73,7 @@
                     // 3
                     $firstImgSrc = $uploadImgSrcList[0];
                     $thumbnailSrc = str_replace("post", "thumbnail", $firstImgSrc);
-                    $thumbnailWidth = 240;
+                    $thumbnailWidth = 300;
                     $thumbnailHeight = 240;
                     getImageThumbnail($firstImgSrc, $thumbnailSrc, $thumbnailWidth, $thumbnailHeight);
                 } 

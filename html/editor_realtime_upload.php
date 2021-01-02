@@ -9,7 +9,7 @@
         if (!$_FILES['image']['error']) {
             
             $name = md5(rand(100, 200));  // 파일명
-            $ext = explode('.', $_FILES['file']['name']);
+            $ext = explode('.', $_FILES['image']['name']);
             $filename = $name . '.' . $ext[1];
             // 전달받은 파일을 지정한 위치에 저장            
             $destination = './img/editor_tmp/' . $filename;

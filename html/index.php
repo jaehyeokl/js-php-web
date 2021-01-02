@@ -1,7 +1,29 @@
 <?php
     include_once("../resources/config.php");
     $signinSessionStatus = checkSigninStatus(); // 로그인 세션 확인
-    
+    $connectDB = connectDB(); // DB 연결
+
+    // Blog 게시글 미리보기
+    $previewPostNum = 6; // 보여줄 미리보기 포스트 개수
+
+    $previewPostStatement = $connectDB->prepare("SELECT id, title, thumbnail FROM blog WHERE deletedAt IS NULL ORDER BY id DESC LIMIT :viewPostNum");
+    $previewPostStatement->bindParam(':viewPostNum', $previewPostNum, PDO::PARAM_INT);
+    $previewPostStatement->execute();
+
+    while ($previewPostRow = $previewPostStatement->fetch()) {
+        $postId = $previewPostRow['id'];
+        $postTitle = $previewPostRow['title'];
+        $postThumnail = $previewPostRow['thumbnail'];
+
+        // 블로그 게시글 태그 생성
+        $previewPostTag = $previewPostTag.
+                                    "<div class='post'>".
+                                        "<a href='view_post.php?id=$postId'>".
+                                            "<img src='$postThumnail' onerror=this.style.visibility='hidden'>".
+                                            "<h3>".$postTitle."</h3>".
+                                        "</a>".
+                                    "</div>";
+    }
 ?>
 
 <!DOCTYPE html>
@@ -73,15 +95,10 @@
         <div class="blog container">
             <div class="blog-header">
                 <h1>BLOG</h1>
-                <a href="blog.php">블로그로 이동</a>
+                <a href="blog.php">more post</a>
             </div>
             <div class="blog-body">
-                <div class="box">1</div>
-                <div class="box">2</div>
-                <div class="box">3</div>
-                <div class="box">4</div>
-                <div class="box">5</div>
-                <div class="box">6</div>
+                <?= $previewPostTag ?>
             </div>
         </div>
     </section>
