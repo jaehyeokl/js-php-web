@@ -21,32 +21,70 @@
 
     
     // 댓글 불러오기
-    $getCommentStatement = $connectDB->prepare("SELECT * FROM comments WHERE postId = :postId AND deletedAt IS NULL");
+    $getCommentStatement = $connectDB->prepare("SELECT * FROM comments WHERE postId = :postId AND deletedAt IS NULL AND nestedOrder = 0");
     $getCommentStatement->bindParam(':postId', $postId, PDO::PARAM_INT);
     $getCommentStatement->execute();
 
-    // 대댓글 불러오기
     
 
     while($commentRow = $getCommentStatement->fetch()) {
         $name = $commentRow['name'];
         $createdAt = $commentRow['createdAt'];
         $comment = $commentRow['comment'];
+        $groupNum = $commentRow['groupNum'];
+        // $nestedOrder = $commentRow['nestedOrder'];
+
+        
+        
+        // 대댓글 불러오기
+        $getNestedCommentStatement =$connectDB->prepare("SELECT * FROM comments WHERE postId = :postId AND deletedAt IS NULL AND groupNum = :groupNum AND nestedOrder != 0");
+        $getNestedCommentStatement->bindParam(':postId', $postId, PDO::PARAM_INT);
+        $getNestedCommentStatement->bindParam(':groupNum', $groupNum, PDO::PARAM_INT);
+        $getNestedCommentStatement->execute();
+
+        // $nestedCommentNum = $getNestedCommentStatement->rowCount();
+        // echo $nestedCommentNum;
+
+        $totalNestedCommentItemTag = "";
+        
+        while($nestedCommentRow = $getNestedCommentStatement->fetch()) {
+            $nestedName = $nestedCommentRow['name'];
+            $nestedCreatedAt = $nestedCommentRow['createdAt'];
+            $nestedComment = $nestedCommentRow['comment'];
+
+            $nestedCommentItemTag =
+                                    "<div class='nested_comment_item'>".
+                                        "<div class='comment_header'>".
+                                            "<div class='header_left'>".
+                                                "<span>$nestedName</span>".
+                                                "<span>$nestedCreatedAt</span>".
+                                            "</div>".
+                                            "<div class='header_right'>".
+                                                "<a href=''>reply</a>".
+                                                "<a href=''>edit</a>".
+                                            "</div>".
+                                        "</div>".
+                                        "<textarea readonly>$nestedComment</textarea>".
+                                    "</div>";
+            
+            $totalNestedCommentItemTag = $totalNestedCommentItemTag.$nestedCommentItemTag;
+        }
 
         $commentItemTag = $commentItemTag.
-                            "<div class='comment_item'>".
-                                "<div class='comment_header'>".
-                                    "<div class='header_left'>".
-                                        "<span>$name</span>".
-                                        "<span>$createdAt</span>".
-                                    "</div>".
-                                    "<div class='header_right'>".
-                                        "<a href=''>reply</a>".
-                                        "<a href=''>edit</a>".
-                                    "</div>".
-                                "</div>".
-                                "<textarea>$comment</textarea>".
-                            "</div>";
+                                    "<div class='comment_item'>".
+                                        "<div class='comment_header'>".
+                                            "<div class='header_left'>".
+                                                "<span>$name</span>".
+                                                "<span>$createdAt</span>".
+                                            "</div>".
+                                            "<div class='header_right'>".
+                                                "<a href=''>reply</a>".
+                                                "<a href=''>edit</a>".
+                                            "</div>".
+                                        "</div>".
+                                        "<textarea readonly>$comment</textarea>".
+                                        $totalNestedCommentItemTag.
+                                    "</div>";
     }
 
 
