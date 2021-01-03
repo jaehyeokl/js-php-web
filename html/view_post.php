@@ -56,12 +56,12 @@
                                     "<div class='nested_comment_item'>".
                                         "<div class='comment_header'>".
                                             "<div class='header_left'>".
-                                                "<span>$nestedName</span>".
-                                                "<span>$nestedCreatedAt</span>".
+                                                "<span class='comment_writer'>$nestedName</span>".
+                                                "<span class='comment_created'>$nestedCreatedAt</span>".
                                             "</div>".
                                             "<div class='header_right'>".
-                                                "<a href=''>reply</a>".
-                                                "<a href=''>edit</a>".
+                                                "<span class='comment_reply' href=''>reply</span>".
+                                                "<span class='comment_edit' href=''>edit</span>".
                                             "</div>".
                                         "</div>".
                                         "<textarea readonly>$nestedComment</textarea>".
@@ -74,12 +74,12 @@
                                     "<div class='comment_item'>".
                                         "<div class='comment_header'>".
                                             "<div class='header_left'>".
-                                                "<span>$name</span>".
-                                                "<span>$createdAt</span>".
+                                                "<span class='comment_writer'>$name</span>".
+                                                "<span class='comment_created'>$createdAt</span>".
                                             "</div>".
                                             "<div class='header_right'>".
-                                                "<a href=''>reply</a>".
-                                                "<a href=''>edit</a>".
+                                                "<span class='comment_reply' href=''>reply</span>".
+                                                "<span class='comment_edit' href=''>edit</span>".
                                             "</div>".
                                         "</div>".
                                         "<textarea readonly>$comment</textarea>".

@@ -102,7 +102,7 @@
 }
 
 #viewer .comment_item {
-    border-bottom: solid 1px black;
+    border-bottom: solid 1px #c9c9c9;
     margin-top: 20px;
 }
 
@@ -113,8 +113,30 @@
     padding: 0px 2px;
 }
 
+#viewer .header_left {
+    opacity: 0.7;
+    font-size: 1rem;
+}
+
+#viewer .header_left .comment_writer {
+    font-weight: bold;
+    font-size: 1.4rem;
+    margin-right: 6px;
+}
+
+#viewer .header_right {
+    font-size: 1.2rem;
+    opacity: 0.7;
+    cursor: pointer;
+}
+
+#viewer .header_right .comment_edit {
+    margin-left: 6px;
+}
+
 #viewer .comment_item textarea {
     width: 100%;
+    margin-top: 4px;
     padding-right: 100px;
     resize: none;
     border: none;
