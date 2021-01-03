@@ -103,7 +103,7 @@
                 </div>
             </div>
         </div>
-        <div class="viewer body">
+        <div class="viewer content">
             <!-- summernote 적용으로 인해  -->
             <!-- <div class="content_image">
                 <?php //echo $imageTag;?>
@@ -113,9 +113,74 @@
                 <textarea name="contents_text" id="summernote"></textarea>
             </div>
         </div>
-        <div class="viewer footer">
-            <span>댓글 다는곳</span>
-            <!-- TODO: Comment 구현하기 -->
+        <div class="viewer comment">
+            <div class="comment_title">
+                <h2>Comment</h2>
+            </div>
+            <div class="comment_list">
+                <div class="comment_item">
+                    <div class="comment_header">
+                        <div class="header_left">
+                            <span>이름</span>
+                            <span>2002/12/21 23:33:11</span>
+                        </div>
+                        <div class="header_right">
+                            <a href="">reply</a>
+                            <a href="">edit</a>
+                        </div>
+                    </div>
+                    <textarea></textarea>
+                    <div class="nested_comment_item">
+                        <div class="comment_header">
+                            <div class="header_left">
+                                <span>이름</span>
+                                <span>2002/12/21 23:33:11</span>
+                            </div>
+                            <div class="header_right">
+                                <a href="">reply</a>
+                                <a href="">edit</a>
+                            </div>
+                        </div>
+                        <textarea></textarea>
+                    </div>
+                </div>
+                <div class="comment_item">
+                    <div class="comment_header">
+                        <div class="header_left">
+                            <span>이름</span>
+                            <span>2002/12/21 23:33:11</span>
+                        </div>
+                        <div class="header_right">
+                            <a href="">reply</a>
+                            <a href="">edit</a>
+                        </div>
+                    </div>
+                    <textarea></textarea>
+                    <div class="nested_comment_item">
+                        <div class="comment_header">
+                            <div class="header_left">
+                                <span>이름</span>
+                                <span>2002/12/21 23:33:11</span>
+                            </div>
+                            <div class="header_right">
+                                <a href="">reply</a>
+                                <a href="">edit</a>
+                            </div>
+                        </div>
+                        <textarea></textarea>
+                    </div>
+                </div>
+            </div>
+            <div class="comment_input">
+                <form action="" method="post">
+                    <div class="input_userinfo">
+                        <input name="name" type="text" placeholder="Name" minlength="2" maxlength="12">
+                        <input name="password" type="text" placeholder="Password" minlength="4" maxlength="16">
+                    </div>
+                    <textarea name="comment" placeholder="Comment" minlength="2" maxliength="200"></textarea>
+                    <input class="input_submit" type="submit" value="write">
+                </form>
+            </div>
         </div>
     </section>
 
