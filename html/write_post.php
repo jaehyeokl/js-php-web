@@ -271,11 +271,11 @@
     <!-- End Wirte Post -->
     
     <!-- Footer Section -->
-    <section id="footer">
+    <!-- <section id="footer">
         <div class="footer">
             <a href="signin.php">관리자 로그인</a>
             <span>@Designed By JaeHyeok</span>
         </div>
-    </section>
+    </section> -->
     <!-- End Footer Section -->
 </body>    

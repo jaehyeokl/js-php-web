@@ -60,4 +60,16 @@ window.onload = function() {
         }
     }
     /** 블로그 게시글 수정/삭제 **/
+
+
+    /** 로그인 상태일때는 footer 에서 '관리자 로그' 인 보이지 않도록 설정 **/
+    let signinManagerButton = document.querySelector('#footer a');
+
+    if (signinManagerButton != null) {
+        if (managerButton.getAttribute('id') == 1) {
+            // 관리자일 경우
+            signinManagerButton.style.visibility = 'hidden';
+        } 
+    }
+    /** 블로그 게시글 수정/삭제 **/
 }
