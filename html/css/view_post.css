@@ -136,6 +136,7 @@
 
 #viewer .comment_item textarea {
     width: 100%;
+    height: 10px;
     margin-top: 4px;
     padding-right: 100px;
     resize: none;

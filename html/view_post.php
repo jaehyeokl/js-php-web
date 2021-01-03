@@ -291,17 +291,22 @@
     </script>
 
     <script>
-        // 불러오는 게시글의 양만큼 textarea 의 높이를 자동으로 조절하도록 한다
+        // 댓글을 담는 textarea 높이 조절
+        // 불러오는 댓글의 양만큼 textarea 의 높이를 자동으로 조절하도록 한다
         function textareaAutoHeight() {
-            let el = document.querySelector(".content_text textarea");
-            setTimeout(() => {
-                el.style.height = 'auto';
+            let commentTextareaArray = document.querySelectorAll(".comment_item textarea");
 
-                let scrollHeight = el.scrollHeight;
-                let outlineHeight = el.offsetHeight - el.clientHeight;
+            for (let i = 0; i < commentTextareaArray.length; i++) {
+                let el = commentTextareaArray[i];
+                setTimeout(() => {
+                    el.style.height = 'auto';
 
-                el.style.height = (scrollHeight + outlineHeight) + 'px';
-            }, 0);
+                    let scrollHeight = el.scrollHeight;
+                    let outlineHeight = el.offsetHeight - el.clientHeight;
+
+                    el.style.height = (scrollHeight + outlineHeight) + 'px';
+                }, 0);
+            }
         }
         textareaAutoHeight();
     </script>
