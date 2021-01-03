@@ -94,6 +94,7 @@
 #viewer .comment_title h2 {
     font-size: 3rem;
     opacity: 0.8;
+    margin-bottom: 40px;
 }
 
 #viewer .comment_list {
@@ -127,6 +128,14 @@
 #viewer .comment_input .input_userinfo input {
     width: 200px;
     margin-bottom: 6px;
+}
+
+#viewer .comment_input .input_userinfo #postId {
+    visibility: hidden;
+}
+
+#viewer .comment_input {
+    margin-top: 20px;
 }
 
 #viewer .comment_input textarea {

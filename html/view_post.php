@@ -19,20 +19,37 @@
     // $contentsImageId = $postRow['contentsImageId'];
     $createdAt = $postRow['createdAt'];
 
-    // summernote 적용으로 인해 이미지를 DB에서 불러오지 않고, 본문의 img 태그에서 파일로 불러온다
-    // if ($contentsImageId) {
-    //     $getImageStatement = $connectDB->prepare("SELECT image FROM image WHERE imageId = :imageId");
-    //     $getImageStatement->bindParam(':imageId', $contentsImageId, PDO::PARAM_INT);
-    //     $getImageStatement->execute();
+    
+    // 댓글 불러오기
+    $getCommentStatement = $connectDB->prepare("SELECT * FROM comments WHERE postId = :postId AND deletedAt IS NULL");
+    $getCommentStatement->bindParam(':postId', $postId, PDO::PARAM_INT);
+    $getCommentStatement->execute();
 
-    //     $getImageStatement->setFetchMode(PDO::FETCH_ASSOC);
-    //     $getImageResult = $getImageStatement->fetch();
-    //     // header("Content-type: image/jpeg");
-    //     $imageBlob = $getImageResult['image'];
-    //     // 이미지 blob img 태그에 넣기
-    //     // https://stackoverflow.com/questions/20556773/php-display-image-blob-from-mysql
-    //     $imageTag = '<img src="data:image/jpeg;base64,'.base64_encode($imageBlob).'"/>';
-    // }
+    // 대댓글 불러오기
+    
+
+    while($commentRow = $getCommentStatement->fetch()) {
+        $name = $commentRow['name'];
+        $createdAt = $commentRow['createdAt'];
+        $comment = $commentRow['comment'];
+
+        $commentItemTag = $commentItemTag.
+                            "<div class='comment_item'>".
+                                "<div class='comment_header'>".
+                                    "<div class='header_left'>".
+                                        "<span>$name</span>".
+                                        "<span>$createdAt</span>".
+                                    "</div>".
+                                    "<div class='header_right'>".
+                                        "<a href=''>reply</a>".
+                                        "<a href=''>edit</a>".
+                                    "</div>".
+                                "</div>".
+                                "<textarea>$comment</textarea>".
+                            "</div>";
+    }
+
+
 
     $connectDB = null;
 ?>
@@ -118,7 +135,8 @@
                 <h2>Comment</h2>
             </div>
             <div class="comment_list">
-                <div class="comment_item">
+                <?= $commentItemTag ?>
+                <!-- <div class="comment_item">
                     <div class="comment_header">
                         <div class="header_left">
                             <span>이름</span>
@@ -129,7 +147,20 @@
                             <a href="">edit</a>
                         </div>
                     </div>
-                    <textarea></textarea>
+                    <textarea>zzz</textarea>
+                    <div class="nested_comment_item">
+                        <div class="comment_header">
+                            <div class="header_left">
+                                <span>이름</span>
+                                <span>2002/12/21 23:33:11</span>
+                            </div>
+                            <div class="header_right">
+                                <a href="">reply</a>
+                                <a href="">edit</a>
+                            </div>
+                        </div>
+                        <textarea>hhh</textarea>
+                    </div>
                     <div class="nested_comment_item">
                         <div class="comment_header">
                             <div class="header_left">
@@ -169,20 +200,57 @@
                         </div>
                         <textarea></textarea>
                     </div>
-                </div>
+                </div> -->
             </div>
             <div class="comment_input">
-                <form action="" method="post">
+                <form action="upload_comment.php" method="post">
                     <div class="input_userinfo">
-                        <input name="name" type="text" placeholder="Name" minlength="2" maxlength="12">
-                        <input name="password" type="text" placeholder="Password" minlength="4" maxlength="16">
+                        <input id="name" name="name" type="text" placeholder="Name" minlength="2" maxlength="12">
+                        <input id="password" name="password" type="text" placeholder="Password" minlength="4" maxlength="16">
+                        <input id="postId" name="postId" type="text" value="<?= $postId;?>">
                     </div>
-                    <textarea name="comment" placeholder="Comment" minlength="2" maxliength="200"></textarea>
+                    <textarea id="comment" name="comment" placeholder="Comment" minlength="2" maxliength="200"></textarea>
                     <input class="input_submit" type="submit" value="write">
+                    <!-- <input class="input_submit" type="button" value="write"> -->
                 </form>
             </div>
         </div>
     </section>
+
+    <script>
+        // ajax 를 이용하여 서버 upload_comment.php 에서 DB에 저장할 댓글 데이터 전달
+        // document.querySelector(".input_submit").addEventListener("click", uploadComment);
+
+        // function uploadComment() {
+        //     // 전달할 데이터
+        //     let commentDataArray = new Array();
+        //     let commentData = new Object();
+
+        //     commentData.postId = <?= $postId;?>;
+        //     commentData.name = document.querySelector("#name").value;
+        //     commentData.password = document.querySelector("#password").value;
+        //     commentData.comment = document.querySelector("#comment").value;
+        //     // commentData.createdAt = Date.now();
+            
+        //     commentDataArray.push(commentData);
+            
+        //     $.ajax({
+        //         url: "upload_comment.php",
+        //         dataType: "json",
+        //         data: {"data" : commentDataArray},
+        //         type: "POST",
+        //         success: function(data) {
+        //             // 현재 스크롤 위치로 새로고침
+        //             // alert(data);
+        //             console.log(data);
+        //             // document.location.reload(true);
+        //         },
+        //         error: function(jqXHR, textStatus, errorThrown) {
+        //             console.log(textStatus+" "+errorThrown);
+        //         }
+        //     });
+        // }
+    </script>
 
     <script>
         // 불러오는 게시글의 양만큼 textarea 의 높이를 자동으로 조절하도록 한다

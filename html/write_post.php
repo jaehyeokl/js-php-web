@@ -239,29 +239,6 @@
                 }
             });
         }
-
-        // XMLHttpRequest 직접 구현하여 FormData 전달하였음,
-        // 전달 완료 후 요청페이지에서 처리한 값을 다시 가져오는 것 구현하지 않고
-        // jQuery 의 ajax를 사용하였음
-        // function sendVideo() {
-        //     var xhr = new XMLHttpRequest();
-        //     var formData = new FormData(document.querySelector(".write-post"));
-        
-        //     xhr.onload = function() {
-        //         if (xhr.status === 200 || xhr.status === 201) {
-        //             // 요청 완료
-        //             console.log(xhr.responseText);
-        //             console.log("성공");
-        //         } else {
-        //             // 요청 실패
-        //             console.error(xhr.responseText);
-        //             console.log("실패");
-        //         }
-        //     };
-
-        //     xhr.open('POST', 'http://54.180.215.159/phptest.php');
-        //     xhr.send(formData);
-        // }
     </script>
 
     <!-- TODO: 게시글 작성할때, 제목 길이제한, 게시글 길이제한 예외처리 해야한다  -->
