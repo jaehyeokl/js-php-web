@@ -109,7 +109,7 @@
 #viewer .comment_item .comment_header {
     display: flex;
     justify-content: space-between;
-    align-items: flex-start;
+    align-items: center;
     padding: 0px 2px;
 }
 
@@ -142,6 +142,7 @@
     resize: none;
     border: none;
     outline: none;
+    opacity: 0.8;
 }
 
 #viewer .comment_item .nested_comment_item {

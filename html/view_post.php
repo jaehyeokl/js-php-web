@@ -25,8 +25,6 @@
     $getCommentStatement->bindParam(':postId', $postId, PDO::PARAM_INT);
     $getCommentStatement->execute();
 
-    
-
     while($commentRow = $getCommentStatement->fetch()) {
         $name = $commentRow['name'];
         $createdAt = $commentRow['createdAt'];
@@ -41,9 +39,6 @@
         $getNestedCommentStatement->bindParam(':postId', $postId, PDO::PARAM_INT);
         $getNestedCommentStatement->bindParam(':groupNum', $groupNum, PDO::PARAM_INT);
         $getNestedCommentStatement->execute();
-
-        // $nestedCommentNum = $getNestedCommentStatement->rowCount();
-        // echo $nestedCommentNum;
 
         $totalNestedCommentItemTag = "";
         
@@ -60,8 +55,8 @@
                                                 "<span class='comment_created'>$nestedCreatedAt</span>".
                                             "</div>".
                                             "<div class='header_right'>".
-                                                "<span class='comment_reply' href=''>reply</span>".
-                                                "<span class='comment_edit' href=''>edit</span>".
+                                                "<span class='comment_reply'>reply</span>".
+                                                "<span class='comment_edit'>edit</span>".
                                             "</div>".
                                         "</div>".
                                         "<textarea readonly>$nestedComment</textarea>".
@@ -70,24 +65,23 @@
             $totalNestedCommentItemTag = $totalNestedCommentItemTag.$nestedCommentItemTag;
         }
 
+        // 댓글 그룹 태그 생성 (일반 댓글 + 대댓글)
         $commentItemTag = $commentItemTag.
-                                    "<div class='comment_item'>".
+                                    "<div id='$groupNum' class='comment_item'>".
                                         "<div class='comment_header'>".
                                             "<div class='header_left'>".
                                                 "<span class='comment_writer'>$name</span>".
                                                 "<span class='comment_created'>$createdAt</span>".
                                             "</div>".
                                             "<div class='header_right'>".
-                                                "<span class='comment_reply' href=''>reply</span>".
-                                                "<span class='comment_edit' href=''>edit</span>".
+                                                "<span class='comment_reply'>reply</span>".
+                                                "<span class='comment_edit'>edit</span>".
                                             "</div>".
                                         "</div>".
                                         "<textarea readonly>$comment</textarea>".
-                                        $totalNestedCommentItemTag.
+                                        $totalNestedCommentItemTag. // 댓글 아래에 대댓글 추가
                                     "</div>";
     }
-
-
 
     $connectDB = null;
 ?>
@@ -174,71 +168,6 @@
             </div>
             <div class="comment_list">
                 <?= $commentItemTag ?>
-                <!-- <div class="comment_item">
-                    <div class="comment_header">
-                        <div class="header_left">
-                            <span>이름</span>
-                            <span>2002/12/21 23:33:11</span>
-                        </div>
-                        <div class="header_right">
-                            <a href="">reply</a>
-                            <a href="">edit</a>
-                        </div>
-                    </div>
-                    <textarea>zzz</textarea>
-                    <div class="nested_comment_item">
-                        <div class="comment_header">
-                            <div class="header_left">
-                                <span>이름</span>
-                                <span>2002/12/21 23:33:11</span>
-                            </div>
-                            <div class="header_right">
-                                <a href="">reply</a>
-                                <a href="">edit</a>
-                            </div>
-                        </div>
-                        <textarea>hhh</textarea>
-                    </div>
-                    <div class="nested_comment_item">
-                        <div class="comment_header">
-                            <div class="header_left">
-                                <span>이름</span>
-                                <span>2002/12/21 23:33:11</span>
-                            </div>
-                            <div class="header_right">
-                                <a href="">reply</a>
-                                <a href="">edit</a>
-                            </div>
-                        </div>
-                        <textarea></textarea>
-                    </div>
-                </div>
-                <div class="comment_item">
-                    <div class="comment_header">
-                        <div class="header_left">
-                            <span>이름</span>
-                            <span>2002/12/21 23:33:11</span>
-                        </div>
-                        <div class="header_right">
-                            <a href="">reply</a>
-                            <a href="">edit</a>
-                        </div>
-                    </div>
-                    <textarea></textarea>
-                    <div class="nested_comment_item">
-                        <div class="comment_header">
-                            <div class="header_left">
-                                <span>이름</span>
-                                <span>2002/12/21 23:33:11</span>
-                            </div>
-                            <div class="header_right">
-                                <a href="">reply</a>
-                                <a href="">edit</a>
-                            </div>
-                        </div>
-                        <textarea></textarea>
-                    </div>
-                </div> -->
             </div>
             <div class="comment_input">
                 <form action="upload_comment.php" method="post">
@@ -254,6 +183,45 @@
             </div>
         </div>
     </section>
+
+    <script>
+        // 답글달기
+
+        // 리플버튼을 클릭했을때 / 수정하기 / 삭제하기
+        // 리플버튼을 클릭했을때
+        let replyButtonArray = document.querySelectorAll(".comment_reply");
+
+        for(let i = 0; i < replyButtonArray.length; i++) {
+            replyButtonArray[i].addEventListener("click", function() {
+                writeReply(this);
+            });
+        }
+
+        function writeReply(el) {
+            // 답글을 작성하는 팝업창을 띄운다
+            // 이때 필요한 정보인 게시글번호와 답글이 포함될 댓글 그룹번호, 그리고 답글의 대상을 전달한다
+            let commentClassName = el.parentNode.parentNode.parentNode.getAttribute('class');
+            let groupNum; // 댓글 그룹 번호
+            let designateUserName; // 지정 답글 유저 이름
+            if (commentClassName === 'comment_item') {
+                // 일반 댓글일 경우에는 태그의 id 값으로 댓글의 그룹번호를 가지고 있음
+                groupNum = el.parentNode.parentNode.parentNode.getAttribute('id');
+            } else if (commentClassName === 'nested_comment_item') {
+                // 대댓글일 경우에는 부모태그인 일반댓글의 id를 통해 그룹번호를 확인해야한다
+                groupNum = el.parentNode.parentNode.parentNode.parentNode.getAttribute('id');
+                designateUserName = el.parentNode.parentNode.firstChild.firstChild.innerHTML;
+            }
+
+            let postId = <?= $postId;?>; // 게시글번호
+            
+            // window.open("/index.php", "_blank", "toolbar=yes,scrollbars=no,resizable=no,top=500,left=500,width=500,height=600");
+            // window.open("popup_reply.php", "PopupWin", "width=500,height=600");
+            
+            // 게시글 postId 와, 댓글 그룹 번호와, 누른녀석의 이름을 전달해준다? 
+            // console.log(el);
+        }
+
+    </script>
 
     <script>
         // ajax 를 이용하여 서버 upload_comment.php 에서 DB에 저장할 댓글 데이터 전달
