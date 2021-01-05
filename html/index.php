@@ -86,10 +86,33 @@
     <section id="projects">
         <div class="projects container">
             <div class="projects-header">
-                <h1 class="section-title">프로젝트 영상 업로드</h1>
+                <div class="header-title">
+                    <h1>PROJECTS</h1>
+                </div>
+                <div class="header-menu">
+                    <span id="talkpic">TALK PIC</span>
+                    <span id="ggym">GGYM</span>
+                    <span id="mafia">MAFIA</span>
+                </div>
+            </div>
+            <div class="projects-body">
+                <video src="/video/project/android_talkpic.mp4" controls width="100%"></video>
             </div>
         </div>
     </section>
+
+    <script>
+        let projectFileName = ["android_talkpic.mp4", "android_ggym.mp4", "java_mafia.mp4"];
+        let projectVideoTag = document.querySelector(".projects-body video"); // 프로젝트 보여줄 비디오 태그
+        let projectButtons = document.querySelectorAll(".header-menu span");
+        for (let i = 0; i < projectButtons.length; i++) {
+            projectButtons[i].addEventListener("click",() => {
+                projectVideoTag.src = "/video/project/" + projectFileName[i];
+            });
+        }
+
+        // TODO: 현재 선택된 프로젝트버튼에 표시할 수 있는 방법
+    </script>
     <!-- End Projects Section -->
 
     <!-- Blog Section -->
