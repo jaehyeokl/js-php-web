@@ -203,7 +203,7 @@
             // (게시글 번호, 댓글의 그룹번호, 답글 대상)
             let commentClassName = el.parentNode.parentNode.parentNode.getAttribute('class');
             let groupNum; // 댓글 그룹 번호
-            let targetUserName; // 지정 답글 유저 이름
+            let targetUserName = ""; // 지정 답글 유저 이름
             if (commentClassName === 'comment_item') {
                 // 일반 댓글일 경우에는 태그의 id 값으로 댓글의 그룹번호를 가지고 있음
                 groupNum = el.parentNode.parentNode.parentNode.getAttribute('id');
