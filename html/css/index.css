@@ -24,6 +24,11 @@ p {
     letter-spacing: 0.05rem;
 }
 
+html{
+    scroll-behavior: smooth;
+    /* 상단 메뉴에 있는 페이지로 스크롤하여 이동할때 부드럽게 이동한다 */
+}
+
 /* main Section */
 #main {
     background-image: url(../img/layout/background-main.jpg);
