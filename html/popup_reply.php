@@ -1,3 +1,12 @@
+<?php
+    if (isset($_POST)) {
+        echo "yes";
+    }
+
+    var_dump($_POST);
+
+?>
+
 <!DOCTYPE html>
 <html lang="ko">
 <head>

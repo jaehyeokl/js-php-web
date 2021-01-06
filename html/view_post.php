@@ -185,10 +185,8 @@
     </section>
 
     <script>
-        // 답글달기
-
-        // 리플버튼을 클릭했을때 / 수정하기 / 삭제하기
-        // 리플버튼을 클릭했을때
+        // 댓글에 답글달기
+        // 모든 답글버튼에서 클릭을 통해 답글달기가 진행될 수 있도록 설정
         let replyButtonArray = document.querySelectorAll(".comment_reply");
 
         for(let i = 0; i < replyButtonArray.length; i++) {
@@ -199,26 +197,57 @@
 
         function writeReply(el) {
             // 답글을 작성하는 팝업창을 띄운다
-            // 이때 필요한 정보인 게시글번호와 답글이 포함될 댓글 그룹번호, 그리고 답글의 대상을 전달한다
+            // 작성한 답글을 DB에 저장할때 필요한 변수들을 POST 방식으로 팝업창에 전달한다
+
+            // 전달할 변수 초기화
+            // (게시글 번호, 댓글의 그룹번호, 답글 대상)
             let commentClassName = el.parentNode.parentNode.parentNode.getAttribute('class');
             let groupNum; // 댓글 그룹 번호
-            let designateUserName; // 지정 답글 유저 이름
+            let targetUserName; // 지정 답글 유저 이름
             if (commentClassName === 'comment_item') {
                 // 일반 댓글일 경우에는 태그의 id 값으로 댓글의 그룹번호를 가지고 있음
                 groupNum = el.parentNode.parentNode.parentNode.getAttribute('id');
             } else if (commentClassName === 'nested_comment_item') {
                 // 대댓글일 경우에는 부모태그인 일반댓글의 id를 통해 그룹번호를 확인해야한다
                 groupNum = el.parentNode.parentNode.parentNode.parentNode.getAttribute('id');
-                designateUserName = el.parentNode.parentNode.firstChild.firstChild.innerHTML;
+                targetUserName = el.parentNode.parentNode.firstChild.firstChild.innerHTML;
             }
 
             let postId = <?= $postId;?>; // 게시글번호
-            
-            // window.open("/index.php", "_blank", "toolbar=yes,scrollbars=no,resizable=no,top=500,left=500,width=500,height=600");
-            // window.open("popup_reply.php", "PopupWin", "width=500,height=600");
-            
-            // 게시글 postId 와, 댓글 그룹 번호와, 누른녀석의 이름을 전달해준다? 
-            // console.log(el);
+            console.log(targetUserName);
+
+
+            // 답글을 작성할 팝업창을 만들고, 초기화한 변수들을 전달한다 (POST)
+            let popupStatus = "width=500, height=600, menubar=no, status=no, resizable=no";
+            window.open("", "popupReply", popupStatus); // 빈 popup 창
+
+            // POST 전송하기위한 form 태그 초기화
+            let form = document.createElement("form");
+            form.setAttribute("charset", "UTF-8");
+            form.setAttribute("method", "Post");
+            form.setAttribute("target", "popupReply"); // 만들어 놓은 팝업창
+            form.setAttribute("action", "popup_reply.php"); // 팝업창에서 실행할 페이지
+            // 전달할 변수 form 에 포함
+            let hiddenField = document.createElement("input");
+            hiddenField.setAttribute("type", "hidden");
+            hiddenField.setAttribute("name", "postId");
+            hiddenField.setAttribute("value", postId);
+            form.appendChild(hiddenField);
+
+            hiddenField = document.createElement("input");
+            hiddenField.setAttribute("type", "hidden");
+            hiddenField.setAttribute("name", "groupNum");
+            hiddenField.setAttribute("value", groupNum);
+            form.appendChild(hiddenField);
+
+            hiddenField = document.createElement("input");
+            hiddenField.setAttribute("type", "hidden");
+            hiddenField.setAttribute("name", "targetUserName");
+            hiddenField.setAttribute("value", targetUserName);
+            form.appendChild(hiddenField);
+
+            document.body.appendChild(form);
+            form.submit();
         }
 
     </script>
