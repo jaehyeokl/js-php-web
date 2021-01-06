@@ -158,6 +158,10 @@
     visibility: hidden;
 }
 
+#viewer .comment_input #nestedOrder {
+    visibility: hidden;
+}
+
 #viewer .comment_input {
     margin-top: 20px;
 }

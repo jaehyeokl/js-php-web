@@ -9,6 +9,11 @@
         $postId = $_POST['postId'];
         $groupNum = $_POST['groupNum'];
         $targetUserName = $_POST['targetUserName'];
+            
+        // 답글의 대상 유저이름이 있을경우에는 textarea 에 '@대상이름' 형태의 텍스트를 입력해준다
+        if ($targetUserName != null) {
+            $targetUserName = "@".$targetUserName." ";
+        } 
 
     } else {
         // 정상적인 경로가 아닙니다
@@ -37,17 +42,16 @@
 <body>
     <div class="comment_input">
         <form action="upload_comment.php" method="post">
-            <div class="input_userinfo">
-                <input id="name" name="name" type="text" placeholder="Name" minlength="2" maxlength="12">
-                <input id="password" name="password" type="text" placeholder="Password" minlength="4" maxlength="16">
-                <input id="postId" name="postId" type="text" value="<?= $postId;?>">
-            </div>
+            <h1>답글달기</h1>
+            <input id="postId" name="postId" type="text" value="<?= $postId;?>">
+            <input id="name" name="name" type="text" placeholder="Name" minlength="2" maxlength="12">
+            <input id="password" name="password" type="text" placeholder="Password" minlength="4" maxlength="16">
             <textarea id="comment" name="comment" placeholder="Comment" minlength="2" maxliength="200"><?= $targetUserName;?></textarea>
             <input class="input_submit" type="submit" value="write">
-            <!-- <input class="input_submit" type="button" value="write"> -->
+            <input id="nestedOrder" name="nested" type="text" value="1">
         </form>
 
-        <script>
+        <!-- <script>
             $(function() {
                 $('#comment').highlightWithinTextarea({
                     highlight: 'potato'
@@ -61,6 +65,6 @@
                 // highlight: whatever // string, regexp, array, function, or custom object
                 highlight: 'fdsaf'
             });
-        </script>
+        </script> -->
     </div>
 </body>
