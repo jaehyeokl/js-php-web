@@ -48,7 +48,7 @@
             <input id="password" name="password" type="text" placeholder="Password" minlength="4" maxlength="16">
             <textarea id="comment" name="comment" placeholder="Comment" minlength="2" maxliength="200"><?= $targetUserName;?></textarea>
             <input class="input_submit" type="submit" value="write">
-            <input id="nestedOrder" name="nested" type="text" value="1">
+            <input id="isNested" name="groupNum" type="text" value="<?= $groupNum;?>">
         </form>
 
         <!-- <script>

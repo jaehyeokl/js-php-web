@@ -178,7 +178,6 @@
                     </div>
                     <textarea id="comment" name="comment" placeholder="Comment" minlength="2" maxliength="200"></textarea>
                     <input class="input_submit" type="submit" value="write">
-                    <input id="nestedOrder" name="nested" type="text" value="0">
                 </form>
             </div>
         </div>
