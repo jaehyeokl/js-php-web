@@ -277,7 +277,7 @@
                 groupNum = el.parentNode.parentNode.parentNode.parentNode.getAttribute('id');
                 nestedOrder = el.parentNode.parentNode.parentNode.getAttribute('id');
                 // id=nested1 의 형태로 id값이 지정되어 있다 여기서 숫자만 가져온다
-                nestedOrder.replace('nested', '');
+                nestedOrder = nestedOrder.replace('nested', '');
             }
 
             let postId = <?= $postId;?>; // 게시글번호

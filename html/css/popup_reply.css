@@ -68,7 +68,7 @@
     /* display: none; */
 }
 
-.edit_comment .check_password .password {
+.edit_comment .check_password .input_password {
     padding: 10px;
     width:300px;
     margin-right: 4px;
@@ -78,6 +78,13 @@
     display: flex;
     flex-direction: column;
     visibility: hidden;
+}
+
+.edit_comment .input_delete {
+    display: hidden;
+    align-self: center;
+    width: 100px;
+    margin-top: 20px;
 }
 
 .edit_comment form input {
@@ -90,7 +97,11 @@
     height: 200px;
 }
 
-.edit_comment form .postId, .groupNum, .nestedOrder {
+.edit_comment form .postId, .groupNum, .nestedOrder, .state, .input_delete {
     visibility: hidden;
+}
+
+.edit_comment #selected {
+    background-color: gray;
 }
 

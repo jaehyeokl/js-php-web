@@ -47,22 +47,75 @@
 </head>
 <body>
     <div class="edit_comment">
-        <h1>게시글 수정</h1>
+        <h1>게시글 수정 / 삭제</h1>
         <div class="select_state">
-            <button>수정</button>
-            <button>삭제</button>
+            <button class="state_modify">수정</button>
+            <button class="state_delete">삭제</button>
         </div>
         <div class="check_password">
-            <input class="password" name="password" type="text" placeholder="게시글 비밀번호를 입력해주세요" minlength="4" maxlength="16">
-            <input type="button" value="확인">
+            <input class="input_password" name="password" type="text" placeholder="게시글 비밀번호를 입력해주세요" minlength="4" maxlength="16">
+            <input class="check" type="button" value="확인">
         </div>
-        <form action="">
+        <form action="edit_comment.php" method="post">
+            <input class="input_delete" type="submit" value="삭제">
             <input class="name" name="name" type="text" placeholder="Name" minlength="2" maxlength="12">
             <textarea class="comment" name="comment" placeholder="Comment" minlength="2" maxliength="200"></textarea>
             <input class="input_submit" type="submit" value="수정">
             <input class="postId" name="postId" type="text" value="<?= $postId;?>">
             <input class="groupNum" name="groupNum" type="text" value="<?= $groupNum;?>">
             <input class="nestedOrder" name="nestedOrder" type="text" value="<?= $nestedOrder;?>">
+            <input class="state" name="state" type="text" value="0">
         </form>
     </div>
+
+    <script>
+        // 수정/삭제 선택
+        // form 태그의 action 에서 작업할 내용이 수정인지 삭제인지 알려주기 위한 input 태그 값 설정
+        // 0일때 수정, 1일때 삭제
+        let modifyButton =  document.querySelector(".state_modify");
+        let deleteButton = document.querySelector(".state_delete");
+        modifyButton.addEventListener("click", function() {
+            document.querySelector(".state").value = 0;
+            modifyButton.id = "selected";
+            deleteButton.id = "";
+        });
+
+        deleteButton.addEventListener("click", function() {
+            document.querySelector(".state").value = 1;
+            modifyButton.id = "";
+            deleteButton.id = "selected";
+        });
+
+
+        // 비밀번호 체크
+        document.querySelector(".check").addEventListener("click", function() {
+            let password = <?= $password;?>; // DB에서 가져온 해당 댓글의 비밀번호
+            let inputPassword = document.querySelector(".input_password").value;
+            
+            // 댓글을 수정/삭제할 수 있는 비밀번호 체크
+            if (password != inputPassword) {
+                let state = document.querySelector(".state").value;
+                
+                if (state == 0) {
+                    // 게시글 수정일때
+                    // 숨겨진 form 태그를 보이게하여 댓글을 수정할 수 있도록 한다
+                    document.querySelector(".check_password").style.display = "none";
+                    document.querySelector("form").style.visibility = "visible";
+
+                    // 수정할 수 있도록 기존에 작성된 내용을 input 창에 보여준다
+                    document.querySelector(".name").value = "<?= $name;?>";
+                    document.querySelector(".comment").value = "<?= $comment;?>";
+
+                } else if (state == 1) {
+                    // 게시글 삭제일때
+                    // 숨겨진 form 태그에서 삭제 버튼만 보여준다
+                    document.querySelector(".check_password").style.display = "none";
+                    document.querySelector(".input_delete").style.visibility = "visible";
+                }
+
+            } else {
+                alert("비밀번호가 일치하지 않습니다");
+            }
+        });
+    </script>
 </body>
