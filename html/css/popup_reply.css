@@ -1,3 +1,5 @@
+/* popup_reply.php */
+
 .comment_input form {
     display: flex;
     flex-direction: column;
@@ -32,3 +34,63 @@
     width: 80px;
     float: right;
 }
+
+
+/* popup_edit_reply.php */
+.edit_comment {
+    display: flex;
+    flex-direction: column;
+    width: 100%;
+    height: 100%;
+    padding: 20px;
+}
+
+.edit_comment h1 {
+    font-size: 2rem;
+    margin-bottom: 20px;
+}
+
+.edit_comment .select_state {
+    display: flex;
+    justify-content: center;
+    margin-bottom: 10px;
+}
+
+.edit_comment .select_state button {
+    width: 200px;
+    margin: 2px;
+    padding: 4px;
+}
+
+.edit_comment .check_password {
+    display: flex;
+    justify-content: center;
+    /* display: none; */
+}
+
+.edit_comment .check_password .password {
+    padding: 10px;
+    width:300px;
+    margin-right: 4px;
+}
+
+.edit_comment form {
+    display: flex;
+    flex-direction: column;
+    visibility: hidden;
+}
+
+.edit_comment form input {
+    width: 200px;
+    margin-bottom: 10px;
+}
+
+.edit_comment form textarea {
+    resize: none;
+    height: 200px;
+}
+
+.edit_comment form .postId, .groupNum, .nestedOrder {
+    visibility: hidden;
+}
+

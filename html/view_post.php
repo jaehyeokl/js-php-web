@@ -30,7 +30,6 @@
         $createdAt = $commentRow['createdAt'];
         $comment = $commentRow['comment'];
         $groupNum = $commentRow['groupNum'];
-        // $nestedOrder = $commentRow['nestedOrder'];
 
         
         
@@ -47,8 +46,10 @@
             $nestedCreatedAt = $nestedCommentRow['createdAt'];
             $nestedComment = $nestedCommentRow['comment'];
 
+            $nestedOrder = $nestedCommentRow['nestedOrder'];
+
             $nestedCommentItemTag =
-                                    "<div class='nested_comment_item'>".
+                                    "<div id='nested$nestedOrder' class='nested_comment_item'>".
                                         "<div class='comment_header'>".
                                             "<div class='header_left'>".
                                                 "<span class='comment_writer'>$nestedName</span>".
@@ -213,18 +214,16 @@
             }
 
             let postId = <?= $postId;?>; // 게시글번호
-            console.log(targetUserName);
-
 
             // 답글을 작성할 팝업창을 만들고, 초기화한 변수들을 전달한다 (POST)
             let popupStatus = "width=500, height=600, menubar=no, status=no, resizable=no";
-            window.open("", "popupReply", popupStatus); // 빈 popup 창
+            window.open("", "popupWriteReply", popupStatus); // 빈 popup 창
 
             // POST 전송하기위한 form 태그 초기화
             let form = document.createElement("form");
             form.setAttribute("charset", "UTF-8");
             form.setAttribute("method", "Post");
-            form.setAttribute("target", "popupReply"); // 만들어 놓은 팝업창
+            form.setAttribute("target", "popupWriteReply"); // 만들어 놓은 팝업창
             form.setAttribute("action", "popup_reply.php"); // 팝업창에서 실행할 페이지
             // 전달할 변수 form 에 포함
             let hiddenField = document.createElement("input");
@@ -248,7 +247,73 @@
             document.body.appendChild(form);
             form.submit();
         }
+    </script>
 
+<script>
+        // 댓글 수정 및 삭제
+        // 모든 수정 버튼에서 클릭을 통해 댓글수정 진행될 수 있도록 설정
+        let editButtonArray = document.querySelectorAll(".comment_edit");
+
+        for(let i = 0; i < editButtonArray.length; i++) {
+            editButtonArray[i].addEventListener("click", function() {
+                editComment(this);
+            });
+        }
+
+        function editComment(el) {
+            // 팝업창에서 댓글 비밀번호를 확인하고 수정/삭제를 한다
+            // 수정 또는 삭제될때 데이터를 전달하여 DB에 반영한다
+
+            // 전달할 변수 초기화
+            // (게시글 번호, 댓글의 그룹번호, 답글 대상)
+            let commentClassName = el.parentNode.parentNode.parentNode.getAttribute('class');
+            let groupNum; // 댓글 그룹 번호
+            let nestedOrder = 0;
+            if (commentClassName === 'comment_item') {
+                // 일반 댓글일 경우에는 태그의 id 값으로 댓글의 그룹번호를 가지고 있음
+                groupNum = el.parentNode.parentNode.parentNode.getAttribute('id');
+            } else if (commentClassName === 'nested_comment_item') {
+                // 대댓글일 경우에는 부모태그인 일반댓글의 id를 통해 그룹번호를 확인해야한다
+                groupNum = el.parentNode.parentNode.parentNode.parentNode.getAttribute('id');
+                nestedOrder = el.parentNode.parentNode.parentNode.getAttribute('id');
+                // id=nested1 의 형태로 id값이 지정되어 있다 여기서 숫자만 가져온다
+                nestedOrder.replace('nested', '');
+            }
+
+            let postId = <?= $postId;?>; // 게시글번호
+    
+            // 답글을 작성할 팝업창을 만들고, 초기화한 변수들을 전달한다 (POST)
+            let popupStatus = "width=500, height=600, menubar=no, status=no, resizable=no";
+            window.open("", "popupEditReply", popupStatus); // 빈 popup 창
+
+            // POST 전송하기위한 form 태그 초기화
+            let form = document.createElement("form");
+            form.setAttribute("charset", "UTF-8");
+            form.setAttribute("method", "Post");
+            form.setAttribute("target", "popupEditReply"); // 만들어 놓은 팝업창
+            form.setAttribute("action", "popup_edit_reply.php"); // 팝업창에서 실행할 페이지
+            // 전달할 변수 form 에 포함
+            let hiddenField = document.createElement("input");
+            hiddenField.setAttribute("type", "hidden");
+            hiddenField.setAttribute("name", "postId");
+            hiddenField.setAttribute("value", postId);
+            form.appendChild(hiddenField);
+
+            hiddenField = document.createElement("input");
+            hiddenField.setAttribute("type", "hidden");
+            hiddenField.setAttribute("name", "groupNum");
+            hiddenField.setAttribute("value", groupNum);
+            form.appendChild(hiddenField);
+
+            hiddenField = document.createElement("input");
+            hiddenField.setAttribute("type", "hidden");
+            hiddenField.setAttribute("name", "nestedOrder");
+            hiddenField.setAttribute("value", nestedOrder);
+            form.appendChild(hiddenField);
+
+            document.body.appendChild(form);
+            form.submit();
+        }
     </script>
 
     <script>
