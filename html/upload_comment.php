@@ -38,6 +38,11 @@
             $groupNum = $getGroupNumStatement->rowCount() + 1;
 
             $createCommentStatement->execute();
+
+            echo "<script>
+                    alert('댓글을 작성하였습니다');
+                    history.back();
+                </script>";
         } else {
             // 대댓글일때
             // 대댓글일때는 $_POST['groupNum'] 으로 대댓글이 포함될 groupNum 을 전달받는다
@@ -56,8 +61,12 @@
 
             // groupNum 와 nestedOrder 변수 지정 했으니 DB 저장
             $createCommentStatement->execute();
+
+            echo "<script>
+                    alert('댓글을 작성하였습니다');
+                    window.close();
+                </script>";
         }
-        
         
     } else {
         // 정상적인 경로가 아닙니다
