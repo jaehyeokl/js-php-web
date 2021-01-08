@@ -45,49 +45,56 @@ function connectDB() {
 
 // 방문자 정보 저장
 function logVisitor() {
-    // 방문자 정보 저장
-    // 웹사이트 최초방문시 유저 정보 DB 저장 및 쿠키생성
-    // 쿠키는 3시간 지속되며 쿠키가 유효한 동안에 재방문 시 동일한 방문자로 판단한다
+    // 마지막 방문시간을 세션에 저장한다
+    // 재방문 시간이 저장된 방문시간 3시간 이내일 경우에는 같은 방문자로 판단 (DB 저장 X)
+    // 3시간 이후 방문 시 새로운 방문자 row 생성 및 저장
     
-    $userIp = $_SERVER['REMOTE_ADDR'];
-    $visitResetTerm = time()+60*60*3; // 방문 유지 시간 3시간
+    $connectDB = connectDB(); // DB 연결
+    session_start();
 
-    if(isset($_COOKIE[$userIp])) { 
-        // 방문자 ip 주소에대한 쿠키가 존재하지 않을때
-        // setcookie($userIp, "", $visitResetTerm, "/");
-        $connectDB = connectDB(); // DB 연결
+     // 변수 초기화
+     $getUserAgent = get_browser(null, true);
 
-        // 변수 초기화
-        $getUserAgent = get_browser(null, true);
+     $userIp = $_SERVER['REMOTE_ADDR'];
+     $visitedAt = date('Y-m-d H:i:s');
+     $os = $getUserAgent['platform'];
+     $browser = $getUserAgent['browser'];
+     $country = geoip_country_code3_by_name($userIp); // 국가
+     $referer = $_SERVER['HTTP_REFERER'];
 
-        $visitedAt = date('Y-m-d H:i:s');
-        $os = $getUserAgent['platform'];
-        $browser = $getUserAgent['browser'];
-        $country = geoip_country_code3_by_name($userIp); // 국가
-        $referer = $_SERVER['HTTP_REFERER'];
+     // visitLog 테이블에 새로운 방문자 기록 저장하는 statement
+     $insertVisitLogStatement = $connectDB->prepare("INSERT INTO visitLog (visitedAt, ip, os, browser, country, referer) 
+                                                     VALUES (:visitedAt, :ip, :os, :browser, :country, :referer)");
+    $insertVisitLogStatement->bindParam(':visitedAt', $visitedAt);
+    $insertVisitLogStatement->bindParam(':ip', $userIp);
+    $insertVisitLogStatement->bindParam(':os', $os);
+    $insertVisitLogStatement->bindParam(':browser', $browser);
+    $insertVisitLogStatement->bindParam(':country', $country);
+    $insertVisitLogStatement->bindParam(':referer', $referer);
+    
+    if(isset($_SESSION['latestVisitedAt'])) { 
+        // 세션에 마지막 방문 시간이 저장되어 있을때
+        // 마지막 방문으로부터 3시간이 지났을때 -> 새로운 방문자로 판단하여 DB 에 기록 저장
+        // 3시간 이내일때 -> 기존 방문자로 판단
 
-        // visitLog 테이블에 새로운 방문자 row 생성
-        $insertVisitLogStatement = $connectDB->prepare("INSERT INTO visitLog (visitedAt, ip, os, browser, country, referer) 
-                                    VALUES (:visitedAt, :ip, :os, :browser, :country, :referer)");
-        $insertVisitLogStatement->bindParam(':visitedAt', $visitedAt);
-        $insertVisitLogStatement->bindParam(':ip', $userIp);
-        $insertVisitLogStatement->bindParam(':os', $os);
-        $insertVisitLogStatement->bindParam(':browser', $browser);
-        $insertVisitLogStatement->bindParam(':country', $country);
-        $insertVisitLogStatement->bindParam(':referer', $referer);
-        $insertVisitLogStatement->execute();
+        // 시간 차 구하기
+        $latestVisitedAt = $_SESSION['latestVisitedAt'];
+        $visitTerm = (strtotime($visitedAt) - strtotime($latestVisitedAt)) / 3600;
 
-        $connectDB = null;
-
-        echo "쿠키가 없으니 DB에 저장";
+        if ($visitTerm > 3) {
+            // 3시간 이후 방문
+            $insertVisitLogStatement->execute();
+        }
+    
     } else {
-        // 3시간 내 방문기록이 존재할때
-        // 쿠키의 제한시간을 다시 3시간으로 초기화
-        // setcookie($userIp, "", $visitResetTerm, "/");
-
-        echo "쿠키가 있으니 시간만 초기화";
-
+        // 마지막 방문 시간을 저장하는 세션이 없을때 (-> 첫 방문일때)
+        // DB 에 방문 기록을 저장한다
+        $insertVisitLogStatement->execute();
     }
+
+    // 마지막 방문시간 업데이트
+    $_SESSION['latestVisitedAt'] = $visitedAt;
+    $connectDB = null;
 }
 
 // Contact 메일 보내기
