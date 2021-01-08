@@ -3,6 +3,7 @@
     include_once("../resources/config.php");
     $signinSessionStatus = checkSigninStatus(); // 로그인 세션 확인
     $connectDB = connectDB(); // DB 연결
+    logVisitor(); // 방문 로그 체크 및 저장
     
     $postId = $_GET['id']; // 게시글 id
 

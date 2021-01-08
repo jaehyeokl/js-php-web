@@ -5,6 +5,7 @@
 <?php
     include_once("../resources/config.php");
     $connectDB = connectDB(); // DB 연결
+    logVisitor(); // 방문 로그 체크 및 저장
     $ip = getIP(); // 사이트의 ip 가져오기
 
     // 게시글 생성, 수정, 삭제 상태를 나타내는 변수 초기화

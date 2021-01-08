@@ -4,8 +4,7 @@
 
         include_once("../resources/config.php");
         $connectDB = connectDB(); // DB 연결
-
-        
+        logVisitor(); // 방문 로그 체크 및 저장
 
         // 댓글, 대댓글 공통 변수
         $postId = $_POST['postId'];

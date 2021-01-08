@@ -6,6 +6,7 @@
     include_once("../resources/config.php");
     $signinSessionStatus = checkSigninStatus(); // 로그인 세션 확인
     $connectDB = connectDB(); // DB 연결
+    logVisitor(); // 방문 로그 체크 및 저장
     
     /** 변수 초기화 **/
 

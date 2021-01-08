@@ -1,6 +1,7 @@
 <?php
     include_once("../resources/config.php");
     $signinSessionStatus = checkSigninStatus(); // 로그인 세션 확인
+    logVisitor(); // 방문 로그 체크 및 저장
 ?>
 
 <!DOCTYPE html>

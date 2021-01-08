@@ -2,7 +2,7 @@
     include_once("../resources/config.php");
     $signinSessionStatus = checkSigninStatus(); // 로그인 세션 확인
     $connectDB = connectDB(); // DB 연결
-    logVisitor();
+    logVisitor(); // 방문 로그 체크 및 저장
 
     // Blog 게시글 미리보기
     $previewPostNum = 6; // 보여줄 미리보기 포스트 개수

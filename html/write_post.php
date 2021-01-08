@@ -2,6 +2,7 @@
     include_once("../resources/config.php");
     $signinSessionStatus = checkSigninStatus(); // 로그인 세션 확인
     $connectDB = connectDB(); // DB 연결
+    logVisitor(); // 방문 로그 체크 및 저장
 
     // 새로 생성, 수정할 블로그 게시글 내용을 입력하는 페이지
     // 게시글 작성 일때 (default) url = www.ex.com/write_post.php
