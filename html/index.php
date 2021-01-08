@@ -2,6 +2,7 @@
     include_once("../resources/config.php");
     $signinSessionStatus = checkSigninStatus(); // 로그인 세션 확인
     $connectDB = connectDB(); // DB 연결
+    logVisitor();
 
     // Blog 게시글 미리보기
     $previewPostNum = 6; // 보여줄 미리보기 포스트 개수
@@ -53,8 +54,8 @@
                         <li><a href="#main">Home</a></li>
                         <li><a href="#projects">Projects</a></li>
                         <li><a href="#blog">Blog</a></li>
-                        <!-- <li><a href="#about">About</a></li> -->
                         <li><a href="#contact">Contact</a></li>
+                        <!-- <li><a href="test.php">About</a></li> -->
                     </ul>
                     <ul class="nav-manager" id="<?php echo $signinSessionStatus[2];?>">
                         <li class="manager-button">관리</li>

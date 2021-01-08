@@ -43,11 +43,58 @@ function connectDB() {
     return $conn;
 }
 
+// 방문자 정보 저장
+function logVisitor() {
+    // 방문자 정보 저장
+    // 웹사이트 최초방문시 유저 정보 DB 저장 및 쿠키생성
+    // 쿠키는 3시간 지속되며 쿠키가 유효한 동안에 재방문 시 동일한 방문자로 판단한다
+    
+    $userIp = $_SERVER['REMOTE_ADDR'];
+    $visitResetTerm = time()+60*60*3; // 방문 유지 시간 3시간
+
+    if(isset($_COOKIE[$userIp])) { 
+        // 방문자 ip 주소에대한 쿠키가 존재하지 않을때
+        // setcookie($userIp, "", $visitResetTerm, "/");
+        $connectDB = connectDB(); // DB 연결
+
+        // 변수 초기화
+        $getUserAgent = get_browser(null, true);
+
+        $visitedAt = date('Y-m-d H:i:s');
+        $os = $getUserAgent['platform'];
+        $browser = $getUserAgent['browser'];
+        $country = geoip_country_code3_by_name($userIp); // 국가
+        $referer = $_SERVER['HTTP_REFERER'];
+
+        // visitLog 테이블에 새로운 방문자 row 생성
+        $insertVisitLogStatement = $connectDB->prepare("INSERT INTO visitLog (visitedAt, ip, os, browser, country, referer) 
+                                    VALUES (:visitedAt, :ip, :os, :browser, :country, :referer)");
+        $insertVisitLogStatement->bindParam(':visitedAt', $visitedAt);
+        $insertVisitLogStatement->bindParam(':ip', $userIp);
+        $insertVisitLogStatement->bindParam(':os', $os);
+        $insertVisitLogStatement->bindParam(':browser', $browser);
+        $insertVisitLogStatement->bindParam(':country', $country);
+        $insertVisitLogStatement->bindParam(':referer', $referer);
+        $insertVisitLogStatement->execute();
+
+        $connectDB = null;
+
+        echo "쿠키가 없으니 DB에 저장";
+    } else {
+        // 3시간 내 방문기록이 존재할때
+        // 쿠키의 제한시간을 다시 3시간으로 초기화
+        // setcookie($userIp, "", $visitResetTerm, "/");
+
+        echo "쿠키가 있으니 시간만 초기화";
+
+    }
+}
+
+// Contact 메일 보내기
 use PHPMailer\PHPMailer\PHPMailer;
 use PHPMailer\PHPMailer\Exception;
 use PHPMailer\PHPMailer\SMTP;
 function sendContactEmail($nameFrom, $mailFrom, $message) {
-    // Contact 메일 보내기
     // 메소드의 인자로 보내는사람의 이름, 이메일, 메세지내용을 받아
     // 나의 계정 hyukzza@gmail.com 으로 보낸다
 
