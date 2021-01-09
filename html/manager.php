@@ -65,6 +65,24 @@
     } catch (PDOException $ex) {
         echo "failed! : ".$ex->getMessage()."<br>";
     }
+
+
+    // 방문 국가별 비율
+    $countryArray = array(); // 국가명 저장할 배열
+    $countryCountArray = array(); // 국가별 방문 횟수 저장할 배열
+
+    try {
+        $getCountryVisitStatement = $connectDB->prepare("SELECT country, COUNT(*) FROM visitLog GROUP BY country");
+        $getCountryVisitStatement->execute();
+        
+        while ($countyCountRow = $getCountryVisitStatement->fetch()) {
+
+            array_push($countryArray, $countyCountRow[0]);
+            array_push($countryCountArray, $countyCountRow[1]);
+        }
+    } catch (PDOException $ex) {
+        echo "failed! : ".$ex->getMessage()."<br>";
+    }
     
 
 ?>
@@ -130,15 +148,15 @@
             </div>
             <div class="chart-item">
                 <div class="item-header">
-                    <h4>접속 브라우저</h4>
+                    <h4>접속 브라우저 비율</h4>
                 </div>
                 <canvas class="browser"></canvas>
             </div>
             <div class="chart-item">
                 <div class="item-header">
-                    <h4>유입 경로</h4>
+                    <h4>방문 국가 비율</h4>
                 </div>
-                <canvas class="referer"></canvas>
+                <canvas class="counrty"></canvas>
             </div>
         </div>
     </section>
@@ -214,14 +232,17 @@
             }
         });
 
-        // 유입 경로 비율 chart
-        var ctx = document.querySelector('.referer');
+        // 방문 국가별 비율 chart
+        var countryArray = <?php echo json_encode($countryArray);?>;
+        var countryCountArray = <?php echo json_encode($countryCountArray);?>;
+
+        var ctx = document.querySelector('.counrty');
         var myDoughnutChart = new Chart(ctx, {
             type: 'doughnut',
             data: {
-                labels: ["Direct", "Referral", "Social"],
+                labels: countryArray,
                 datasets: [{
-                    data: [30, 50, 20],
+                    data: countryCountArray,
                     backgroundColor: [
                         'rgba(255, 159, 64, 0.2)',
                         'rgba(153, 102, 255, 0.2)',

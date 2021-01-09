@@ -38,11 +38,11 @@
     // }
 
 
-    $today = date('Y-2-t');
-    echo $today;
+    // $today = date('Y-2-t');
+    // echo $today;
 
     // $montly = date('Y-'.'0'.$i);
 
-
+        // phpinfo();
     
 ?>
