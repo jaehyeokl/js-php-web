@@ -18,19 +18,38 @@
     }
     
 
-
-
     // 월별 방문자
-    // $getMontlyVisitStatement = $connectDB->prepare("SELECT * FROM visitLog WHERE DATE(post_date) BETWEEN :a AND :b");
-    // $getMontlyVisitStatement->bindParam(':postId', $postId);
-    // $getMontlyVisitStatement->bindParam(':postId', $postId);
-    // $getMontlyVisitStatement->execute();
-            
-    // $getMontlyVisitStatement = $getPostStatement->fetch();
+    // 월별 방문자수를 array 에 저장하여 javascript 에서도 array 그대로 사용할 수 있도록 전달한다
+    $montlyVisitCountArray = array();
+
+    try {
+        // 1월부터 12월까지 월별 방문자 구하기
+        for ($i = 1; $i <= 12; $i++) {
+            $montlyFirstDay = date('Y-'.$i.'-01'); // 매월 1일
+            $montlyLastDay = date('Y-'.$i.'-t'); // 매월 마지막 일
+
+            $getMontlyVisitStatement = $connectDB->prepare("SELECT * FROM visitLog WHERE DATE(visitedAt) BETWEEN :montlyFirstDay AND :montlyLastDay");
+            $getMontlyVisitStatement->bindParam(':montlyFirstDay', $montlyFirstDay);
+            $getMontlyVisitStatement->bindParam(':montlyLastDay', $montlyLastDay);
+            $getMontlyVisitStatement->execute();
+            $montlyVisitCount = $getMontlyVisitStatement->rowCount(); // 월별 방문자 수
+
+            // echo $montlyFirstDay;
+            // echo "<br>";
+            // echo $montlyLastDay;
+            // echo "<br>";
+            // echo $montlyVisitCount;
+            // echo "<br>";
+
+            array_push($montlyVisitCountArray, $montlyVisitCount);
+        }
+    } catch (PDOException $ex) {
+        echo "failed! : ".$ex->getMessage()."<br>";
+    }
+
 
 
     // 브라우저
-
     // 유입 경로
 
 ?>
@@ -110,7 +129,10 @@
     </section>
 
     <script>
+
         // 월별 방문자 통계 chart
+        var montlyVisitCountArray = <?php echo json_encode($montlyVisitCountArray);?>;
+        console.log(montlyVisitCountArray);
         var montlyVisit = document.querySelector('.montly-visit');
         var myChart = new Chart(montlyVisit, {
             type: 'line',
@@ -118,7 +140,7 @@
                 labels: ['1', '2', '3', '4', '5', '6', '7', '8', '9', '10', '11', '12'],
                 datasets: [{
                     label: '월별 총 방문자 수',
-                    data: [12, 19, 3, 5, 2, 3],
+                    data: montlyVisitCountArray,
                     backgroundColor: [
                         'rgba(255, 99, 132, 0.2)'
                     ],

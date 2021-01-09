@@ -9,13 +9,13 @@
     // echo '<br>';
     // var_dump($_SERVER);
 
-    echo $_SERVER['HTTP_USER_AGENT'] ."<br>"."dd";
+    // echo $_SERVER['HTTP_USER_AGENT'] ."<br>"."dd";
 
-    $browser = get_browser(null, true);
-    echo $browser['platform'];
-    echo "<br>";
-    echo $browser['browser'];
-    echo "<br>";
+    // $browser = get_browser(null, true);
+    // echo $browser['platform'];
+    // echo "<br>";
+    // echo $browser['browser'];
+    // echo "<br>";
 
     // $details = json_decode(file_get_contents("http://ipinfo.io/"));
     //     echo $details->country; // 어느나라니
@@ -36,5 +36,13 @@
     //     echo $_SESSION['test'];
     //     echo $_SESSION['332423'];
     // }
+
+
+    $today = date('Y-2-t');
+    echo $today;
+
+    // $montly = date('Y-'.'0'.$i);
+
+
     
 ?>
