@@ -4,7 +4,34 @@
     $connectDB = connectDB(); // DB 연결
     logVisitor(); // 방문 로그 체크 및 저장
 
+    // 오늘 방문자 수
+    $today = date('Y-m-d');
+    
+    try {
+        $getTodayVisitStatement = $connectDB->prepare("SELECT * FROM visitLog WHERE DATE(visitedAt) = :today");
+        $getTodayVisitStatement->bindParam(':today', $today, PDO::PARAM_STR);
+        $getTodayVisitStatement->execute();
+        $todayVisitCount = $getTodayVisitStatement->rowCount(); // 오늘 방문자 수
+        
+    } catch (PDOException $ex) {
+        echo "failed! : ".$ex->getMessage()."<br>";
+    }
+    
 
+
+
+    // 월별 방문자
+    // $getMontlyVisitStatement = $connectDB->prepare("SELECT * FROM visitLog WHERE DATE(post_date) BETWEEN :a AND :b");
+    // $getMontlyVisitStatement->bindParam(':postId', $postId);
+    // $getMontlyVisitStatement->bindParam(':postId', $postId);
+    // $getMontlyVisitStatement->execute();
+            
+    // $getMontlyVisitStatement = $getPostStatement->fetch();
+
+
+    // 브라우저
+
+    // 유입 경로
 
 ?>
 
@@ -58,7 +85,7 @@
                 <div class="item-header">
                     <h4>오늘 방문자</h4>
                 </div>
-                <p>300</p>
+                <p><?=$todayVisitCount?></p>
             </div>
             <div class="chart-item">
                 <div class="item-header">
@@ -93,12 +120,7 @@
                     label: '월별 총 방문자 수',
                     data: [12, 19, 3, 5, 2, 3],
                     backgroundColor: [
-                        'rgba(255, 99, 132, 0.2)',
-                        // 'rgba(54, 162, 235, 0.2)',
-                        // 'rgba(255, 206, 86, 0.2)',
-                        // 'rgba(75, 192, 192, 0.2)',
-                        // 'rgba(153, 102, 255, 0.2)',
-                        // 'rgba(255, 159, 64, 0.2)'
+                        'rgba(255, 99, 132, 0.2)'
                     ],
                     borderWidth: 1
                 }]
