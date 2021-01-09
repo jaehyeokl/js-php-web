@@ -9,34 +9,32 @@
     // echo '<br>';
     // var_dump($_SERVER);
 
-    // echo $_SERVER['HTTP_USER_AGENT'] ."<br>"."dd";
+    echo $_SERVER['HTTP_USER_AGENT'] ."<br>"."dd";
 
-    // $browser = get_browser(null, true);
-    // echo $browser['platform'];
-    // echo "<br>";
-    // echo $browser['browser'];
-    // echo "<br>";
-    // print_r($browser);
-    // echo $browser;
+    $browser = get_browser(null, true);
+    echo $browser['platform'];
+    echo "<br>";
+    echo $browser['browser'];
+    echo "<br>";
 
     // $details = json_decode(file_get_contents("http://ipinfo.io/"));
     //     echo $details->country; // 어느나라니
     //     echo $details->city; // 어느도시니​
 
-    $a = 1;
+    // $a = 1;
 
-    if ($a == 1) {
-        session_cache_expire(1);
-        session_start();
-        $_SESSION['test'] = 1;
-        echo "a = 1";
-        echo session_cache_expire();
+    // if ($a == 1) {
+    //     session_cache_expire(1);
+    //     session_start();
+    //     $_SESSION['test'] = 1;
+    //     echo "a = 1";
+    //     echo session_cache_expire();
 
-        $a++;
-        echo $a;
-    } else {
-        echo $_SESSION['test'];
-        echo $_SESSION['332423'];
-    }
+    //     $a++;
+    //     echo $a;
+    // } else {
+    //     echo $_SESSION['test'];
+    //     echo $_SESSION['332423'];
+    // }
     
 ?>
