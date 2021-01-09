@@ -1,0 +1,30 @@
+
+/* Chart Section */
+#chart {
+    width: 100%;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+}
+
+#chart .header {
+    font-size: 2rem;
+    margin-top: 100px;
+    padding-bottom: 10px;
+    border-bottom: solid 2px #444444;
+    opacity: 0.7;
+    /* align-self: flex-start; */
+
+    /* display: flex;
+    justify-content: flex-end;
+    align-items: center; */
+}
+
+#chart .body {
+    width: 60%;
+    height: 100px;
+    background-color: red;
+}
+
+/* End Chart Section */

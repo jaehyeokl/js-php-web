@@ -28,11 +28,7 @@
             <div class="nav-bar">
                 <div class="nav-list">
                     <ul class="nav-menu">
-                        <li><a href="#main">Home</a></li>
-                        <li><a href="#projects">Projects</a></li>
-                        <li><a href="#blog">Blog</a></li>
-                        <li><a href="#contact">Contact</a></li>
-                        <!-- <li><a href="test.php">About</a></li> -->
+                        <li><a href="index.php">Home</a></li>
                     </ul>
                     <ul class="nav-manager" id="<?php echo $signinSessionStatus[2];?>">
                         <li class="manager-button">관리</li>
@@ -48,13 +44,13 @@
     </section>
     <!-- End Header -->
 
-    <!-- Main Section  -->
-    <section id="main">
-        <div class="main container">
-            <div class="main-title">
-                <!-- <h1>wellcome</h1>
-                <h1>my portfolio!</h1> -->
-            </div>
+    <!-- Chart Section  -->
+    <section id="chart">
+        <div class="chart header">
+            <h1>방문자 통계</h1>
+        </div>
+        <div class="chart body">
+
         </div>
     </section>
     <!-- End Main Section  -->
