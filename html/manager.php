@@ -19,7 +19,9 @@
     <link rel="stylesheet" href="css/header.css">
     <link rel="stylesheet" href="css/manager.css">
     <script src="js/common.js"></script>
-    <!-- <script src="https://kit.fontawesome.com/8451689280.js" crossorigin="anonymous"></script> -->
+    <!-- <script src="../resources/library/Chart.js-2.9.4/dist/Chart.js"></script> -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/2.9.4/Chart.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/2.9.4/Chart.bundle.min.js"></script>
 </head>
 <body>
     <!-- Header -->
@@ -50,9 +52,68 @@
             <h1>방문자 통계</h1>
         </div>
         <div class="chart body">
-
+            <div class="chart-item">
+                <div class="item-header">
+                    <h4>오늘 방문자</h4>
+                </div>
+                <p>300</p>
+            </div>
+            <div class="chart-item">
+                <div class="item-header">
+                    <h4>월별 방문자 통계</h4>
+                    <span>ddd</span>
+                </div>
+                <canvas id="myChart"></canvas>
+            </div>
+            <div class="chart-item">
+                <div class="item-header">
+                    <h4>접속 브라우저</h4>
+                </div>
+                <canvas id="aa"></canvas>
+            </div>
         </div>
     </section>
+
+    <script>
+        var ctx = document.getElementById('myChart');
+        var myChart = new Chart(ctx, {
+            type: 'bar',
+            data: {
+                labels: ['Red', 'Blue', 'Yellow', 'Green', 'Purple', 'Orange'],
+                datasets: [{
+                    label: '# of Votes',
+                    data: [12, 19, 3, 5, 2, 3],
+                    backgroundColor: [
+                        'rgba(255, 99, 132, 0.2)',
+                        'rgba(54, 162, 235, 0.2)',
+                        'rgba(255, 206, 86, 0.2)',
+                        'rgba(75, 192, 192, 0.2)',
+                        'rgba(153, 102, 255, 0.2)',
+                        'rgba(255, 159, 64, 0.2)'
+                    ],
+                    borderColor: [
+                        'rgba(255, 99, 132, 1)',
+                        'rgba(54, 162, 235, 1)',
+                        'rgba(255, 206, 86, 1)',
+                        'rgba(75, 192, 192, 1)',
+                        'rgba(153, 102, 255, 1)',
+                        'rgba(255, 159, 64, 1)'
+                    ],
+                    borderWidth: 1
+                }]
+            },
+            options: {
+                responsive: false,
+                scales: {
+                    yAxes: [{
+                        ticks: {
+                            beginAtZero: true
+                        }
+                    }]
+                },
+            }
+        });
+    </script>
     <!-- End Main Section  -->
 
     
