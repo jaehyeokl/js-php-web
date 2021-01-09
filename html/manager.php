@@ -48,9 +48,24 @@
     }
 
 
+    // 방문 브라우저 비율
+    // javascript chart.js 에서 사용할 수 있도록 배열을 만들어서 전달한다
+    $browserArray = array(); // 브라우저 이름 저장할 배열
+    $browserCountArray = array(); // 브라우저 개수 저장할 배열
 
-    // 브라우저
-    // 유입 경로
+    try {
+        $getMontlyVisitStatement = $connectDB->prepare("SELECT browser, COUNT(*) FROM visitLog GROUP BY browser");
+        $getMontlyVisitStatement->execute();
+        
+        while ($browserCountRow = $getMontlyVisitStatement->fetch()) {
+
+            array_push($browserArray, $browserCountRow[0]);
+            array_push($browserCountArray, $browserCountRow[1]);
+        }
+    } catch (PDOException $ex) {
+        echo "failed! : ".$ex->getMessage()."<br>";
+    }
+    
 
 ?>
 
@@ -131,7 +146,9 @@
     <script>
 
         // 월별 방문자 통계 chart
+        // PHP 배열을 그대로 사용할 수 있다
         var montlyVisitCountArray = <?php echo json_encode($montlyVisitCountArray);?>;
+
         console.log(montlyVisitCountArray);
         var montlyVisit = document.querySelector('.montly-visit');
         var myChart = new Chart(montlyVisit, {
@@ -160,13 +177,17 @@
         });
 
         // 브라우저 비율 chart
+        var browserArray = <?php echo json_encode($browserArray);?>;
+        var browserCountArray = <?php echo json_encode($browserCountArray);?>;
+
         var browser = document.querySelector('.browser');
         var myPieChart = new Chart(browser, {
             type: 'pie',
             data: {
-                labels: ["Chrome", "Firefox", "IE", "Edge", "Safari"],
+                // labels: ["Chrome", "Firefox", "IE", "Edge", "Safari"],
+                labels: browserArray,
                 datasets: [{
-                    data: [30, 50, 20, 10],
+                    data: browserCountArray,
                     backgroundColor: [
                         'rgba(255, 99, 132, 0.2)',
                         'rgba(54, 162, 235, 0.2)',
