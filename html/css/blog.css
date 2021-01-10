@@ -85,4 +85,26 @@
     height: 110px;
     margin-left: 20px;
 }
+
+#blog .page_button{
+    margin: 30px;
+}
+
+#blog .page_button a {
+    margin: 4px;
+    padding: 4px;
+    opacity: 0.7;
+    border: none;
+    border-radius: 20px;
+}
+
+#blog .page_button a:hover {
+    color: white;
+    background-color: black;
+}
+
+#blog .page_button .current {
+    color: white;
+    background-color: black;
+}
 /* End Blog */

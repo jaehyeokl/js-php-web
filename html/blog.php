@@ -41,7 +41,7 @@
     // 현재 블록의 페이지 버튼 생성
     for ($p = $blockStartPage; $p <= $blockEndPage; $p++) {
         $buttonNumber = $p;
-        $pageButtonTag = $pageButtonTag.'<a href="blog.php?page='.$buttonNumber.'">'.$buttonNumber.'</a>';
+        $pageButtonTag = $pageButtonTag.'<a class="page-button" href="blog.php?page='.$buttonNumber.'">'.$buttonNumber.'</a>';
     }
 
     // 블록 이전/다음 이동 버튼 생성
@@ -203,6 +203,20 @@
             <?= $nextBlockTag ?>
         </div>
     </section>
+
+    <script>
+        // 현재 페이지 버튼일 경우에는 CSS 효과를 주는 클래스 주기
+        let page = <?= $page ?>;
+        let pageButtonArray = document.querySelectorAll(".page-button");
+
+        for (let i = 0; i < pageButtonArray.length; i++) {
+            let pageButton = pageButtonArray[i];
+            
+            if (pageButton.innerHTML == page) {
+                pageButton.classList.add("current");
+            } 
+        }
+    </script>
     <!-- End Blog -->
 
     <!-- Footer Section -->
