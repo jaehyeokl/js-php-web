@@ -117,12 +117,10 @@
                 for (let i = 0; i < projectButtons.length; i++) {
                     projectButtons[i].classList.remove("clicked");
                 }
-                
+
                 projectButtons[i].classList.toggle("clicked");
             });
         }
-
-        
     </script>
     <!-- End Projects Section -->
 
