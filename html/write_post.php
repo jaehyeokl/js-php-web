@@ -4,6 +4,14 @@
     $connectDB = connectDB(); // DB 연결
     logVisitor(); // 방문 로그 체크 및 저장
 
+    // 페이지 접근 권한 체크
+    if (!$signinSessionStatus[2] == 1) {
+        // 관리자 계정이 아닐때 메인페이지로 이동
+        // (비로그인 또는 로그인한 계정이 관리자권한 '1' 을 가지고 있지 않을때)
+        header("Location: https://jaehyeok.ml/");
+        die();
+    } 
+
     // 새로 생성, 수정할 블로그 게시글 내용을 입력하는 페이지
     // 게시글 작성 일때 (default) url = www.ex.com/write_post.php
     // 게시글 수정 일때 url = www.ex.com/write_post.php?mode=modify&id=N(게시글 id)
