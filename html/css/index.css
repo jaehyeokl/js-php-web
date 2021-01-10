@@ -160,17 +160,13 @@ html{
     cursor: pointer;
 }
 
-#projects .header-menu span:hover {
-    border-radius: 8px;
+#projects .header-menu .clicked {
     background-color: lightgray;
 }
 
-/* #projects .header-menu span:first-child {
-    border-radius: 8px;
+#projects .header-menu span:hover {
     background-color: lightgray;
-} */
-
-
+}
 /* EndProjects Section */
 
 

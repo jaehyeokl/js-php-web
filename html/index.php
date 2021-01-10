@@ -103,16 +103,26 @@
     </section>
 
     <script>
+        // 프로젝트 선택에 따라 해당 동영상 불러오기
         let projectFileName = ["android_talkpic.mp4", "android_ggym.mp4", "java_mafia.mp4"];
         let projectVideoTag = document.querySelector(".projects-body video"); // 프로젝트 보여줄 비디오 태그
         let projectButtons = document.querySelectorAll(".header-menu span");
         for (let i = 0; i < projectButtons.length; i++) {
             projectButtons[i].addEventListener("click",() => {
+                // 비디오태그에 선택된 동영상 src 변경
                 projectVideoTag.src = "/video/project/" + projectFileName[i];
+
+                // 선택된 버튼 CSS 처리하기 (class="clicked" 추가)
+                // 이전에 선택된 버튼이 있다면 클래스명을 제거하고, 현재 선택된 버튼만 클래스명 추가
+                for (let i = 0; i < projectButtons.length; i++) {
+                    projectButtons[i].classList.remove("clicked");
+                }
+                
+                projectButtons[i].classList.toggle("clicked");
             });
         }
 
-        // TODO: 현재 선택된 프로젝트버튼에 표시할 수 있는 방법
+        
     </script>
     <!-- End Projects Section -->
 
