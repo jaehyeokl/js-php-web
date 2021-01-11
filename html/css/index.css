@@ -41,19 +41,22 @@ html{
 #main .main-title {
     position: absolute;
     right: 20px;
-    bottom: 100px;
-    /* text-align: right; */
+    bottom: 60px;
+    display: flex;
+    flex-direction: column;
+    align-items: flex-end;
 }
 
 #main h1 {
-    display: block;
-    width: fit-content;
     font-size: 4rem; 
-    color: white;   
-    /* todo오른쪽으로 정렬하는 방법 찾아서 적용하기 */
-    /* text-align: right; */
-    /* margin-right: 0; */
-    /* float: right; */
+    color: white;
+    padding-bottom: 10px;   
+}
+
+#main span {
+    font-size: 2rem; 
+    color: white;
+    align-self: center;
 }   
 /* End Main Section */
 

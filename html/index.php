@@ -75,9 +75,8 @@
     <section id="main">
         <div class="main container">
             <div class="main-title">
-                <h1>wellcome</h1>
-                <h1>my portfolio!</h1>
-                <!-- <h1></h1> -->
+                <h1>PORTFOLIO</h1>
+                <span>by JAE HYEOK</span>
             </div>
         </div>
     </section>
