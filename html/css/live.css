@@ -1,0 +1,15 @@
+
+
+
+/* Live Section */
+#live {
+    display: flex;
+    flex-direction: column;
+    justify-self: center;
+    align-items: center;
+}
+
+#live .live-header {
+    margin-top: 100px;
+}
+/* End Live Section */
