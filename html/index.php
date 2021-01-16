@@ -55,7 +55,7 @@
                         <li><a href="#projects">Projects</a></li>
                         <li><a href="#blog">Blog</a></li>
                         <li><a href="#contact">Contact</a></li>
-                        <li><a href="test.php">Live</a></li>
+                        <li><a href="live.php">Live</a></li>
                     </ul>
                     <ul class="nav-manager" id="<?php echo $signinSessionStatus[2];?>">
                         <li class="manager-button">관리</li>

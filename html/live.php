@@ -19,6 +19,11 @@
     <!-- <script src="https://unpkg.com/videojs-flash/dist/videojs-flash.js"></script> -->
     <!-- <script src="https://unpkg.com/videojs-contrib-hls/dist/videojs-contrib-hls.js"></script> -->
     <script src="https://cdnjs.cloudflare.com/ajax/libs/videojs-contrib-dash/4.0.0/videojs-dash.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/videojs-contrib-eme@3.7.0/dist/videojs-contrib-eme.min.js"></script>
+    <!-- TODO: CDN 정리하기 -->
+
+    <script src="http://cdn.dashjs.org/latest/dash.all.min.js"></script>
+
 </head>
 <body>
     <!-- Header -->
@@ -49,10 +54,62 @@
         <h1>라이브방송</h1>
         </div>
         <div class="live-body">
-            <video id='example-video' width='696' height='392' class="video-js vjs-default-skin vjs-big-play-centered vjs-show-big-play-button-on-pause" controls autoplay preload="none" data-setup='{"techorder" : ["flash", "html5"], "loop" : "true"}' loop>
-            <source src="/video/streaming/test2.mpd" type="application/x-mpegURL"> 
+            <!-- <video id='video' width='696' height='392' class="video-js vjs-default-skin vjs-big-play-centered vjs-show-big-play-button-on-pause" controls autoplay="true" muted="muted" preload="none" data-setup='{"techorder" : ["flash", "html5"], "loop" : "true"}' loop> -->
+            <!-- <source src="/video/streaming/test4.mpd" type="application/x-mpegURL">  -->
         </div>
     </section>
+
+    <script>
+        let player = videojs("video");
+        // player.src({
+        // src: "/video/streaming/test4.mpd",
+        // type: "application/dash+xml",
+        // });
+
+        // player.eme();
+        // player.src ({
+        //     src: "/video/project/dash/stream.mpd",
+        //     type: "application/dash+xml",
+        //     keySystemOptions: [{
+        //         name: 'com.widevine.alpha',
+        //         options: {
+        //             serverURL: 'http://m.widevine.com/proxy'
+        //         }  
+        //     }]
+        // });
+
+
+        player.ready(function(){
+            player.src({
+                'src': '/video/project/dash/stream.mpd',
+                'type': 'application/dash+xml',
+                'keySystemOptions': [
+                    {
+                        'name': 'com.widevine.alpha',
+                        'options':{
+                            'serverURL' : 'https://license.pallycon.com/ri/licenseManager.do',
+                            // 'httpRequestHeaders' : {
+                            //     'CUSTOM_HEADER_NAME' : 'CUSTOM_HEADER_VALUE',
+                            // }  
+                        }
+                    },
+                    // {
+                    //     'name': 'com.microsoft.playready',
+                    //     'options':{
+                    //         'serverURL' : 'PALLYCON_LA_URL',
+                    //         'httpRequestHeaders' : {
+                    //             'CUSTOM_HEADER_NAME' : 'CUSTOM_HEADER_VALUE',
+                    //         }
+                    //     }
+                    // }
+                ]
+            });
+        })
+        player.play();
+
+
+
+    </script>
     <!-- End Live Section -->
 
 </body>
