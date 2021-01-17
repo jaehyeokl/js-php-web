@@ -47,10 +47,10 @@ class SampleTest extends TestCase
             /* create token */
             $result = $pallyConTokenClient
                 ->playReady()
-                ->siteId($config["siteId"])
-                ->accessKey($config["accessKey"])
-                ->siteKey($config["siteKey"])
-                ->userId("testUser")
+                ->siteId($config["JXIY"])
+                ->accessKey($config["DktUxvh5MxoNUe4hIdtm6T9k16ANdre9"])
+                ->siteKey($config["kEssroEb7ztlOjMmIZjAGs5yiky1pK9B"])
+                ->userId("LICENSETOKEN")
                 ->cid("testCID")
                 ->policy($policyRequest)
                 ->execute();
