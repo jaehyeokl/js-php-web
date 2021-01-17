@@ -1,9 +1,10 @@
 <?php
     define("IV","0123456789abcdef");
-    $siteId = "";
-    $siteKey = "";
-    $accessKey = "";
+    // $siteId = "";
+    // $siteKey = "";
+    // $accessKey = "";
     include_once("../resources/drm_config.php");
+
 
     // 정책 생성
     $policy = array (
@@ -52,6 +53,9 @@
             ),
         ),
     );
+
+    // $c = json_encode($policy, JSON_UNESCAPED_UNICODE + JSON_PRETTY_PRINT);
+    // var_dump($c);
     
     $policyDetail = array (
         'policy_version' => 2,
@@ -114,25 +118,71 @@
                                             // ),
     );
                                         
-
-    $policyString = openssl_encrypt(json_encode($policy), "AES-256-CBC", $siteKey, false, IV);
+    // 정책을 AES256 으로 암호화
+    $policyAES256 = openssl_encrypt(json_encode($policy), "AES-256-CBC", $siteKey, 0, IV);
+    // 결과를 Base 64 문자열로 변환해야한다
+    $policyString = base64_encode($policyAES256);
+    // $policyString = openssl_encrypt(json_encode($policy), "AES-256-CBC", $siteKey, 0, IV);
+    // echo $policyAES256;
     // echo $policyString;
 
 
     // 해쉬생성
     $drmType = "Widevine";
     $userId = "LICENSETOKEN"; // 없을경우의 default 값
-    $cid = "start";
+    $cid = "test3";
     $timestamp = gmdate("Y-m-d\Th:i:s\Z");
 
-    $body = $accessKey.$drmType.$siteId.$userId.$cid.$policy.$timestamp;
-    $hash = base64_encode(hash("sha256", $body, true));
+    // echo "<br>";
+    // echo $accessKey;
+    // echo "<br>";
+    // echo $drmType;
+    // echo "<br>";
+    // echo $siteId;
+    // echo "<br>";
+    // echo $userId;
+    // echo "<br>";
+    // echo $cid;
+    // echo "<br>";
+    // echo $policyString;
+    // echo "<br>";
+    // echo $timestamp;
+    // echo "<br>";
+    $body = $accessKey.$drmType.$siteId.$userId.$cid.$policyString.$timestamp;
+    $hashString = base64_encode(hash("sha256", $body, true));
+
 
     // echo "<br>";
-    // echo $hash;
+    // echo $hashString;
 
     // 토큰생성
-    $result = base64_encode(json_encode([$drmType, $siteId, $userId, $cid, $policyString, gmdate("Y-m-d\Th:i:s\Z"), "original", $hash]));
+    $tokenData = array (
+        'drm_type' => $drmType,
+        'site_id' => $siteId,
+        'user_id' => $userId,
+        'cid' => $cid,
+        'token' => $policyString,
+        'timestamp' => $timestamp,
+        'hash' => $hashString,
+        
+    );
+    // 'response_format' => 'original',
+    // 'key_rotation' => false
+
+    $token = base64_encode(json_encode($tokenData));
+    // echo $token;
+
+    // $token = base64_encode(json_encode(
+    //     ["drm_type"=> $drmType,
+    //      "site_id"=> $this->_siteId, 
+    //      "user_id"=> $this->_userId, 
+    //      "cid"=> $this->_cid, 
+    //      "policy"=> $this->_encPolicy, 
+    //      "timestamp"=> $this->_timestamp, 
+    //      "response_format"=> $this->_responseFormat, 
+    //      "hash"=> $this->_hash]
+    // ));
+    // $result = base64_encode(json_encode([$drmType, $siteId, $userId, $cid, $policyString, $timestamp, "original", $hash]));
     // echo "<br>";
     // echo $result;
 ?>
@@ -159,10 +209,10 @@
     <!-- TODO: CDN 정리하기 -->
 
     <script src="http://cdn.dashjs.org/latest/dash.all.min.js"></script>
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/video.js/7.11.1/video.min.js"></script>
-    <!-- <script src="https://cdnjs.cloudflare.com/ajax/libs/videojs-contrib-dash/4.0.0/videojs-dash.min.js"></script> -->
+    <!-- <script src="https://cdnjs.cloudflare.com/ajax/libs/video.js/7.11.1/video.min.js"></script> -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/video.js/6.13.0/video.min.js"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/videojs-contrib-dash/4.0.0/videojs-dash.min.js"></script>
-    <script src="https://cdn.jsdelivr.net/npm/videojs-contrib-eme@3.7.0/dist/videojs-contrib-eme.min.js"></script>
+    <!-- <script src="https://cdn.jsdelivr.net/npm/videojs-contrib-eme@3.7.0/dist/videojs-contrib-eme.min.js"></script> -->
 </head>
 <body>
     <!-- Header -->
@@ -218,7 +268,10 @@
         // });
 
         
-        const result = '<?= $result ?>';
+        const token = '<?= $token ?>';
+
+        // player.eme();
+        // console.log(token);
         player.ready(function(){
             player.src({
                 'src': '/video/project/dash/stream.mpd',
@@ -229,7 +282,7 @@
                         'options':{
                             'serverURL' : 'https://license.pallycon.com/ri/licenseManager.do',
                             'httpRequestHeaders' : {
-                                'pallycon-customdata-v2' : result,
+                                'pallycon-customdata-v2' : token,
                             }
                         }
                     },
@@ -238,7 +291,7 @@
                         'options':{
                             'serverURL' : 'https://license.pallycon.com/ri/licenseManager.do',
                             'httpRequestHeaders' : {
-                                'pallycon-customdata-v2' : result,
+                                'pallycon-customdata-v2' : token,
                             }
                         }
                     }
