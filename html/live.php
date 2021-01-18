@@ -6,56 +6,6 @@
     include_once("../resources/drm_config.php");
 
 
-    // 정책 생성
-    $policy = array (
-        'policy_version' => 2,
-        'playback_policy' => 
-        array (
-            'persistent' => false,
-            'license_duration' => 0,
-            'rental_duration' => 0,
-            'playback_duration' => 0,
-            'allowed_track_types' => 'ALL',
-        ),
-        'security_policy' => 
-        array (
-            0 => 
-            array (
-                'track_type' => 'ALL',
-                'widevine' => 
-                array (
-                    'security_level' => 1,
-                    'required_hdcp_version' => 'HDCP_NONE',
-                    'required_cgms_flags' => 'CGMS_NONE',
-                    'disable_analog_output' => false,
-                    'hdcp_srm_rule' => 'HDCP_SRM_RULE_NONE',
-                ),
-                'playready' => 
-                array (
-                    'security_level' => 150,
-                    'digital_video_protection_level' => 100,
-                    'analog_video_protection_level' => 100,
-                    'digital_audio_protection_level' => 100,
-                    'require_hdcp_type_1' => false,
-                ),
-                'fairplay' => 
-                array (
-                    'hdcp_enforcement' => -1,
-                    'allow_airplay' => true,
-                    'allow_av_adapter' => true,
-                ),
-                'ncg' => 
-                array (
-                    'allow_mobile_abnormal_device' => false,
-                    'allow_external_display' => false,
-                    'control_hdcp' => 0,
-                ),
-            ),
-        ),
-    );
-
-    // $c = json_encode($policy, JSON_UNESCAPED_UNICODE + JSON_PRETTY_PRINT);
-    // var_dump($c);
     
     $policyDetail = array (
         'policy_version' => 2,
@@ -117,11 +67,78 @@
                                             //     ),
                                             // ),
     );
+
+    // 정책 생성
+    $policy = array (
+        'policy_version' => 2,
+        'playback_policy' => 
+        array (
+            'persistent' => false,
+            'license_duration' => 0,
+            'rental_duration' => 0,
+            'playback_duration' => 0,
+            'allowed_track_types' => 'ALL',
+        ),
+        'security_policy' => 
+        array (
+            0 => 
+            array (
+                'track_type' => 'ALL',
+                'widevine' => 
+                array (
+                    'security_level' => 2,
+                    'required_hdcp_version' => 'HDCP_NONE',
+                    'required_cgms_flags' => 'CGMS_NONE',
+                    'disable_analog_output' => false,
+                    'hdcp_srm_rule' => 'HDCP_SRM_RULE_NONE',
+                ),
+                'playready' => 
+                array (
+                    'security_level' => 150,
+                    'digital_video_protection_level' => 100,
+                    'analog_video_protection_level' => 100,
+                    'digital_audio_protection_level' => 100,
+                    'require_hdcp_type_1' => false,
+                ),
+                'fairplay' => 
+                array (
+                    'hdcp_enforcement' => -1,
+                    'allow_airplay' => true,
+                    'allow_av_adapter' => true,
+                ),
+                'ncg' => 
+                array (
+                    'allow_mobile_abnormal_device' => false,
+                    'allow_external_display' => false,
+                    'control_hdcp' => 0,
+                ),
+            ),
+        ),
+    );
+
+    // $c = json_encode($policy, JSON_UNESCAPED_UNICODE + JSON_PRETTY_PRINT);
+    // var_dump($c);
+
+    $samplePolicy = array (
+        'playback_policy' => 
+        array (
+          'limit' => true,
+          'persistent' => false,
+          'duration' => 3600,
+        ),
+    );
+
+    $samplePolicy2 = array (
+        'policy_version' => 2,
+    );
+    
+    $policyString = openssl_encrypt(json_encode($policy), "AES-256-CBC", $siteKey, 0, IV);
+    
                                         
     // 정책을 AES256 으로 암호화
-    $policyAES256 = openssl_encrypt(json_encode($policy), "AES-256-CBC", $siteKey, 0, IV);
+    // $policyAES256 = openssl_encrypt(json_encode($policy), "AES-256-CBC", $siteKey, 0, IV);
     // 결과를 Base 64 문자열로 변환해야한다
-    $policyString = base64_encode($policyAES256);
+    // $policyString = base64_encode($policyAES256);
     // $policyString = openssl_encrypt(json_encode($policy), "AES-256-CBC", $siteKey, 0, IV);
     // echo $policyAES256;
     // echo $policyString;
@@ -130,7 +147,7 @@
     // 해쉬생성
     $drmType = "Widevine";
     $userId = "LICENSETOKEN"; // 없을경우의 default 값
-    $cid = "test3";
+    $cid = "test4";
     $timestamp = gmdate("Y-m-d\Th:i:s\Z");
 
     // echo "<br>";
@@ -208,10 +225,12 @@
     <!-- <script src="https://unpkg.com/videojs-contrib-hls/dist/videojs-contrib-hls.js"></script> -->
     <!-- TODO: CDN 정리하기 -->
 
-    <script src="http://cdn.dashjs.org/latest/dash.all.min.js"></script>
     <!-- <script src="https://cdnjs.cloudflare.com/ajax/libs/video.js/7.11.1/video.min.js"></script> -->
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/video.js/6.13.0/video.min.js"></script>
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/videojs-contrib-dash/4.0.0/videojs-dash.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/video.js/6.12.0/video.min.js"></script>
+    <!-- <script src="http://cdn.dashjs.org/latest/dash.all.min.js"></script> -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/dashjs/3.2.0/dash.all.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/videojs-contrib-dash/2.11.0/videojs-dash.min.js"></script>
+    <!-- <script src="https://cdnjs.cloudflare.com/ajax/libs/videojs-contrib-dash/4.0.0/videojs-dash.min.js"></script> -->
     <!-- <script src="https://cdn.jsdelivr.net/npm/videojs-contrib-eme@3.7.0/dist/videojs-contrib-eme.min.js"></script> -->
 </head>
 <body>
@@ -272,6 +291,11 @@
 
         // player.eme();
         // console.log(token);
+        // dictionary MediaKeySystemMediaCapability {
+        //     DOMString contentType = "";
+        //     DOMString robustness = "";
+        // };
+
         player.ready(function(){
             player.src({
                 'src': '/video/project/dash/stream.mpd',

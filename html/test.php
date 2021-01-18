@@ -117,20 +117,34 @@
                                             //     ),
                                             // ),
     );
-                                        
+
+    $samplePolicy = array (
+        'playback_policy' => 
+        array (
+          'limit' => true,
+          'persistent' => false,
+          'duration' => 3600,
+        ),
+    );
+    
+    $policyString = openssl_encrypt(json_encode($samplePolicy), "AES-256-CBC", $siteKey, 0, IV);
+
+
     // 정책을 AES256 으로 암호화
-    $policyAES256 = openssl_encrypt(json_encode($policy), "AES-256-CBC", $siteKey, 0, IV);
+    // $policyAES256 = openssl_encrypt(json_encode($policy), "AES-256-CBC", $siteKey, 0, IV);
     // 결과를 Base 64 문자열로 변환해야한다
-    $policyString = base64_encode($policyAES256);
+    // $policyString = base64_encode($policyAES256);
     // $policyString = openssl_encrypt(json_encode($policy), "AES-256-CBC", $siteKey, 0, IV);
     // echo $policyAES256;
     // echo $policyString;
 
 
+
+
     // 해쉬생성
     $drmType = "Widevine";
     $userId = "LICENSETOKEN"; // 없을경우의 default 값
-    $cid = "test3";
+    $cid = "test4";
     $timestamp = gmdate("Y-m-d\Th:i:s\Z");
 
     // echo "<br>";
@@ -163,8 +177,7 @@
         'cid' => $cid,
         'token' => $policyString,
         'timestamp' => $timestamp,
-        'hash' => $hashString,
-        
+        'hash' => $hashString,  
     );
     // 'response_format' => 'original',
     // 'key_rotation' => false
@@ -224,10 +237,12 @@
         <video id="video" width="640" controls autoplay></video>
 
         <script>
-            const manifestUrl = "/video/project/dash/stream.mpd"
+            const manifestUrl = "/video/project/dash/stream.mpd";
             const result = '<?= $token ?>';
+            // let array = <?php echo json_encode($tokenData);?>;
+            // let result = btoa(array);
 
-            // shaka.polyfill.installAll();
+            shaka.polyfill.installAll();
             var video = document.getElementById('video');
             var player = new shaka.Player(video);
             window.player = player;
@@ -242,11 +257,13 @@
                         'com.widevine.alpha': 'https://license.pallycon.com/ri/licenseManager.do',
                         'com.microsoft.playready': 'https://license.pallycon.com/ri/licenseManager.do'
                     },
-                    // advanced: {
-                    //     'com.widevine.alpha': {
-                    //         serverCertificate: serverCertificate
-                    //     }
-                    // }
+                    advanced: {
+                        'com.widevine.alpha': {
+                            // serverCertificate: serverCertificate
+                            'videoRobustness': 'SW_SECURE_CRYPTO',
+                            'audioRobustness': 'SW_SECURE_CRYPTO'
+                        }
+                    }
                 }
             });
 
@@ -292,6 +309,56 @@
             // }
 
             // document.addEventListener("DOMContentLoaded", initApp);
+
+
+            // function base64DecodeUint8Array(input) {
+            //     var raw = window.atob(input);
+            //     var rawLength = raw.length;
+            //     var array = new Uint8Array(new ArrayBuffer(rawLength));
+
+            //     for(i = 0; i < rawLength; i++) {
+            //         array[i] = raw.charCodeAt(i);
+            //     }
+
+            //     return array;
+            // }
+
+            // shaka.polyfill.installAll();
+            // var video = document.getElementById('video');
+            // var player = new shaka.Player(video);
+            // window.player = player;
+
+            // player.load('https://jaehyeok.ml/video/project/dash/stream.mpd').then(function(){}).catch(onError);
+
+            // // var base64Cert = "CsECCAMSEBcFuRfMEgSGiwYzOi93KowYgrSCkgUijgIwggEKAoIBAQCZ7Vs7Mn2rXiTvw7YqlbWYUgrVvMs3UD4GRbgU2Ha430BRBEGtjOOtsRu4jE5yWl5KngeVKR1YWEAjp+GvDjipEnk5MAhhC28VjIeMfiG/+/7qd+EBnh5XgeikX0YmPRTmDoBYqGB63OBPrIRXsTeo1nzN6zNwXZg6IftO7L1KEMpHSQykfqpdQ4IY3brxyt4zkvE9b/tkQv0x4b9AsMYE0cS6TJUgpL+X7r1gkpr87vVbuvVk4tDnbNfFXHOggrmWEguDWe3OJHBwgmgNb2fG2CxKxfMTRJCnTuw3r0svAQxZ6ChD4lgvC2ufXbD8Xm7fZPvTCLRxG88SUAGcn1oJAgMBAAE6FGxpY2Vuc2Uud2lkZXZpbmUuY29tEoADrjRzFLWoNSl/JxOI+3u4y1J30kmCPN3R2jC5MzlRHrPMveoEuUS5J8EhNG79verJ1BORfm7BdqEEOEYKUDvBlSubpOTOD8S/wgqYCKqvS/zRnB3PzfV0zKwo0bQQQWz53ogEMBy9szTK/NDUCXhCOmQuVGE98K/PlspKkknYVeQrOnA+8XZ/apvTbWv4K+drvwy6T95Z0qvMdv62Qke4XEMfvKUiZrYZ/DaXlUP8qcu9u/r6DhpV51Wjx7zmVflkb1gquc9wqgi5efhn9joLK3/bNixbxOzVVdhbyqnFk8ODyFfUnaq3fkC3hR3f0kmYgI41sljnXXjqwMoW9wRzBMINk+3k6P8cbxfmJD4/Paj8FwmHDsRfuoI6Jj8M76H3CTsZCZKDJjM3BQQ6Kb2m+bQ0LMjfVDyxoRgvfF//M/EEkPrKWyU2C3YBXpxaBquO4C8A0ujVmGEEqsxN1HX9lu6c5OMm8huDxwWFd7OHMs3avGpr7RP7DUnTikXrh6X0";
+            // var base64Cert = "<?= $token ?>";
+            // // var serverCertificate = base64DecodeUint8Array(base64Cert);
+
+            // player.configure({
+            //     drm:{
+            //         servers:{
+            //             'com.widevine.alpha': 'https://license.pallycon.com/ri/licenseManager.do',
+            //             'com.microsoft.playready': 'https://license.pallycon.com/ri/licenseManager.do'
+            //         },
+            //         advanced: {
+            //             'com.widevine.alpha': {
+            //                 // serverCertificate: serverCertificate
+            //                 'videoRobustness': 'SW_SECURE_CRYPTO',
+            //                 'audioRobustness': 'SW_SECURE_CRYPTO'
+            //             }
+            //         }
+            //     }
+            // });
+
+            // player.getNetworkingEngine().registerRequestFilter(function(type, request) {
+            //     if (type == shaka.net.NetworkingEngine.RequestType.LICENSE) {
+            //         if (is_chrome_or_firefox) {
+            //             request.headers['pallycon-customdata-v2'] = base64Cert;
+            //         } else {
+            //             // request.headers['pallycon-customdata-v2'] = 'WM92HmV/aEtHgkIeKbAnZbRl52BofvWtsPYVWbYMbOpAYSb+yJzTF97QBF1Szbq/rG9eQ6la+5nPV9vGXI6ZUGrM6hhfyyJInOB3tOCoFJhFkgn55rSC47Nbgno32fN8MKT1EV1daXzER1qV1EAE50SfXWlib29kVo+futrK/JwwzOw7Ujx4N+UmUf0TLROM';
+            //         }
+            //     }
+            // });
         </script>
     </body>
 </html>
