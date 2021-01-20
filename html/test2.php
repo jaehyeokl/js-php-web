@@ -1,5 +1,5 @@
 <?php 
-    echo "hello";
+    // echo "hello";
     // $uri = 'https://jaehyeok.ml/test2.php';
     // $ch = curl_init($uri);
     // curl_setopt_array($ch, array(
@@ -12,5 +12,9 @@
     
     // echo $out;
     // print_r(apache_request_headers());
-    header('HeaderName: HeaderValue');
+    // header('HeaderName: HeaderValue');
+
+
+    $input = json_decode(file_get_contents('php://input'), true);
+    echo json_encode($input);
 ?>

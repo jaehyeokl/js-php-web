@@ -5,16 +5,16 @@
     include_once("../resources/drm_config.php"); // PallyCon DRM key
     define("IV","0123456789abcdef"); // DRM policy(정책)을 암호화할때 사용되는 상수
 
-    // 라이센스 토큰을 만드는데 필요한 데이터를 전달받거나, 생성한다
-    // drmType, userId, contentid
-    $drmType = "Widevine";
-    // $userId = "LICENSETOKEN"; // 없을경우의 default 값
-    $userId = "";
-    $contentId = "test4";
+    // 라이센스 토큰을 만드는데 필요한 데이터를 전달받는다 (drmType, userId, contentid)
+    $getData = json_decode(file_get_contents('php://input'), true);
+    $drmType = $getData['drmType'];
+    $userId = $getData['userId']; // "LICENSETOKEN" default 값
+    // $contentId = $getData['contentId'];
+    $contentId = 'test4';
     $timestamp = gmdate("Y-m-d\Th:i:s\Z"); // GMT 시간
 
-    // 정책
-    // 기본 스트리밍 정책을 사용
+    // DRM 정책 설정 (해당 내용은 스트리밍 기본값)
+    // 설정된 정책에 맞게 DRM 보안이 적용되며, 토큰을 만드는데 사용된다
     $policy = array (
         'policy_version' => 2,
         'playback_policy' => 
@@ -101,5 +101,6 @@
 
     $licenseToken = base64_encode(json_encode($tokenJson));
     
-    echo $licenseToken;
+    // 라이센스 토큰 리턴
+    echo json_encode([ 'licenseToken' => $licenseToken], JSON_THROW_ON_ERROR, 512);
 ?>

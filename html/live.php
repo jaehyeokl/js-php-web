@@ -154,7 +154,6 @@
     );
 
     $token = base64_encode(json_encode($tokenData));
-    // echo $token;
 ?>
 
 <!DOCTYPE html>
@@ -212,6 +211,32 @@
     </section>
 
     <script>
+        // 라이브 시청하기 위한 라이센스 가져오기
+        let licenseToken;
+        let value = { "drmType": "chrome", 
+            userId: "hyukzza@naver.com",
+            contentId: "test4",
+        }
+        // TODO: 값 지정할 수 있도록 설정,
+        // TODO: DB 설정하여 방송 정보 저장, 사용자 라이브 시청 정보 저장
+
+        fetch("generate_drm_token.php", {
+            method: "POST",
+            headers: {
+                "Content-Type": "application/json",
+            },
+            body: JSON.stringify(value),
+        })
+            .then(response => response.json())
+            .then(data => {
+                licenseToken = data.licenseToken
+                // console.log(licenseToken)
+            })
+            .catch((error) => console.log(error))
+
+    
+        
+        // 플레이에어서 라이센스 DRM 연동하기!
         let player = videojs("video");
         
         const token = '<?= $token ?>';
@@ -226,7 +251,7 @@
                         'options':{
                             'serverURL' : 'https://license.pallycon.com/ri/licenseManager.do',
                             'httpRequestHeaders' : {
-                                'pallycon-customdata-v2' : false,
+                                'pallycon-customdata-v2' : licenseToken,
                                 // 'pallycon-customdata-v2' : token,
                             }
                         }
@@ -236,7 +261,7 @@
                         'options':{
                             'serverURL' : 'https://license.pallycon.com/ri/licenseManager.do',
                             'httpRequestHeaders' : {
-                                'pallycon-customdata-v2' : false,
+                                'pallycon-customdata-v2' : licenseToken,
                                 // 'pallycon-customdata-v2' : token,
                             }
                         }
