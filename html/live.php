@@ -1,9 +1,6 @@
-<?php
-    define("IV","0123456789abcdef");
-    // $siteId = "";
-    // $siteKey = "";
-    // $accessKey = "";
-    include_once("../resources/drm_config.php");
+<?php 
+    define("IV","0123456789abcdef"); // DRM policy(정책)을 암호화할때 사용되는 상수
+    include_once("../resources/drm_config.php"); // PallyCon DRM key
 
 
     
@@ -86,7 +83,7 @@
                 'track_type' => 'ALL',
                 'widevine' => 
                 array (
-                    'security_level' => 2,
+                    'security_level' => 1,
                     'required_hdcp_version' => 'HDCP_NONE',
                     'required_cgms_flags' => 'CGMS_NONE',
                     'disable_analog_output' => false,
@@ -116,9 +113,6 @@
         ),
     );
 
-    // $c = json_encode($policy, JSON_UNESCAPED_UNICODE + JSON_PRETTY_PRINT);
-    // var_dump($c);
-
     $samplePolicy = array (
         'playback_policy' => 
         array (
@@ -132,17 +126,8 @@
         'policy_version' => 2,
     );
     
-    $policyString = openssl_encrypt(json_encode($policy), "AES-256-CBC", $siteKey, 0, IV);
-    
-                                        
     // 정책을 AES256 으로 암호화
-    // $policyAES256 = openssl_encrypt(json_encode($policy), "AES-256-CBC", $siteKey, 0, IV);
-    // 결과를 Base 64 문자열로 변환해야한다
-    // $policyString = base64_encode($policyAES256);
-    // $policyString = openssl_encrypt(json_encode($policy), "AES-256-CBC", $siteKey, 0, IV);
-    // echo $policyAES256;
-    // echo $policyString;
-
+    $policyString = openssl_encrypt(json_encode($policy), "AES-256-CBC", $siteKey, 0, IV);
 
     // 해쉬생성
     $drmType = "Widevine";
@@ -150,29 +135,12 @@
     $cid = "test4";
     $timestamp = gmdate("Y-m-d\Th:i:s\Z");
 
-    // echo "<br>";
-    // echo $accessKey;
-    // echo "<br>";
-    // echo $drmType;
-    // echo "<br>";
-    // echo $siteId;
-    // echo "<br>";
-    // echo $userId;
-    // echo "<br>";
-    // echo $cid;
-    // echo "<br>";
-    // echo $policyString;
-    // echo "<br>";
-    // echo $timestamp;
-    // echo "<br>";
     $body = $accessKey.$drmType.$siteId.$userId.$cid.$policyString.$timestamp;
     $hashString = base64_encode(hash("sha256", $body, true));
 
 
-    // echo "<br>";
-    // echo $hashString;
-
-    // 토큰생성
+    // 라이센스 요청을 위한 토큰 생성
+    // 앞에서 암호화한 정책과, 해쉬를 포함한 json 을 통해 생성한다
     $tokenData = array (
         'drm_type' => $drmType,
         'site_id' => $siteId,
@@ -181,27 +149,12 @@
         'token' => $policyString,
         'timestamp' => $timestamp,
         'hash' => $hashString,
-        
+        'response_format' => 'original', // default
+        'key_rotation' => false // default
     );
-    // 'response_format' => 'original',
-    // 'key_rotation' => false
 
     $token = base64_encode(json_encode($tokenData));
     // echo $token;
-
-    // $token = base64_encode(json_encode(
-    //     ["drm_type"=> $drmType,
-    //      "site_id"=> $this->_siteId, 
-    //      "user_id"=> $this->_userId, 
-    //      "cid"=> $this->_cid, 
-    //      "policy"=> $this->_encPolicy, 
-    //      "timestamp"=> $this->_timestamp, 
-    //      "response_format"=> $this->_responseFormat, 
-    //      "hash"=> $this->_hash]
-    // ));
-    // $result = base64_encode(json_encode([$drmType, $siteId, $userId, $cid, $policyString, $timestamp, "original", $hash]));
-    // echo "<br>";
-    // echo $result;
 ?>
 
 <!DOCTYPE html>
@@ -219,19 +172,11 @@
     <link rel="stylesheet" href="css/header.css">
     <link rel="stylesheet" href="css/live.css">
     <script src="js/common.js"></script>
-    <!-- <script src="https://vjs.zencdn.net/7.10.2/video.min.js"></script> -->
-    <link href="https://vjs.zencdn.net/7.10.2/video-js.css" rel="stylesheet" />
-    <!-- <script src="https://unpkg.com/videojs-flash/dist/videojs-flash.js"></script> -->
-    <!-- <script src="https://unpkg.com/videojs-contrib-hls/dist/videojs-contrib-hls.js"></script> -->
-    <!-- TODO: CDN 정리하기 -->
-
-    <!-- <script src="https://cdnjs.cloudflare.com/ajax/libs/video.js/7.11.1/video.min.js"></script> -->
+    <!-- video.js CSS -->
+    <link href="https://vjs.zencdn.net/7.10.2/video-js.css" rel="stylesheet" /> 
     <script src="https://cdnjs.cloudflare.com/ajax/libs/video.js/6.12.0/video.min.js"></script>
-    <!-- <script src="http://cdn.dashjs.org/latest/dash.all.min.js"></script> -->
     <script src="https://cdnjs.cloudflare.com/ajax/libs/dashjs/3.2.0/dash.all.min.js"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/videojs-contrib-dash/2.11.0/videojs-dash.min.js"></script>
-    <!-- <script src="https://cdnjs.cloudflare.com/ajax/libs/videojs-contrib-dash/4.0.0/videojs-dash.min.js"></script> -->
-    <!-- <script src="https://cdn.jsdelivr.net/npm/videojs-contrib-eme@3.7.0/dist/videojs-contrib-eme.min.js"></script> -->
 </head>
 <body>
     <!-- Header -->
@@ -263,38 +208,13 @@
         </div>
         <div class="live-body">
             <video id='video' width='696' height='392' class="video-js vjs-default-skin vjs-big-play-centered vjs-show-big-play-button-on-pause" controls autoplay="true" muted="muted" preload="none" data-setup='{"techorder" : ["flash", "html5"], "loop" : "true"}' loop>
-            <!-- <source src="/video/streaming/test4.mpd" type="application/x-mpegURL">  -->
         </div>
     </section>
 
     <script>
         let player = videojs("video");
-        // player.src({
-        // src: "/video/streaming/test4.mpd",
-        // type: "application/dash+xml",
-        // });
-
-        // player.eme();
-        // player.src ({
-        //     src: "/video/project/dash/stream.mpd",
-        //     type: "application/dash+xml",
-        //     keySystemOptions: [{
-        //         name: 'com.widevine.alpha',
-        //         options: {
-        //             serverURL: 'http://m.widevine.com/proxy'
-        //         }  
-        //     }]
-        // });
-
         
         const token = '<?= $token ?>';
-
-        // player.eme();
-        // console.log(token);
-        // dictionary MediaKeySystemMediaCapability {
-        //     DOMString contentType = "";
-        //     DOMString robustness = "";
-        // };
 
         player.ready(function(){
             player.src({
@@ -306,7 +226,8 @@
                         'options':{
                             'serverURL' : 'https://license.pallycon.com/ri/licenseManager.do',
                             'httpRequestHeaders' : {
-                                'pallycon-customdata-v2' : token,
+                                'pallycon-customdata-v2' : false,
+                                // 'pallycon-customdata-v2' : token,
                             }
                         }
                     },
@@ -315,7 +236,8 @@
                         'options':{
                             'serverURL' : 'https://license.pallycon.com/ri/licenseManager.do',
                             'httpRequestHeaders' : {
-                                'pallycon-customdata-v2' : token,
+                                'pallycon-customdata-v2' : false,
+                                // 'pallycon-customdata-v2' : token,
                             }
                         }
                     }
@@ -323,9 +245,6 @@
             });
         })
         player.play();
-
-
-
     </script>
     <!-- End Live Section -->
 
