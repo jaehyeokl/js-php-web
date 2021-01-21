@@ -35,18 +35,18 @@
     font-weight: 700;
 }
 
-#live .auth-user {
-    display: none;
+#live .header-auth .auth-user {
     font-size: 0.8rem;
 }
 
-#live .auth-after {
+#live .header-auth .certified {
     display: none;
 }
 
 #live .left-player .video-js {
     width: 1000px;
     height: 563px;
+    /* width='696' height='392' */
 }
 
 #live .live-right {
@@ -54,3 +54,83 @@
     width: 20%;
 }
 /* End Live Section */
+
+
+/* User certify */
+.popup {
+    display: none;
+    position: fixed;
+    top: 150px;
+    left: 50%;
+    margin-left: -200px;
+    box-shadow : rgba(0,0,0,0.5) 0 0 0 9999px;
+    z-index : 100;
+}
+
+.popup form {
+    background-color: white;
+    width: 400px;
+    height: 250px;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    border-radius: 20px;
+}
+
+.popup p {
+    font-size: 18px;
+    margin-bottom: 30px;
+    color: black;
+    opacity: 0.8;
+}
+
+.popup__input {
+    width: 260px;
+    height: 30px;
+    margin-bottom: 20px;
+    border-radius: 30px;
+    border: double 2px #444444;
+    font-size: 16px;
+    color: black;
+    opacity: 0.7;
+    text-align: center;
+}
+
+.popup__input:focus {
+    outline: none;
+    border: solid 2px cornflowerblue;
+    border-radius: 30px;
+}
+
+.popup__button.submit{
+    width: 260px;
+    height: 35px;
+    border-radius: 30px;
+    border: none;
+    font-size: 14px;
+    background-color: lightslategrey;
+    color: white;
+    margin-bottom: 20px;
+}
+
+.popup__button.submit:hover{
+    outline: none;
+    width: 270px;
+    height: 40px;
+    border-radius: 30px;
+    cursor: pointer;
+    font-size: 15px;
+    /* visibility: h; */
+}
+
+.popup__button.cancel {
+    width: 60px;
+    height: 25px;
+    border-radius: 30px;
+    border: none;
+    font-size: 14px;
+    background-color: #d8d8d8;
+    color: #444444;
+}
+/* End User certify */
