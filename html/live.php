@@ -231,10 +231,16 @@
     <!-- User certify -->
     <div class="popup">
         <form >
-            <p>이메일을 입력해주세요</p>
-            <input class="popup__input" name="email" type="email">
-            <!-- <input type="text"> -->
-            <button class="popup__button submit" type="button">인증번호 전송</button>
+            <div class="popup_body email">
+                <p>이메일을 입력해주세요</p>
+                <input class="popup__input input_email" name="email" type="email">
+                <button class="popup__button submit submit_email" type="button">인증번호 전송</button>
+            </div>
+            <div class="popup_body certify-number current">
+                <p>이메일 확인 후 인증번호를 입력해주세요</p>
+                <input class="popup__input input_certify_number" name="certify-number" type="text">
+                <button class="popup__button submit submit_certify_number" type="button">인증확인</button>
+            </div>
             <button class="popup__button cancel"type="button">취소</button>
         </form>
     </div>
