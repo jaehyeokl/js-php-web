@@ -7,9 +7,9 @@
     $getData = json_decode(file_get_contents('php://input'), true);
     $emailTo = $getData['email'];
     // 임의의 6개 숫자 인증번호 생성
-    $certifyNumber = sprintf('%06d',rand(000000,999999));
+    $certifyNumber = sprintf('%06d',rand(100000,999999));
 
-    sendLiveCertifyEmail($emailTo, $message);
+    sendLiveCertifyEmail($emailTo, $certifyNumber);
     
     // DB 저장
     $createdAt = date('Y-m-d H:i:s');

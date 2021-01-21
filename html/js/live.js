@@ -50,6 +50,11 @@ window.onload = function() {
                 .then(data => {
                     console.log(data)
 
+                    // rerutn 문자열에서 authId 변수 반환하기
+                    let array = data.split("\n")
+                    let json = JSON.parse(array[1])
+                    authId = json.authId
+                    
                      // 팝업창 내 인증번호 입력받기위한 input 태그 및 버튼으로 전환
                     toggleInput()
                 })
@@ -76,28 +81,34 @@ window.onload = function() {
 
     // 인증번호 입력
     // 유저가 입력한 인증번호가 서버에 저장된 인증번호와 일치한지 확인한다
-    // submitEmail 을 통해 return 받은 authID 를 이용해 데이터에 접근한다
-    // DB liveAuth 테이블에서 id 값으로 authID 를 가지는 데이터 조회하여 인증번호 일치 여부 확인한다
+    // submitEmail 을 통해 return 받은 authId 를 이용해 데이터에 접근한다
+    // DB liveAuth 테이블에서 id 값으로 authId 를 가지는 데이터 조회하여 인증번호 일치 여부 확인한다
     function submitCertifyNumber() {
         let certifyNumberInput = document.querySelector(".input_certify_number").value;
         if (certifyNumberInput.length > 0) {
 
             // 유저가 입력한 인증번호와 authId 를 전달한다
-            fetch("send_live_certify_email.php", {
+            fetch("check_live_certify_number.php", {
                 method: "POST",
                 headers: {
                     "Content-Type": "application/json",
                 },
                 body: JSON.stringify({
-                    "email" : emailInput
+                    "certifyNumber" : certifyNumberInput,
+                    "authId" : authId
                 }),
             })
-                .then(response => response.text())
+                .then(response => response.json())
                 .then(data => {
-                    console.log(data)
+                    let result = data.result
 
-                     // 팝업창 내 인증번호 입력받기위한 input 태그 및 버튼으로 전환
-                    toggleInput()
+                    console.log(data)
+                    // if (result) {
+                    //     alert("성공")
+                    // } else {
+                    //     alert('실패')
+                    // }
+                    //
                 })
                 .catch(error => console.log(error))
 
