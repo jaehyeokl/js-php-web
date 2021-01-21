@@ -208,7 +208,10 @@
                     <h1>Live Streaming</h1>
                 </div>
                 <div class="header-auth">
-                    <span class="auth-user certified">브라우저 정보, DRM 정보, 등</span>
+                    <div class="auth-user certified">
+                        <span class="certified-email"></span>
+                        <span class="certified-drmType"></span>
+                    </div>
                     <div class="auth-guide">
                         <span class="auth-message">라이브 시청을 위해서는 이메일 인증이 필요합니다</span>
                         <a class="auth-button" href="#">인증하기</a>
