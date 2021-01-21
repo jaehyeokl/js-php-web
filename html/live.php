@@ -202,18 +202,57 @@
 
     <!-- Live Section -->
     <section id="live">
-        <div class="live-header">
-        <h1>라이브방송</h1>
+        <div class="live-left">
+            <div class="left-header">
+                <div class="header-title">
+                    <h1>Live Streaming</h1>
+                </div>
+                <div class="header-auth">
+                    <span class="auth-user">브라우저 정보, DRM 정보, 등</span>
+                    <div class="auth-guide">
+                        <span class="auth-message">라이브 시청을 위해서는 이메일 인증이 필요합니다</span>
+                        <a class="auth-button" href="#">인증하기</a>
+                    </div>
+                </div>
+            </div>
+            <div class="left-player">
+                <video id='video'  class="video-js vjs-default-skin vjs-big-play-centered vjs-show-big-play-button-on-pause" controls autoplay="true" muted="muted" preload="none" data-setup='{"techorder" : ["flash", "html5"], "loop" : "true"}' loop>
+            </div>
         </div>
-        <div class="live-body">
-            <video id='video' width='696' height='392' class="video-js vjs-default-skin vjs-big-play-centered vjs-show-big-play-button-on-pause" controls autoplay="true" muted="muted" preload="none" data-setup='{"techorder" : ["flash", "html5"], "loop" : "true"}' loop>
+        <div class="live-right">
+            <div class="body-chat">
+                <div>
+                    채팅 필드
+                </div>
+            </div>
         </div>
     </section>
 
     <script>
-        // 라이브 시청하기 위한 라이센스 가져오기
+        // 이메일 인증 이후, 라이센스 얻기
+        // 라이센스를 발급하기위해 필요한 정보를 제공해 주어야한다
+        // drmType 은 브라우저 현재 접속한 브라우저를 통해 초기화
+
+        let drmType;
+        const agent = navigator.userAgent.toLowerCase(); 
+        if (agent.indexOf("chrome") != -1) drmType = "Widevine";
+        if (agent.indexOf("firefox") != -1) drmType = "Widevine";
+        if (agent.indexOf("edge") != -1) drmType = "PlayReady";
+        if ( (navigator.appName == 'Netscape' && navigator.userAgent.search('Trident') != -1) || (agent.indexOf("msie") != -1) ) {
+            drmType = "PlayReady";
+        }
+        // if (agt.indexOf("webtv") != -1) return 'WebTV'; 
+        // if (agt.indexOf("beonex") != -1) return 'Beonex'; 
+        // if (agt.indexOf("chimera") != -1) return 'Chimera'; 
+        // if (agt.indexOf("netpositive") != -1) return 'NetPositive'; 
+        // if (agt.indexOf("phoenix") != -1) return 'Phoenix'; 
+        // if (agt.indexOf("safari") != -1) return 'Safari'; 
+        // if (agt.indexOf("skipstone") != -1) return 'SkipStone'; 
+        // if (agt.indexOf("netscape") != -1) return 'Netscape'; 
+        // if (agt.indexOf("mozilla/5.0") != -1) return 'Mozilla'; 
+
         let licenseToken;
-        let value = { "drmType": "chrome", 
+        let value = { "drmType": drmType, 
             userId: "hyukzza@naver.com",
             contentId: "test4",
         }

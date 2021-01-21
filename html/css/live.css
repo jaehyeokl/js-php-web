@@ -1,15 +1,56 @@
-
-
-
 /* Live Section */
 #live {
     display: flex;
-    flex-direction: column;
-    justify-self: center;
-    align-items: center;
+    justify-content: space-between;
+    padding: 0px 80px;
+    margin-top: 80px;
 }
 
-#live .live-header {
-    margin-top: 100px;
+#live .live-left {
+    display: flex;
+    flex-direction: column;
+}
+
+#live .left-header {
+    margin-bottom: 12px;
+}
+
+#live .live-left .header-title {
+    font-size: 2rem;
+    margin-bottom: 8px;
+}
+
+#live .header-auth {
+    display: flex;
+    align-items: flex-end;
+}
+
+#live .header-auth .auth-message {
+    font-size: 0.8rem;
+}
+
+#live .header-auth .auth-button {
+    color: cornflowerblue;
+    font-size: 1rem;
+    font-weight: 700;
+}
+
+#live .auth-user {
+    display: none;
+    font-size: 0.8rem;
+}
+
+#live .auth-after {
+    display: none;
+}
+
+#live .left-player .video-js {
+    width: 1000px;
+    height: 563px;
+}
+
+#live .live-right {
+    background-color: brown;
+    width: 20%;
 }
 /* End Live Section */

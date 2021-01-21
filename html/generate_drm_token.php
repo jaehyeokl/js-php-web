@@ -8,7 +8,7 @@
     // 라이센스 토큰을 만드는데 필요한 데이터를 전달받는다 (drmType, userId, contentid)
     $getData = json_decode(file_get_contents('php://input'), true);
     $drmType = $getData['drmType'];
-    $userId = $getData['userId']; // "LICENSETOKEN" default 값
+    $userId = $getData['userId']; // 인증한 이메일 계정, (TEST 시) default 값으로 "LICENSETOKEN" 사용 
     // $contentId = $getData['contentId'];
     $contentId = 'test4';
     $timestamp = gmdate("Y-m-d\Th:i:s\Z"); // GMT 시간
