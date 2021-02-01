@@ -78,7 +78,7 @@
         <div class="live-right">
             <div class="body-chat">
                 <div>
-                    채팅 필드
+                    채팅
                 </div>
             </div>
         </div>
