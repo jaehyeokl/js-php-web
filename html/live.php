@@ -78,7 +78,7 @@
         <div class="live-right">
             <div class="body-chat">
                 <div>
-                    채팅
+                    채팅테스트
                 </div>
             </div>
         </div>
