@@ -203,7 +203,7 @@ window.onload = function() {
 
         player.ready(function(){
                 player.src({
-                    'src': '/video/project/dash/stream.mpd',
+                    'src': '/video/project/output/dash/stream.mpd',
                     'type': 'application/dash+xml',
                     'keySystemOptions': [
                         {
@@ -226,8 +226,8 @@ window.onload = function() {
                         }
                     ]
                 });
-            })
-            player.play();
+        })
+        player.play();
     }
 
     
@@ -237,7 +237,4 @@ window.onload = function() {
     
 
 
-
-
-    
 }

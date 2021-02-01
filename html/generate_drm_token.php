@@ -10,7 +10,7 @@
     $drmType = $getData['drmType'];
     $userId = $getData['userId']; // 인증한 이메일 계정, (TEST 시) default 값으로 "LICENSETOKEN" 사용 
     // $contentId = $getData['contentId'];
-    $contentId = 'test4';
+    $contentId = 'test5';
     $timestamp = gmdate("Y-m-d\Th:i:s\Z"); // GMT 시간
 
     // DRM 정책 설정 (해당 내용은 스트리밍 기본값)
