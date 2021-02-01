@@ -176,9 +176,17 @@ window.onload = function() {
         let drmType;
 
         const agent = navigator.userAgent.toLowerCase()
-        if (agent.indexOf("chrome") != -1) drmType = "Widevine"
+
+        if (agent.indexOf("chrome") != -1) {
+            // Edge 는 chrome 의 값도 가지고 있기때문에 
+            // 해당 위치에서 한번 더 분기해주어야한다
+            if (agent.indexOf("edg") != -1) { // egd 키워드로 찾아야한다
+                drmType = "PlayReady"
+            } else {
+                drmType = "Widevine"
+            }
+        } 
         if (agent.indexOf("firefox") != -1) drmType = "Widevine"
-        if (agent.indexOf("edge") != -1) drmType = "PlayReady"
         if ( (navigator.appName == 'Netscape' && navigator.userAgent.search('Trident') != -1) || (agent.indexOf("msie") != -1) ) {
             drmType = "PlayReady"
         }
@@ -229,12 +237,4 @@ window.onload = function() {
         })
         player.play();
     }
-
-    
-
-
-
-    
-
-
 }
