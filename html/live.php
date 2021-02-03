@@ -77,10 +77,10 @@
         </div>
         <div class="live-right">
             <button class="join-chat">채팅 참가</button>
-            <div class="body-chat">
-                <!-- <div>
-                    채팅테스트
-                </div> -->
+            <div class="body-chat"></div>
+            <div class="input-chat">
+                <input class="input-message" type="text">
+                <input class="send-message" type="submit">
             </div>
         </div>
     </section>
@@ -109,25 +109,26 @@
 
     <!-- 실시간 채팅 -->
     <script src="/chat/node_modules/socket.io/client-dist/socket.io.js"></script>
+    <script src="/chat/chat_client.js"></script>
     <script>
-        let socket = io.connect("https://jaehyeok.ml:3000", { transports: ['websocket'] })
-        let name = "testName"
+        // let socket = io.connect("https://jaehyeok.ml:3000", { transports: ['websocket'] })
+        // let name = "testName"
 
-        // 클라이언트가 채팅방에 참가 // 
+        // // 클라이언트가 채팅방에 참가 // 
 
-        // 클라이언트가 채팅에 참여할 이름을 서버에 전달한다
-        socket.emit("join_chat", name);
+        // // 클라이언트가 채팅에 참여할 이름을 서버에 전달한다
+        // socket.emit("join_chat", name);
 
-        // 채팅방 참가(join_caht) 인원이 있을때마다 서버로부터 참가자 데이터를 전달받는다 
-        socket.on("join_chat", (name) => {
-            let messageTag = document.createElement("div");
-            let joinMessage = name + "님이 입장하였습니다";
-            // css 적용 위한 class 부여
-            messageTag.classList.add("join-message");
-            // 채팅창에 메세지 반영
-            document.querySelector(".body-chat").append(messageTag);
-            messageTag.append(joinMessage);
-        });
+        // // 채팅방 참가(join_caht) 인원이 있을때마다 서버로부터 참가자 데이터를 전달받는다 
+        // socket.on("join_chat", (name) => {
+        //     let messageTag = document.createElement("div");
+        //     let joinMessage = name + "님이 입장하였습니다";
+        //     // css 적용 위한 class 부여
+        //     messageTag.classList.add("join-message");
+        //     // 채팅창에 메세지 반영
+        //     document.querySelector(".body-chat").append(messageTag);
+        //     messageTag.append(joinMessage);
+        // });
 
 
         // 채팅 메세지 작성, 전달 //

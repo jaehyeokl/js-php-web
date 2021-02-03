@@ -1,5 +1,3 @@
-// 웹페이지 모든 페이지에 걸쳐 공통된 javascript 함수
-
 window.onload = function() {
 
     // 라이브 시청을 위해 이메일 인증하기
