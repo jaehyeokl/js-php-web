@@ -105,4 +105,7 @@
     
     <!-- live.js 유저 인증 및 플레이어 재생 -->
     <script src="js/live.js"></script>
+
+
+    <script src="https://jaehyeok.ml/chat"></script>
 </body>
