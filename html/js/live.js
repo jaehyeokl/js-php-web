@@ -117,6 +117,9 @@ window.onload = function() {
                         
                         inputCancel() // 팝업창 종료
                         getAuthState() // 인증 안내메세지 대신, 인증 정보를 보여준다
+                        
+                        // 채팅에 참가하기 위한 버튼을 생성
+                        document.querySelector(".join-chat").style.display ="inline-block"
                     } else {
                         alert('인증번호가 일치하지 않습니다')
                     }
