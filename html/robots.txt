@@ -1,0 +1,14 @@
+User-agent: *
+Disallow: /
+User-agent: Yeti
+User-agent: Daumoa
+User-agent: Googlebot
+Allow: /
+
+Disallow: /chat/
+Disallow: /img/
+Disallow: /test/
+Disallow: /video/
+
+#Sitemap: https://jaehyeok.ml/sitemap.xml
+

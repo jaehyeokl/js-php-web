@@ -13,9 +13,10 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <!-- <meta name="description" content="메인페이지"> -->
-    <!-- <meta property="og:title" content="ego lego" /> -->
-    <!-- <meta property="og:description" content="활동적인 아웃도어 라이프스타일" /> -->
+    <meta name="description" content="Live">
+    <meta property="og:title" content="JaeHyeok's Portfolio" />
+    <meta property="og:description" content="개발자 이재혁 포트폴리오 사이트" />
+    <meta name="keywords" content="개발자 포트폴리오" />
     <meta http-equiv="Content-Security-Policy" content="upgrade-insecure-requests"> 
     <title>LIVE</title>
     <link rel="icon" href="data:;base64,iVBORw0KGgo=">
