@@ -39,6 +39,8 @@
     <meta property="og:description" content="개발자 이재혁 포트폴리오 사이트" />
     <meta name="keywords" content="개발자 포트폴리오" />
     <title>Home</title>
+    <!-- 대표 URL 지정 -->
+    <link rel="canonical" href="https://jaehyeok.ml">
     <link rel="stylesheet" href="css/reset.css">
     <link rel="stylesheet" href="css/header.css">
     <link rel="stylesheet" href="css/index.css">
