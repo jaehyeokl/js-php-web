@@ -10,5 +10,5 @@ Disallow: /img
 Disallow: /test
 Disallow: /video
 
-#Sitemap: https://jaehyeok.ml/sitemap.xml
+Sitemap: https://jaehyeok.ml/sitemap.xml
 
