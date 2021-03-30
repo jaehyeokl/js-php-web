@@ -93,7 +93,7 @@
             let inputPassword = document.querySelector(".input_password").value;
             
             // 댓글을 수정/삭제할 수 있는 비밀번호 체크
-            if (password != inputPassword) {
+            if (password == inputPassword) {
                 let state = document.querySelector(".state").value;
                 
                 if (state == 0) {

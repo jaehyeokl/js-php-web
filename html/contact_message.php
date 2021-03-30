@@ -7,11 +7,11 @@
     $mailFrom = $_POST['email'];
     $message = $_POST['message'];
 
-    echo $nameFrom;
-    echo "<br>";
-    echo $mailFrom;
-    echo "<br>";
-    echo $message;
+    // echo $nameFrom;
+    // echo "<br>";
+    // echo $mailFrom;
+    // echo "<br>";
+    // echo $message;
 
     sendContactEmail($nameFrom, $mailFrom, $message);
 

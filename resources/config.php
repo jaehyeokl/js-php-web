@@ -129,7 +129,7 @@ function sendContactEmail($nameFrom, $mailFrom, $message) {
         $mail->Body = "[보내는 사람 : $nameFrom]\n\n".$message; // 메세지
         $mail->Send(); // 발송
         
-        echo "Message Sent OK //발송 확인\n";
+        //echo "Message Sent OK //발송 확인\n";
     } catch (phpmailerException $e) {
         echo $e->errorMessage(); //Pretty error messages from PHPMailer
     } catch (Exception $e) {
