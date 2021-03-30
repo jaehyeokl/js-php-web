@@ -48,6 +48,7 @@
 
         echo "<script>
                     alert('$message 되었습니다');
+                    opener.location.reload();
                     window.close();
                 </script>";
         

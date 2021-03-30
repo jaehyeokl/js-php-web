@@ -64,6 +64,7 @@
 
             echo "<script>
                     alert('댓글을 작성하였습니다');
+                    opener.location.reload();
                     window.close();
                 </script>";
         }

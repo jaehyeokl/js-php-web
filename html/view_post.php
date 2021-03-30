@@ -250,7 +250,7 @@
         }
     </script>
 
-<script>
+    <script>
         // 댓글 수정 및 삭제
         // 모든 수정 버튼에서 클릭을 통해 댓글수정 진행될 수 있도록 설정
         let editButtonArray = document.querySelectorAll(".comment_edit");
@@ -315,6 +315,16 @@
             document.body.appendChild(form);
             form.submit();
         }
+    </script>
+
+    <script>
+        // 댓글 전송 시 기존 input 태그 입력 창 초기화
+        // 페이지 업로드 시 각 태그를 초기화 하였음
+        window.onload = function() {
+            document.querySelector("#name").value = "";
+            document.querySelector("#password").value = "";
+            document.querySelector("#comment").value = "";
+        };
     </script>
 
     <script>
