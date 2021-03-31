@@ -158,16 +158,109 @@
                 break;
 
             case $MODIFY_POST:
+                
+                // 아래 preg_match_all 에서 게시글의 이미지를 추출할 수 있도록 먼저 초기화한다
+                $contentsText = $_POST['contents_text'];
+                
+                // 게시글에 작성된 모든 이미지를 추출한다 (img 태그 정규표현식을 이용)
+                preg_match_all("/<img[^>]*src=[\"']?([^>\"']+)[\"']?[^>]*>/i", $contentsText, $matches);
+                $imgTagList = $matches[0]; // 게시글 이미지태그 전체 리스트(img 태그 포함)
+                $imgSrcList = $matches[1]; // 게시글 이미지태그의 src(폴더 경로) 리스트
+
+                var_dump($imgTagList);
+                echo "<br>";
+                var_dump($imgSrcList);
+                                    
+                // 게시글에 작성된 이미지가 있을때
+                if (!empty($imgTagList)) {
+                    
+                    // 1
+                    $uploadImgSrcList = array();
+
+                    foreach($imgSrcList as $src) {
+                        $srcFileName = explode("/", $src)[2]; // 이미지 파일명
+                        $tmpImgSrc = $src; // 이미지의 임시폴더 경로
+                        $uploadImgSrc = "img/post/".$srcFileName; // 파일명 그대로 이동할 경로
+                        
+                        // 임시폴더에서 게시글 이미지를 저장하는 폴더(img/post) 이미지 이동
+                        if(file_exists($tmpImgSrc)) {
+                            rename($tmpImgSrc, $uploadImgSrc);
+                        }
+                        
+                        // uploadImgSrcList 는 기존 게시글에 저장된 이미지 경로를 replace 하기 위해 사용
+                        array_push($uploadImgSrcList, $uploadImgSrc);
+                    }                
+                    
+                    // 2
+                    $contentsText = str_replace("editor_tmp", "post", $contentsText);
+                    // TODO: 게시글에 경로 이름이 들어가면 오류가 생기게된다
+                    // $contentsText = preg_replace($imgSrcList, $uploadImgSrcList, $contentsText);
+                    // print_r($imgSrcList);
+                    // print_r($uploadImgSrcList);
+                    // var_dump($contentsText);
+                    
+                    // 3
+                    $firstImgSrc = $uploadImgSrcList[0];
+                    $thumbnailSrc = str_replace("post", "thumbnail", $firstImgSrc);
+                    $thumbnailWidth = 300;
+                    $thumbnailHeight = 240;
+                    getImageThumbnail($firstImgSrc, $thumbnailSrc, $thumbnailWidth, $thumbnailHeight);
+                } 
+
+                // 게시글 동영상 처리
+                // 1. 임시폴더에 저장된 게시글의 동영상 파일을 업로드된 게시글의 동영상 저장을 위한 폴더로 이동
+                // 2. 게시글에서 기록된 동영상의 임시경로를 변경된 경로로 수정 (video 태그의 src 경로를 수정)
+                // 3. 게시글에 업로드된 이미지 중 첫번째 이미지를 썸네일 이미지로 만들기 (resize)
+                
+                // 게시글에 작성된 모든 이미지를 추출한다 (img 태그 정규표현식을 이용)
+                preg_match_all("/<video[^>]*src=[\"']?([^>\"']+)[\"']?[^>]*>/i", $contentsText, $matches);
+                $videoTagList = $matches[0]; // 게시글 비디오태그 전체 리스트(video 태그 포함)
+                $videoSrcList = $matches[1]; // 게시글 비디오태그의 src(폴더 경로) 리스트
+                                    
+                // 게시글에 작성된 동영상이 있을때
+                if (!empty($videoTagList)) {
+                    
+                    // 1
+                    $uploadvideoSrcList = array();
+
+                    foreach($videoSrcList as $src) {
+                        $srcFileName = explode("/", $src)[2]; // 비디오 파일명
+                        $tmpVideoSrc = $src; // 동영상의 임시폴더 경로
+                        $uploadVideoSrc = "video/post/".$srcFileName; // 파일명 그대로 이동할 경로
+                        
+                        // 임시폴더에서 게시글 동영상을 저장하는 폴더(video/post) 동영상 이동
+                        if(file_exists($tmpVideoSrc)) {
+                            rename($tmpVideoSrc, $uploadVideoSrc);
+                        }
+                        
+                        // uploadVideoSrcList 는 기존 게시글에 저장된 동영상 경로를 replace 하기 위해 사용
+                        array_push($uploadVideoSrcList, $uploadVideoSrc);
+                    }                
+                    
+                    // 2
+                    $contentsText = str_replace("editor_tmp", "post", $contentsText);
+                    // TODO: 게시글에 경로 이름이 들어가면 오류가 생기게된다
+                    
+                    // 3
+                    // TODO: 비디오 썸네일 생성 보류 : FFMpeg 객체 생성 실패
+                    // $firstVideoSrc = $uploadVideoSrcList[0];
+                    // $videoThumbnailSrc = str_replace("post", "thumbnail", $firstVideoSrc);
+                    // $thumbnailWidth = 240;
+                    // $thumbnailHeight = 240;
+                    // getVideoThumbnail($firstVideoSrc, $videoThumbnailSrc, $thumbnailWidth, $thumbnailHeight);
+                    // getVideoThumbnail($firstVideoSrc, $videoThumbnailSrc);
+                }
                 // 기존 게시글 수정
                 $modifyPostStatement = $connectDB->prepare("UPDATE blog SET title = :title, contentsText = :contentsText, 
-                updatedAt = :updatedAt WHERE id = :id");
+                updatedAt = :updatedAt, thumbnail = :thumbnail WHERE id = :id");
                 $modifyPostStatement->bindParam(':title', $title);
                 $modifyPostStatement->bindParam(':contentsText', $contentsText);
                 $modifyPostStatement->bindParam(':updatedAt', $updatedAt);
+                $modifyPostStatement->bindParam(':thumbnail', $thumbnailSrc);
                 $modifyPostStatement->bindParam(':id', $postId, PDO::PARAM_INT);
                 // 데이터 입력 후 실행
                 $title = $_POST['title'];
-                $contentsText = $_POST['contents_text'];
+                // $contentsText = $_POST['contents_text'];
                 $updatedAt = date('Y-m-d H:i:s');
                 $postId = $_GET['id'];
                 $modifyPostStatement->execute();
