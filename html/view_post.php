@@ -172,7 +172,7 @@
                 <?= $commentItemTag ?>
             </div>
             <div class="comment_input">
-                <form action="upload_comment.php" method="post">
+                <form action="upload_comment.php" method="post" autocomplete="off">
                     <div class="input_userinfo">
                         <input id="name" name="name" type="text" placeholder="Name" minlength="2" maxlength="12">
                         <input id="password" name="password" type="text" placeholder="Password" minlength="4" maxlength="16">
@@ -315,16 +315,6 @@
             document.body.appendChild(form);
             form.submit();
         }
-    </script>
-
-    <script>
-        // 댓글 전송 시 기존 input 태그 입력 창 초기화
-        // 페이지 업로드 시 각 태그를 초기화 하였음
-        window.onload = function() {
-            document.querySelector("#name").value = "";
-            document.querySelector("#password").value = "";
-            document.querySelector("#comment").value = "";
-        };
     </script>
 
     <script>
