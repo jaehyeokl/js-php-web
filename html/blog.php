@@ -20,7 +20,7 @@
     $page = $_GET['page'] == '' ? 1 : $_GET['page'];
 
     // 하단 페이지 버튼 생성 위한 변수
-    $blockPageCount = 3; // 한번에 보여줄 버튼 개수(블록)
+    $blockPageCount = 5; // 한번에 보여줄 버튼 개수(블록)
     $totalBlockCount = ceil($totalPageCount / $blockPageCount); // 총 블록
     $currentBlock = ceil($page/$blockPageCount); // 현재 페이지가 속한 블록
     // 블럭의 첫번째 페이지 번호
@@ -102,6 +102,9 @@
 
         // 블로그 게시글 태그 생성
         $blogItemTag = $blogItemTag."<div class='blog-item'>".
+                                        "<div class='item-time'>".
+                                            "<span>$formatCreatedAt</span>".
+                                        "</div>".
                                         "<a href='view_post.php?id=$postId'>".
                                             "<div class='item-text'>".
                                                 "<span>$title</span>".
@@ -133,12 +136,12 @@
     // 게시글 작성날짜 포맷
     // default : 년.월.일 / today : 시:분
     function getFormatCreatedAt($row) {
-        $currntDate = date("Y.m.d"); // 현재 날짜
-        if($currntDate === $formatCreatedAt) {
+        $currentDate = date("Y.m.d"); // 현재 날짜
+        if($currentDate === $row['createdAt']) {
             // 게시글 생성일이 현재 날짜와 같을 경우에는 시:분 으로 작성일을 표기한다
-            $formatCreatedAt = date("H:i", strtotime($row['created']));
+            $formatCreatedAt = date("H:i", strtotime($row['createdAt']));
         } else {
-            $formatCreatedAt = date("Y.m.d", strtotime($row['created']));
+            $formatCreatedAt = date("Y.m.d", strtotime($row['createdAt']));
         }
         return $formatCreatedAt;
     }

@@ -45,11 +45,16 @@
 }
 
 #blog .blog-item {
-    height: 8vw;
+    height: 10vw;
     margin-top: 40px;
     padding: 2px 20px;
     border-bottom: solid 1px black;
     /* background-color: tomato; */
+}
+
+#blog .blog-item .item-time{
+    margin-bottom: 10px;
+    opacity: 0.6;
 }
 
 #blog .blog-item a {
