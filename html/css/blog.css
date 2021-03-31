@@ -108,6 +108,11 @@
     background-color: black;
 }
 
+#blog .page_button .hidden:hover {
+    color: white;
+    background-color: white;
+}
+
 #blog .page_button .current {
     color: white;
     background-color: black;

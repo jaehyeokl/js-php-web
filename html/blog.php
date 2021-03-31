@@ -60,6 +60,19 @@
         $nextBlockTag = '<a class="next-block" href="blog.php?page='.$nextBlockStartPage.'">'.'>'.'</a>';
     }
 
+    // 첫페이지 끝페이지 이동 버튼 생성
+    if ($currentBlock != 1) {
+        $firstPageTag = '<a class="next-block" href="blog.php?page='.'1'.'">'.'<<'.'</a>';
+    } else {
+        $firstPageTag = '<a class="hidden"></a>';
+    }
+
+    if ($currentBlock != $totalBlockCount) {
+        $endPageTag = '<a class="previous-block" href="blog.php?page='.$totalPageCount.'">'.'>>'.'</a>';
+    } else {
+        $endPageTag = '<a class="hidden"></a>';
+    }
+
     
     /* 게시글 불러오기 */
 
@@ -202,9 +215,13 @@
             <?= $blogItemTag ?>
         </div>
         <div class="page_button">
+            <?= $firstPageTag ?>
+
             <?= $previousBlockTag ?>
             <?= $pageButtonTag ?>
             <?= $nextBlockTag ?>
+
+            <?= $endPageTag ?>
         </div>
     </section>
 
